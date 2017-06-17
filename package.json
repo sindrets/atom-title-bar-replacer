@@ -1,7 +1,7 @@
 {
   "name": "title-bar-replacer",
   "main": "./lib/title-bar-replacer",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Adds an alternative, theme-aware title bar and application menu that is more inline with Atom's UI design.",
   "keywords": [
     "title bar",
