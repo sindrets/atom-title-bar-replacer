@@ -9,7 +9,7 @@
      "custom",
      "replacer"
   ],
-  "repository": "https://github.com/atom/title-bar-replacer",
+  "repository": "https://github.com/sindrets/atom-title-bar-replacer",
   "license": "MIT",
   "engines": {
     "atom": ">=1.17.0"
