@@ -8,7 +8,7 @@ module.exports =
                 displayMenu:
                     order: 1
                     title: "Display Menu Bar"
-                    description: "Determines whether or not the menu bar should be displayed by default."
+                    description: "Determines whether or not the menu bar should be displayed by default. Overridden by 'Auto Hide'."
                     type: "boolean"
                     default: true
                 closeOnDispatch:
@@ -17,6 +17,18 @@ module.exports =
                     description: "Closes the application menu once you click an item."
                     type: "boolean"
                     default: true
+                openAdjacent:
+                    order: 3
+                    title: "Open Adjacent Categories On Hover"
+                    description: "Opens adjacent menu categories on mouse hover as long as a menu category is already open."
+                    type: "boolean"
+                    default: true
+                autoHide:
+                    order: 4
+                    title: "Auto Hide Menu Bar"
+                    description: "Automatically hide the menu bar and toggle it by pressing Alt. Overrides 'Display Menu Bar'."
+                    type: "boolean"
+                    default: false
         colours:
             order: 2
             type: "object"
