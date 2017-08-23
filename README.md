@@ -2,7 +2,7 @@
 
 Adds an alternative, theme-aware title bar and application menu that is more inline with Atom's UI design.
 
-![Showcase of the replacer](https://drive.google.com/uc?export=download&id=0Byw2iYIxnNWKbVVlUVZHT0FrVWs)
+![Showcase of the replacer](http://i.imgur.com/s4wUu5M.gif)
 
 This package is aimed mostly at Windows users, as the native Windows title bar doesn't really go well with Atom's UI design. This title bar replacer adds a functional custom title bar, that lets you move, scale, and utilize Aero-snap features. It also adds a custom application menu that is somewhat more intelligent in terms of design. The default behaviour of the title bar and application menu is to choose colours based on the theme you are currently using. However, most of the colours can be customized in the settings, and the menu can also be hidden.
 
@@ -11,13 +11,28 @@ This package is aimed mostly at Windows users, as the native Windows title bar d
 For Windows users, this package comes equipped with functionality to do just this for you. The Window Frame Removal Utility can be accessed  from the application menu:
 * Packages > Title Bar Replacer > Settings > Window frame remover
 
-It can also be accessed from the package settings under 'Configuration'. Further it can be accessed from the command pallette by searching for 'Remove Window Frame'.
+It can also be accessed from the package settings under 'Configuration'. Further it can be accessed from the command palette by searching for 'Remove Window Frame'.
 
-The utility will edit one line in Atom's source code in order to make Atom start frameless. Due to the fact that it edits the source code, the removal has to be redone after each Atom update.
+The utility will edit one line in Atom's source code in order to make Atom start frameless.
 
-![Frame removal](https://drive.google.com/uc?export=download&id=0Byw2iYIxnNWKZ1ZCVUlQTEtMN1U)
+*Due to the fact that the source code is being edited, the frame removal has to be **redone after each Atom update.***
+
+![Frame removal](http://i.imgur.com/UCSf8fo.png)
+
+# Keyboard Navigation
+
+The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> will allow you to access the various categories through alt key shortcuts.
+* <kbd>Alt</kbd> - toggle alt key shortcuts or close menu if it's open
+* <kbd>&leftarrow;</kbd><kbd>&uparrow;</kbd><kbd>&downarrow;</kbd><kbd>&rightarrow;</kbd> - navigate the menu
+* <kbd>Enter</kbd> - Use selected menu item
+* <kbd>Esc</kbd> - Close menu
 
 # Changelog
+
+### 1.3.0 - Keyboard Navigation
+* Full keyboard navigation support
+* Alt key shortcuts for the menu bar
+* The title bar is now hidden in fullscreen mode by default
 
 ### 1.2.0 - Auto Hide
 * Added an auto hide feature for the menu bar

@@ -29,6 +29,11 @@ module.exports =
                     description: "Automatically hide the menu bar and toggle it by pressing Alt. Overrides 'Display Menu Bar'."
                     type: "boolean"
                     default: false
+                hideFullscreenTitle:
+                    order: 5
+                    title: "Hide Title Bar in Fullscreen"
+                    type: "boolean"
+                    default: true
         colours:
             order: 2
             type: "object"

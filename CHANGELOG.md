@@ -1,3 +1,8 @@
+### 1.3.0 - Keyboard Navigation
+* Full keyboard navigation support
+* Alt key shortcuts for the menu bar
+* The title bar is now hidden in fullscreen mode by default
+
 ### 1.2.0 - Auto Hide
 * Added an auto hide feature for the menu bar
 * Added an option to allow adjacent menu categories to be opened on mouse hover if a category is already open
