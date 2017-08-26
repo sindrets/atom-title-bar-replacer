@@ -1,3 +1,7 @@
+### 1.3.1
+ * Menu categories is navigated with left and right arrow keys when alt is pressed, or a submenu is unavailable in that direction
+ * Alt is toggled off when the window becomes out of focus
+
 ### 1.3.0 - Keyboard Navigation
 * Full keyboard navigation support
 * Alt key shortcuts for the menu bar

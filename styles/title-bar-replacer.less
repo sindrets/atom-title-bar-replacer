@@ -128,7 +128,7 @@
             font: inherit;
             color: inherit;
         }
-        &.open, &:hover {
+        &.open, &.hovered, &:hover {
             background-color: darken(@tab-bar-background-color, 10%);
         }
 
@@ -141,7 +141,6 @@
             @box-radius: 2px;
             border-radius: @box-radius;
             box-shadow: 0px 0px 6px black;
-            //overflow: hidden;
             z-index: 99999;
             transform: translate(-5px);
             hr {

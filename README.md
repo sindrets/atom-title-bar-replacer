@@ -21,13 +21,21 @@ The utility will edit one line in Atom's source code in order to make Atom start
 
 # Keyboard Navigation
 
-The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> will allow you to access the various categories through alt key shortcuts.
+The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> will allow you to access the various categories through alt key shortcuts, or arrow keys.
+
 * <kbd>Alt</kbd> - toggle alt key shortcuts or close menu if it's open
-* <kbd>&leftarrow;</kbd><kbd>&uparrow;</kbd><kbd>&downarrow;</kbd><kbd>&rightarrow;</kbd> - navigate the menu
+* <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> - navigate the menu
 * <kbd>Enter</kbd> - Use selected menu item
 * <kbd>Esc</kbd> - Close menu
+* <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> - Toggle menu bar visibility
+
+![Keyboard Navigation](http://i.imgur.com/WeAerzg.gif)
 
 # Changelog
+
+### 1.3.1
+ * Menu categories is navigated with left and right arrow keys when alt is pressed, or a submenu is unavailable in that direction
+ * Alt is toggled off when the window becomes unfocused
 
 ### 1.3.0 - Keyboard Navigation
 * Full keyboard navigation support
