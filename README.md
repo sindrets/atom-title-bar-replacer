@@ -33,6 +33,9 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 # Changelog
 
+### 1.4.1
+ * Hotfix: openCategory accessed from wrong scope
+
 ### 1.4.0 - Live Menu Updates
  * The menu now updates in real-time: updating label text, adding or removing new menu items, or categories
  * Improved selection of keystrokes for menu items
