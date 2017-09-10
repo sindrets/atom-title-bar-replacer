@@ -1,6 +1,10 @@
+### 1.4.3
+ * Bug fixes for the menu updater: improved order of index incrementation
+ * Exception handling: the menu updater now ignores objects with insufficient properties
+
 ### 1.4.2
  * Bug fixes for the menu updater
- 
+
 ### 1.4.1
  * Hotfix: openCategory accessed from wrong scope
 

@@ -33,15 +33,14 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 # Changelog
 
+### 1.4.3
+ * Bug fixes for the menu updater: improved order of index incrementation
+ * Exception handling: the menu updater now ignores objects with insufficient properties
+
 ### 1.4.2
  * Bug fixes for the menu updater
 
 ### 1.4.1
  * Hotfix: openCategory accessed from wrong scope
-
-### 1.4.0 - Live Menu Updates
- * The menu now updates in real-time: updating label text, adding or removing new menu items, or categories
- * Improved selection of keystrokes for menu items
- * More exception handling
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).
