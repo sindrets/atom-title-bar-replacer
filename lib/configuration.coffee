@@ -5,32 +5,38 @@ module.exports =
             type: "object"
             title: "General"
             properties:
-                displayMenu:
+                displayTitleBar:
                     order: 1
+                    title: "Display Title Bar"
+                    description: "Determines whether or not the title bar should be displayed by default."
+                    type: "boolean"
+                    default: true
+                displayMenu:
+                    order: 2
                     title: "Display Menu Bar"
                     description: "Determines whether or not the menu bar should be displayed by default. Overridden by 'Auto Hide'."
                     type: "boolean"
                     default: true
                 closeOnDispatch:
-                    order: 2
+                    order: 3
                     title: "Close Menu On Dispatch"
                     description: "Closes the application menu once you click an item."
                     type: "boolean"
                     default: true
                 openAdjacent:
-                    order: 3
+                    order: 4
                     title: "Open Adjacent Categories On Hover"
                     description: "Opens adjacent menu categories on mouse hover as long as a menu category is already open."
                     type: "boolean"
                     default: true
                 autoHide:
-                    order: 4
+                    order: 5
                     title: "Auto Hide Menu Bar"
                     description: "Automatically hide the menu bar and toggle it by pressing Alt. Overrides 'Display Menu Bar'."
                     type: "boolean"
                     default: false
                 hideFullscreenTitle:
-                    order: 5
+                    order: 6
                     title: "Hide Title Bar in Fullscreen"
                     type: "boolean"
                     default: true

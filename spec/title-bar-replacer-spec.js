@@ -30,9 +30,9 @@ describe('TitleBarReplacer', () => {
       });
 
       runs(() => {
-        expect(workspaceElement.querySelector('.custom-title-bar')).toExist();
+        expect(workspaceElement.querySelector('.title-bar-replacer')).toExist();
 
-        let titleBarReplacerElement = workspaceElement.querySelector('.custom-title-bar');
+        let titleBarReplacerElement = workspaceElement.querySelector('.title-bar-replacer');
         expect(titleBarReplacerElement).toExist();
 
         let titleBarReplacerPanel = TitleBarReplacer.getElement();

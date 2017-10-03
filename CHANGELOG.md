@@ -1,3 +1,13 @@
+### 1.5.0 - General Improvements
+ * Pressing space bar now uses the selected menu item without closing the application menu
+ * Implemented support for command details
+ * No longer stopping key event propagation if no action responding to a key event is taken in the Title Bar Replacer
+ * Added setting for title bar visibility
+ * Improved selection of keystrokes for menu items
+ * Handle error that occurs when the title element is accessed pre definition
+ * Window control icons now transition to white on hover
+ * New markup structure and class naming 
+
 ### 1.4.3
  * Bug fixes for the menu updater: improved order of index incrementation
  * Exception handling: the menu updater now ignores objects with insufficient properties

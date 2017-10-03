@@ -26,12 +26,23 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 * <kbd>Alt</kbd> - toggle alt key shortcuts or close menu if it's open
 * <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> - navigate the menu
 * <kbd>Enter</kbd> - Use selected menu item
+* <kbd>Space</kbd> - Use selected menu item without closing the application menu
 * <kbd>Esc</kbd> - Close menu
-* <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> - Toggle menu bar visibility
+* <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> - Toggle menu bar visibility
+* <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> - Toggle title bar visibility
 
 ![Keyboard Navigation](http://i.imgur.com/WeAerzg.gif)
 
 # Changelog
+
+### 1.5.0 - General Improvements
+ * Pressing space bar now uses the selected menu item without closing the application menu
+ * Implemented support for command details
+ * No longer stopping key event propagation if no action responding to a key event is taken in the Title Bar Replacer
+ * Added setting for title bar visibility
+ * Improved selection of keystrokes for menu items
+ * Handle error that occurs when the title element is accessed pre instantiation
+ * Window control icons now transition to white on hover
 
 ### 1.4.3
  * Bug fixes for the menu updater: improved order of index incrementation
@@ -39,8 +50,5 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 ### 1.4.2
  * Bug fixes for the menu updater
-
-### 1.4.1
- * Hotfix: openCategory accessed from wrong scope
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).

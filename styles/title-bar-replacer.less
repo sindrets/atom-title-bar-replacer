@@ -7,10 +7,10 @@
 @import "ui-variables";
 
 @title-height: 30px;
-@menu-height: 30px;
+@title-bar-height: 30px;
 @menu-margin: 10px;
 
-.custom-title-bar {
+.title-bar-replacer {
     -webkit-app-region: drag;
     display: inline-block;
     position: relative;
@@ -23,12 +23,12 @@
     margin-top: 3px;
     z-index: 900;
 
-    &.no-title-bar .custom-title, &.no-title-bar .menu-div {
+    &.no-title-bar .custom-title, &.no-title-bar .tbr-title-bar {
         display: none;
     }
 
-    &.no-title-bar .custom-menu {
-        margin-top: 4px;
+    &.no-title-bar .app-menu {
+        margin-top: 5px;
     }
 }
 
@@ -45,12 +45,12 @@
     text-align: center;
 }
 
-.menu-div {
+.tbr-title-bar {
     position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: @menu-height;
+    height: @title-bar-height;
     width: calc(~"100% -"@menu-margin * 2);
     margin-left: @menu-margin;
     transform: translate(0, 0);
@@ -69,6 +69,7 @@
         font-size: 16px;
         margin-right: 7px;
         margin-left: 7px;
+        transition: color 0.45s ease;
         &:before {
             content: "";
             display: inline-block;
@@ -86,6 +87,9 @@
             transform: scale(0);
             transition: all .18s ease;
         }
+        &:hover {
+            color: #ececec;
+        }
         &:hover:before {
             opacity: 1;
             transform: scale(1);
@@ -98,7 +102,7 @@
     }
 }
 
-.custom-menu {
+.app-menu {
     -webkit-app-region: no-drag;
     display: block;
     width: calc(~"100% -"@menu-margin * 2);
@@ -161,6 +165,8 @@
                 padding-top: 3px;
                 padding-bottom: 3px;
                 color: @text-color-highlight;
+                animation-duration: 0.15s;
+                transform-origin: center;
                 &.disabled {
                     color: @text-color-subtle;
                 }
@@ -185,6 +191,9 @@
                 .menu-item-name {
                     white-space: nowrap;
                 }
+                &.bounce {
+                    animation-name: tbr-item-bounce;
+                }
             }
             & > .menu-item:nth-child(1) {
                 border-top-left-radius: @box-radius;
@@ -198,5 +207,18 @@
     }
     div.open > .menu-box {
         display: initial;
+    }
+}
+
+
+@keyframes tbr-item-bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1);
     }
 }
