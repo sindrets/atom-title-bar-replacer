@@ -43,6 +43,7 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
  * Improved selection of keystrokes for menu items
  * Handle error that occurs when the title element is accessed pre instantiation
  * Window control icons now transition to white on hover
+ * New markup structure and class naming
 
 ### 1.4.3
  * Bug fixes for the menu updater: improved order of index incrementation
