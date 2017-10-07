@@ -14,7 +14,7 @@
   "repository": "https://github.com/sindrets/atom-title-bar-replacer",
   "license": "MIT",
   "engines": {
-    "atom": "<=1.17.0 >=1.21.0"
+    "atom": ">=1.21.0"
   },
   "dependencies": {
     "asar": "^0.13.0",
