@@ -1,3 +1,7 @@
+### 1.6.0 - Conversion to TypeScript
+ * The entire project has been ported to TypeScript
+ * Made the window-frame-remover compatible with Atom 1.21
+
 ### 1.5.0 - General Improvements
  * Pressing space bar now uses the selected menu item without closing the application menu
  * Implemented support for command details

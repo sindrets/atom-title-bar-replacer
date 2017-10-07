@@ -15,6 +15,8 @@ It can also be accessed from the package settings under 'Configuration'. Further
 
 The utility will edit one line in Atom's source code in order to make Atom start frameless.
 
+> Note: Atom 1.21 brought back Asar archiving of the application. This makes source code editing much more difficult, and - more notably for users - much slower, as the archive needs to be extracted, modified, then repacked.
+
 *Due to the fact that the source code is being edited, the frame removal has to be **redone after each Atom update.***
 
 ![Frame removal](http://i.imgur.com/UCSf8fo.png)
@@ -35,21 +37,22 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 # Changelog
 
+### 1.6.0 - Conversion to TypeScript
+ * The entire project has been ported to TypeScript
+ * Made the window-frame-remover compatible with Atom 1.21
+
 ### 1.5.0 - General Improvements
  * Pressing space bar now uses the selected menu item without closing the application menu
  * Implemented support for command details
  * No longer stopping key event propagation if no action responding to a key event is taken in the Title Bar Replacer
  * Added setting for title bar visibility
  * Improved selection of keystrokes for menu items
- * Handle error that occurs when the title element is accessed pre instantiation
+ * Handle error that occurs when the title element is accessed pre definition
  * Window control icons now transition to white on hover
  * New markup structure and class naming
 
 ### 1.4.3
  * Bug fixes for the menu updater: improved order of index incrementation
  * Exception handling: the menu updater now ignores objects with insufficient properties
-
-### 1.4.2
- * Bug fixes for the menu updater
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).

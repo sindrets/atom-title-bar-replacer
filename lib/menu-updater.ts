@@ -1,14 +1,12 @@
-'use babel'
+import TitleBarReplacerView from "./title-bar-replacer-view";
 
-import TitleBarReplacerView from "./title-bar-replacer-view.js";
-
-var _this: null;
+var _this: MenuUpdater;
 
 export default class MenuUpdater {
 
-    titleBarReplacerView: null;
-    lastMenu: null;
-    currMenu: null;
+    titleBarReplacerView = null;
+    lastMenu = null;
+    currMenu = null;
 
     constructor(titleBarReplacerView) {
         _this = this;
@@ -217,14 +215,14 @@ export default class MenuUpdater {
         var targetLength = 1;
 
         if (indexList.length > 1) {
-            o = o.firstChild; // Exception for everything that isn't category labels
+            o = <Element> o.firstChild; // Exception for everything that isn't category labels
             targetLength = 0;
         }
         while (o.childNodes.length > targetLength) {
-            o.childNodes[0].remove();
+            (o.childNodes[0] as any).remove();
         }
         if (labelText == "VERSION")
-            altData.html = "Version " + atom.appVersion;
+            altData.html = "Version " + (atom as any).appVersion;
         o.insertAdjacentHTML("afterbegin", altData.html);
     }
 

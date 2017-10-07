@@ -1,21 +1,30 @@
-'use babel';
-
-import MenuUpdater from "./menu-updater.js";
-$ = jQuery = require("jquery");
+import MenuUpdater from "./menu-updater";
+const $ = require("jquery");
+const jQuery = $;
 const remote = require('electron').remote;
 const { shell } = require('electron');
 
 var mainWindow = null;
 var customMenu;
-var _this;
+var _this: TitleBarReplacerView;
+
+//Missing definitions
+declare global {
+	interface String { includes(input: string): string }
+	namespace AtomCore {
+		interface CommandRegistry { dispatch(target: Node, commandName: string, detail: string): void; }
+		interface MenuManager { template: Array<Object>; }
+	}
+}
 
 export default class TitleBarReplacerView {
 
-	TitleBarReplacer: null;
-	MenuUpdater: null;
-	currentTemplate: null;
-	firstBuildDone: false;
-	lastMenuUpdate: null;
+	TitleBarReplacer = null;
+	MenuUpdater = null;
+	currentTemplate = null;
+	firstBuildDone = false;
+	lastMenuUpdate = null;
+	element: HTMLElement;
 
     constructor(args) {
         _this = this;
@@ -34,7 +43,7 @@ export default class TitleBarReplacerView {
         else titleString = "Atom";
         titleSpan.innerHTML = titleString;
         this.element.appendChild(titleSpan);
-        initTitleListener(titleSpan);
+        this.initTitleListener(titleSpan);
 
         const menuDiv = document.createElement('div');
         menuDiv.classList.add('tbr-title-bar');
@@ -60,16 +69,16 @@ export default class TitleBarReplacerView {
         customMenu.classList.add("app-menu");
         this.element.appendChild(customMenu);
 
-        this.element.isVisible = function() {
+        (this.element as any).isVisible = function() {
             return ($(".title-bar-replacer").css("display") != "none");
-        }
-        this.element.isMenuVisible = function() {
+        };
+        (this.element as any).isMenuVisible = function() {
             return ($(".app-menu").css("display") != "none");
-        }
+        };
     }
 
     spawnTemp() {
-        spawnTempLabels(customMenu);
+        this.spawnTempLabels(customMenu);
     }
 
     cleanOpenClass(jqueryElmnt) {
@@ -147,7 +156,7 @@ export default class TitleBarReplacerView {
 	            _this.cleanHovered();
 
 	            if (atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
-	                setMenuVisible(false);
+	                _this.setMenuVisible(false);
 	            }
 	            _this.TitleBarReplacer.openCategory = false;
 	            _this.TitleBarReplacer.setAltOn(false);
@@ -254,7 +263,7 @@ export default class TitleBarReplacerView {
 	                _this.hideAll();
 	            }
 	            if (!this.ignoreHide && atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
-	                setMenuVisible(false);
+	                _this.setMenuVisible(false);
 	            }
 				this.ignoreHide = false;
 	            _this.TitleBarReplacer.openCategory = false;
@@ -328,14 +337,14 @@ export default class TitleBarReplacerView {
 
 	        var menuLabel = document.createElement("span");
 	        menuLabel.classList.add("menu-label");
-	        var labelData = formatAltKey(this.currentTemplate[i].label);
-	        menuLabel.label = labelData.name;
-	        menuLabel.altTrigger = labelData.key;
+	        var labelData = this.formatAltKey(this.currentTemplate[i].label);
+	        (menuLabel as any).label = labelData.name;
+	        (menuLabel as any).altTrigger = labelData.key;
 	        menuLabel.innerHTML = labelData.html;
 
 	        var menu = document.createElement("div");
 	        menu.classList.add("menu-box");
-	        var traversed = traverseMenu(this.currentTemplate[i].submenu);
+	        var traversed = this.traverseMenu(this.currentTemplate[i].submenu);
 
 	        //Sort packages alphabetically
 	        if (labelData.name == "Packages") {
@@ -363,14 +372,14 @@ export default class TitleBarReplacerView {
 
 		var menuLabel = document.createElement("span");
 		menuLabel.classList.add("menu-label");
-		var labelData = formatAltKey(labelObject.label);
-		menuLabel.label = labelData.name;
-		menuLabel.altTrigger = labelData.key;
+		var labelData = this.formatAltKey(labelObject.label);
+		(menuLabel as any).label = labelData.name;
+		(menuLabel as any).altTrigger = labelData.key;
 		menuLabel.innerHTML = labelData.html;
 
 		var menu = document.createElement("div");
 		menu.classList.add("menu-box");
-		var traversed = traverseMenu(labelObject.submenu);
+		var traversed = this.traverseMenu(labelObject.submenu);
 
 		traversed.forEach(function(elmnt) {
 			menu.appendChild(elmnt);
@@ -398,7 +407,9 @@ export default class TitleBarReplacerView {
     }
 
     // Returns an object that can be retrieved when package is activated
-    serialize() {}
+    serialize(): object {
+		return this;
+	}
 
     // Tear down any state and detach
     destroy() {
@@ -409,12 +420,12 @@ export default class TitleBarReplacerView {
         return this.element;
     }
 
-	traverseTemplate(menuArray, init) {
-		return traverseMenu(menuArray, init);
+	traverseTemplate(menuArray) {
+		return this.traverseMenu(menuArray);
 	}
 
 	initMenuItem(item, menuBox) {
-		itemArray = $(item).find("div, span").toArray();
+		var itemArray = $(item).find("div, span").toArray();
 		itemArray.splice(0, 0, item);
 		itemArray.forEach(function(o) {
 			_this.initMenuBar(o);
@@ -427,177 +438,179 @@ export default class TitleBarReplacerView {
 		}
 	}
 
-}
+	private setMenuVisible(bool) {
+	    if (bool) $(".app-menu").css("display", "block");
+	    else $(".app-menu").css("display", "none");
+	}
 
-function setMenuVisible(bool) {
-    if (bool) $(".app-menu").css("display", "block");
-    else $(".app-menu").css("display", "none");
-}
+	//Spawn menu bar labels without traversing the menu template as this is not finished at this point
+	private spawnTempLabels(parent) {
+	    this.currentTemplate = atom.menu.template.slice(0);
 
-//Spawn menu bar labels without traversing the menu template as this is not finished at this point
-function spawnTempLabels(parent) {
-    this.currentTemplate = atom.menu.template.slice(0);
+	    for (var i = 0; i < this.currentTemplate.length; i++) {
 
-    for (var i = 0; i < this.currentTemplate.length; i++) {
+	        if (!this.currentTemplate[i].label) continue; //Prevent crash upon accessing faulty menu items
 
-        if (!this.currentTemplate[i].label) continue; //Prevent crash upon accessing faulty menu items
+	        var menuLabel = document.createElement("span");
+	        menuLabel.classList.add("menu-label");
+	        var labelString = this.formatAltKey(this.currentTemplate[i].label).name;
+	        (menuLabel as any).label = menuLabel.innerHTML = labelString;
+	        parent.appendChild(menuLabel);
+	    }
+	}
 
-        var menuLabel = document.createElement("span");
-        menuLabel.classList.add("menu-label");
-        var labelString = formatAltKey(this.currentTemplate[i].label).name;
-        menuLabel.label = menuLabel.innerHTML = labelString;
-        parent.appendChild(menuLabel);
-    }
-}
+	// Return an object that contains the html for a menu label, a plain-text label name, and the alt key that triggers this menu item
+	private formatAltKey(string) {
+	    var key = string.match(/&./);
+	    if (key == null) {
+	        return { html: string, name: string, key: null }
+	    }
+	    key = this.removeAmp(key[0]);
+	    var html = string.replace("&" + key, "<u>" + key + "</u>");
+	    return { html: html, name: this.removeAmp(string), key: key.toLowerCase() };
+	}
+	private removeAmp(string) {
+	    return string.replace("&", "");
+	}
 
-// Return an object that contains the html for a menu label, a plain-text label name, and the alt key that triggers this menu item
-function formatAltKey(string) {
-    var key = string.match(/&./);
-    if (key == null) {
-        return { html: string, name: string, key: null }
-    }
-    key = removeAmp(key[0]);
-    var html = string.replace("&" + key, "<u>" + key + "</u>");
-    return { html: html, name: removeAmp(string), key: key.toLowerCase() };
-}
-function removeAmp(string) {
-    return string.replace("&", "");
-}
+	//Recursively traverse the menu template and assemble the custom menu
+	private traverseMenu(menuArray) {
+	    var traversedElements = new Array();
 
-//Recursively traverse the menu template and assemble the custom menu
-function traverseMenu(menuArray) {
-    var traversedElements = new Array();
+	    for (var i = 0; i < menuArray.length; i++) {
+	        if (menuArray[i].label == undefined && menuArray[i].type == "separator") {
+	            var separator = document.createElement("hr");
+	            traversedElements.push(separator);
+	            continue
+	        }
 
-    for (var i = 0; i < menuArray.length; i++) {
-        if (menuArray[i].label == undefined && menuArray[i].type == "separator") {
-            var separator = document.createElement("hr");
-            traversedElements.push(separator);
-            continue
-        }
+	        if (menuArray[i].visible == false) continue;
 
-        if (menuArray[i].visible == false) continue;
+	        var menuItem = document.createElement("div");
+	        menuItem.classList.add("menu-item");
+	        if (menuArray[i].enabled == false)
+	            menuItem.classList.add("disabled");
 
-        var menuItem = document.createElement("div");
-        menuItem.classList.add("menu-item");
-        if (menuArray[i].enabled == false)
-            menuItem.classList.add("disabled");
+	        var altData = this.formatAltKey(menuArray[i].label);
+	        var s = altData.html;
+	        (menuItem as any).altTrigger = altData.key;
+	        if (menuArray[i].label == "VERSION")
+	            s = "Version " + (atom as any).appVersion;
+	        var menuItemName = document.createElement("span");
+	        menuItemName.classList.add("menu-item-name");
+	        menuItemName.innerHTML = s;
 
-        var altData = formatAltKey(menuArray[i].label);
-        var s = altData.html;
-        menuItem.altTrigger = altData.key;
-        if (menuArray[i].label == "VERSION")
-            s = "Version " + atom.appVersion;
-        var menuItemName = document.createElement("span");
-        menuItemName.classList.add("menu-item-name");
-        menuItemName.innerHTML = s;
+	        var menuItemKeystroke = document.createElement("span");
+	        menuItemKeystroke.classList.add("menu-item-keystroke");
 
-        var menuItemKeystroke = document.createElement("span");
-        menuItemKeystroke.classList.add("menu-item-keystroke");
+	        menuItem.appendChild(menuItemName);
+	        menuItem.appendChild(menuItemKeystroke);
 
-        menuItem.appendChild(menuItemName);
-        menuItem.appendChild(menuItemKeystroke);
+	        if (menuArray[i].submenu != undefined) {
+	            menuItem.classList.add("has-sub");
 
-        if (menuArray[i].submenu != undefined) {
-            menuItem.classList.add("has-sub");
+	            var menu = document.createElement("div");
+	            menu.classList.add("menu-box", "menu-item-submenu");
 
-            var menu = document.createElement("div");
-            menu.classList.add("menu-box", "menu-item-submenu");
-
-            var traversed = traverseMenu(menuArray[i].submenu);  // Recurse
-            for (var j = 0; j < menuArray[i].submenu.length; j++) {
-                if (traversed[j] == undefined) continue;
-                menu.appendChild(traversed[j]);
-            }
-            menuItem.appendChild(menu);
-        } else if (menuArray[i].command != undefined) {
-            menuItem.command = menuArray[i].command;
-			menuItem.commandDetail = menuArray[i].commandDetail;
-            var strokeArray = atom.keymaps.findKeyBindings({
-                command: menuItem.command
-            });
-			if (strokeArray.length == 0) {
-				traversedElements.push(menuItem);
-				continue;
-			}
-
-			// Splice out all key strokes that target an irrelevant context
-			var relSelectors = [
-				"body",
-				"atom-text-editor",
-				"atom-text-editor:not([mini])",
-				"atom-workspace",
-				"atom-workspace atom-text-editor",
-				"atom-workspace atom-text-editor:not([mini])",
-				".workspace"
-			];
-			for (var j = 0; j < strokeArray.length; j++) {
-				if (strokeArray[j].selector.includes(".platform-"))
+	            var traversed = this.traverseMenu(menuArray[i].submenu);  // Recurse
+	            for (var j = 0; j < menuArray[i].submenu.length; j++) {
+	                if (traversed[j] == undefined) continue;
+	                menu.appendChild(traversed[j]);
+	            }
+	            menuItem.appendChild(menu);
+	        } else if (menuArray[i].command != undefined) {
+	            (menuItem as any).command = menuArray[i].command;
+				(menuItem as any).commandDetail = menuArray[i].commandDetail;
+	            var strokeArray = atom.keymaps.findKeyBindings({
+	                command: (menuItem as any).command
+	            });
+				if (strokeArray.length == 0) {
+					traversedElements.push(menuItem);
 					continue;
-				var selectors = strokeArray[j].selector + ",";
-				var currSelectors = selectors.match(/(?!,)[^,]+(?=,)/g);
-				if (!currSelectors) continue;
-				var noMatches = true;
-				for (var k = 0; k < currSelectors.length; k++) {
-					for (var l = 0; l < relSelectors.length; l++) {
-						if (currSelectors[k] == relSelectors[l])
-							noMatches = false;
-					}
 				}
-				if (noMatches)
-					strokeArray.splice(j, 1);
-			}
 
-            var keystroke;
-            if (strokeArray.length > 1) {
-                keystroke = getPlatformSpecificKeystroke(strokeArray);
-            } else if (strokeArray.length == 1) {
-				var platform = getPlatformKeystroke(strokeArray[0]);
-				if (platform == null || platform == process.platform)
-                	keystroke = strokeArray[0].keystrokes;
-            }
-            if (keystroke != undefined)
-                menuItemKeystroke.innerHTML = keystroke;
-        }
-        traversedElements.push(menuItem);
-    }
+				// Splice out all key strokes that target an irrelevant context
+				var relSelectors = [
+					"body",
+					"atom-text-editor",
+					"atom-text-editor:not([mini])",
+					"atom-workspace",
+					"atom-workspace atom-text-editor",
+					"atom-workspace atom-text-editor:not([mini])",
+					".workspace"
+				];
+				for (var j = 0; j < strokeArray.length; j++) {
+					if (strokeArray[j].selector.includes(".platform-"))
+						continue;
+					var selectors = strokeArray[j].selector + ",";
+					var currSelectors = selectors.match(/(?!,)[^,]+(?=,)/g);
+					if (!currSelectors) continue;
+					var noMatches = true;
+					for (var k = 0; k < currSelectors.length; k++) {
+						for (var l = 0; l < relSelectors.length; l++) {
+							if (currSelectors[k] == relSelectors[l])
+								noMatches = false;
+						}
+					}
+					if (noMatches)
+						strokeArray.splice(j, 1);
+				}
 
-    return traversedElements;
+	            var keystroke;
+	            if (strokeArray.length > 1) {
+	                keystroke = this.getPlatformSpecificKeystroke(strokeArray);
+	            } else if (strokeArray.length == 1) {
+					var platform = this.getPlatformKeystroke(strokeArray[0]);
+					if (platform == null || platform == process.platform)
+	                	keystroke = strokeArray[0].keystrokes;
+	            }
+	            if (keystroke != undefined)
+	                menuItemKeystroke.innerHTML = keystroke;
+	        }
+	        traversedElements.push(menuItem);
+	    }
+
+	    return traversedElements;
+	}
+
+	private getPlatformKeystroke(keystrokeObj) {
+	    if (keystrokeObj.selector.includes("win32")) {
+	        return "win32";
+	    } else if (keystrokeObj.selector.includes("darwin")) {
+	        return "darwin";
+	    } else if (keystrokeObj.selector.includes("linux")) {
+	        return "linux";
+	    }
+	    return null;
+	}
+	//An attempt at getting the most relevant keystroke
+	private getPlatformSpecificKeystroke(keystrokeArray) {
+	    for (var i = 0; i < keystrokeArray.length; i++) {
+	        var platform = this.getPlatformKeystroke(keystrokeArray[i]);
+	        if (platform == process.platform) {
+	            return keystrokeArray[i].keystrokes;
+	        }
+	    }
+	    return keystrokeArray[keystrokeArray.length - 1].keystrokes;
+	}
+
+	private initTitleListener(titleSpan) {
+
+	    setInterval(function() {
+	        var title = $("title")[0];
+	        if (title && title.innerHTML == undefined) return;
+
+	        var oldTitle = titleSpan.innerHTML;
+	        var newTitle = title.innerHTML;
+	        if (oldTitle != newTitle) {
+	            titleSpan.innerHTML = newTitle;
+	        }
+	    }, 200);
+	}
+
 }
 
-function getPlatformKeystroke(keystrokeObj) {
-    if (keystrokeObj.selector.includes("win32")) {
-        return "win32";
-    } else if (keystrokeObj.selector.includes("darwin")) {
-        return "darwin";
-    } else if (keystrokeObj.selector.includes("linux")) {
-        return "linux";
-    }
-    return null;
-}
-//An attempt at getting the most relevant keystroke
-function getPlatformSpecificKeystroke(keystrokeArray) {
-    for (var i = 0; i < keystrokeArray.length; i++) {
-        var platform = getPlatformKeystroke(keystrokeArray[i]);
-        if (platform == process.platform) {
-            return keystrokeArray[i].keystrokes;
-        }
-    }
-    return keystrokeArray[keystrokeArray.length - 1].keystrokes;
-}
 
-function initTitleListener(titleSpan) {
-
-    setInterval(function() {
-        var title = $("title")[0];
-        if (title && title.innerHTML == undefined) return;
-
-        var oldTitle = titleSpan.innerHTML;
-        var newTitle = title.innerHTML;
-        if (oldTitle != newTitle) {
-            titleSpan.innerHTML = newTitle;
-        }
-    }, 200);
-}
 
 (function($) {
     $.fn.getHiddenDimensions = function(includeMargin) {
