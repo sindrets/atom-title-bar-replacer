@@ -1,3 +1,6 @@
+### 1.6.1
+ * package.json correction
+
 ### 1.6.0 - Conversion to TypeScript
  * The entire project has been ported to TypeScript
  * Made the window-frame-remover compatible with Atom 1.21

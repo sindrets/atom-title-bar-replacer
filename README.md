@@ -37,6 +37,9 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 # Changelog
 
+### 1.6.1
+ * package.json correction
+
 ### 1.6.0 - Conversion to TypeScript
  * The entire project has been ported to TypeScript
  * Made the window-frame-remover compatible with Atom 1.21
@@ -50,9 +53,5 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
  * Handle error that occurs when the title element is accessed pre definition
  * Window control icons now transition to white on hover
  * New markup structure and class naming
-
-### 1.4.3
- * Bug fixes for the menu updater: improved order of index incrementation
- * Exception handling: the menu updater now ignores objects with insufficient properties
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).
