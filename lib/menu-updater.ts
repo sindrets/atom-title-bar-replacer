@@ -4,16 +4,16 @@ var _this: MenuUpdater;
 
 export default class MenuUpdater {
 
-    titleBarReplacerView = null;
-    lastMenu = null;
-    currMenu = null;
+    titleBarReplacerView: TitleBarReplacerView = null;
+    lastMenu: TbrCore.MenuItem[] = null;
+    currMenu: TbrCore.MenuItem[] = null;
 
     constructor(titleBarReplacerView) {
         _this = this;
         this.titleBarReplacerView = titleBarReplacerView;
     }
 
-    run() {
+    public run(): void {
         this.lastMenu = this.titleBarReplacerView.getCurrentTemplate().slice(0);
         this.currMenu = null;
         this.currMenu = JSON.parse(JSON.stringify(atom.menu.template)); // Deep clone menu template
@@ -44,12 +44,12 @@ export default class MenuUpdater {
     }
 
     //Compare current menu template to the previous template and make necessary changes
-    traverseTemplate(indexListLast, indexListCurr) {
-        var iLast = indexListLast;
-        var iCurr = indexListCurr;
-        var changeState = "none";
-        var objLast;
-        var objCurr;
+    private traverseTemplate(indexListLast: number[], indexListCurr: number[]): void {
+        var iLast: number[] = indexListLast;
+        var iCurr: number[] = indexListCurr;
+        var changeState: string = "none";
+        var objLast: TbrCore.MenuItem;
+        var objCurr: TbrCore.MenuItem;
 
         var getObjLast = function() {
             if (iLast.length == 0) return 1;

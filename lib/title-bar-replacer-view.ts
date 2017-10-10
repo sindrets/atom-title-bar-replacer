@@ -1,3 +1,4 @@
+import TitleBarReplacer from "./title-bar-replacer";
 import MenuUpdater from "./menu-updater";
 const $ = require("jquery");
 const jQuery = $;
@@ -19,11 +20,11 @@ declare global {
 
 export default class TitleBarReplacerView {
 
-	TitleBarReplacer = null;
-	MenuUpdater = null;
-	currentTemplate = null;
-	firstBuildDone = false;
-	lastMenuUpdate = null;
+	TitleBarReplacer: TitleBarReplacer = null;
+	MenuUpdater: MenuUpdater = null;
+	currentTemplate: TbrCore.MenuItem[] = null;
+	firstBuildDone: boolean = false;
+	lastMenuUpdate: number = null;
 	element: HTMLElement;
 
     constructor(args) {
@@ -77,11 +78,11 @@ export default class TitleBarReplacerView {
         };
     }
 
-    spawnTemp() {
+    public spawnTemp(): void {
         this.spawnTempLabels(customMenu);
     }
 
-    cleanOpenClass(jqueryElmnt) {
+    public cleanOpenClass(jqueryElmnt): void {
         if (!jqueryElmnt.hasClass("has-sub")) {
             jqueryElmnt.parent().find(".open").removeClass("open");
         } else if (!jqueryElmnt.hasClass("open")) {
@@ -95,25 +96,25 @@ export default class TitleBarReplacerView {
         }
     }
 
-    cleanHovered() {
+    public cleanHovered(): void {
         $(".app-menu .hovered").removeClass("hovered");
     }
 
-    cleanSelectedSub() {
+    public cleanSelectedSub(): void {
         $(".app-menu .menu-item.selected").removeClass("selected");
     }
 
-    hideAll() {
+    public hideAll(): void {
         $(".app-menu span, .app-menu div").removeClass("open");
         this.cleanSelectedSub();
 		this.cleanHovered();
     }
 
-	descendantOf(child, parent) {
+	public descendantOf(child, parent): boolean {
 	    return ($(parent).find(child).length > 0);
 	}
 
-    initMenuBar(elmnt) {
+    public initMenuBar(elmnt): void {
 
 		var target;
 		var run = false;
@@ -156,7 +157,7 @@ export default class TitleBarReplacerView {
 	            _this.cleanHovered();
 
 	            if (atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
-	                _this.setMenuVisible(false);
+					_this.TitleBarReplacer.setMenuVisible(false);
 	            }
 	            _this.TitleBarReplacer.openCategory = false;
 	            _this.TitleBarReplacer.setAltOn(false);
@@ -263,7 +264,7 @@ export default class TitleBarReplacerView {
 	                _this.hideAll();
 	            }
 	            if (!this.ignoreHide && atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
-	                _this.setMenuVisible(false);
+					_this.TitleBarReplacer.setMenuVisible(false);
 	            }
 				this.ignoreHide = false;
 	            _this.TitleBarReplacer.openCategory = false;
@@ -273,7 +274,7 @@ export default class TitleBarReplacerView {
 		}
     }
 
-    initButtons() {
+    public initButtons(): void {
         mainWindow = remote.getCurrentWindow();
 
         mainWindow.on("maximize", function() {
@@ -327,7 +328,7 @@ export default class TitleBarReplacerView {
     }
 
 	//Assemble each menu category and populate submenus
-	deserializeLabels() {
+	public deserializeLabels(): void {
 		this.currentTemplate = JSON.parse(JSON.stringify(atom.menu.template)); // Deep clone menu template
 
 	    $(customMenu).empty();
@@ -349,8 +350,8 @@ export default class TitleBarReplacerView {
 	        //Sort packages alphabetically
 	        if (labelData.name == "Packages") {
 	            traversed.sort(function(a, b) {
-	                var nameA = a.firstChild.innerHTML.toLowerCase(),
-	                    nameB = b.firstChild.innerHTML.toLowerCase();
+	                var nameA = (<HTMLElement> a.firstChild).innerHTML.toLowerCase(),
+	                    nameB = (<HTMLElement> b.firstChild).innerHTML.toLowerCase();
 	                if (nameA < nameB) return -1;
 	                if (nameA > nameB) return 1;
 	                return 0;
@@ -366,7 +367,13 @@ export default class TitleBarReplacerView {
 		this.firstBuildDone = true;
 	}
 
-	deserializeLabel(labelObject, insertIndex) {
+	/**
+	 * Deserializes a single menu label object along with all submenu's, and inserts the menu label at
+	 * specified index.
+	 * @param  {TbrCore.MenuItem} labelObject The menu label object
+	 * @param  {number} 		  insertIndex The index at which the menu label should be inserted
+	 */
+	public deserializeLabel(labelObject: TbrCore.MenuItem, insertIndex: number): void {
 
 		if (!labelObject.label || !labelObject.submenu) return; //Prevent crash upon accessing faulty menu items
 
@@ -392,14 +399,14 @@ export default class TitleBarReplacerView {
 
 	}
 
-	setCurrentTemplate(template) {
+	public setCurrentTemplate(template): void {
 		this.currentTemplate = template;
 	}
-	getCurrentTemplate() {
+	public getCurrentTemplate(): TbrCore.MenuItem[] {
 		return this.currentTemplate;
 	}
 
-    updateMenu() {
+    public updateMenu(): void {
 		// var now = new Date().getTime();
 		if (!this.firstBuildDone) return;
 		this.MenuUpdater.run();
@@ -407,24 +414,24 @@ export default class TitleBarReplacerView {
     }
 
     // Returns an object that can be retrieved when package is activated
-    serialize(): object {
+    public serialize(): object {
 		return this;
 	}
 
     // Tear down any state and detach
-    destroy() {
+    public destroy(): void {
         this.element.remove();
     }
 
-    getElement() {
+    public getElement(): HTMLElement {
         return this.element;
     }
 
-	traverseTemplate(menuArray) {
+	public traverseTemplate(menuArray): any[] {
 		return this.traverseMenu(menuArray);
 	}
 
-	initMenuItem(item, menuBox) {
+	public initMenuItem(item, menuBox): void {
 		var itemArray = $(item).find("div, span").toArray();
 		itemArray.splice(0, 0, item);
 		itemArray.forEach(function(o) {
@@ -438,14 +445,9 @@ export default class TitleBarReplacerView {
 		}
 	}
 
-	private setMenuVisible(bool) {
-	    if (bool) $(".app-menu").css("display", "block");
-	    else $(".app-menu").css("display", "none");
-	}
-
 	//Spawn menu bar labels without traversing the menu template as this is not finished at this point
-	private spawnTempLabels(parent) {
-	    this.currentTemplate = atom.menu.template.slice(0);
+	private spawnTempLabels(parent): void {
+	    this.currentTemplate = atom.menu.template.slice(0) as any;
 
 	    for (var i = 0; i < this.currentTemplate.length; i++) {
 
@@ -460,7 +462,7 @@ export default class TitleBarReplacerView {
 	}
 
 	// Return an object that contains the html for a menu label, a plain-text label name, and the alt key that triggers this menu item
-	private formatAltKey(string) {
+	private formatAltKey(string): TbrCore.AltKeyCommand {
 	    var key = string.match(/&./);
 	    if (key == null) {
 	        return { html: string, name: string, key: null }
@@ -469,13 +471,13 @@ export default class TitleBarReplacerView {
 	    var html = string.replace("&" + key, "<u>" + key + "</u>");
 	    return { html: html, name: this.removeAmp(string), key: key.toLowerCase() };
 	}
-	private removeAmp(string) {
+	private removeAmp(string: string): string {
 	    return string.replace("&", "");
 	}
 
 	//Recursively traverse the menu template and assemble the custom menu
-	private traverseMenu(menuArray) {
-	    var traversedElements = new Array();
+	private traverseMenu(menuArray): HTMLElement[] {
+	    var traversedElements: Array<HTMLElement> = new Array();
 
 	    for (var i = 0; i < menuArray.length; i++) {
 	        if (menuArray[i].label == undefined && menuArray[i].type == "separator") {
@@ -573,7 +575,7 @@ export default class TitleBarReplacerView {
 	    return traversedElements;
 	}
 
-	private getPlatformKeystroke(keystrokeObj) {
+	private getPlatformKeystroke(keystrokeObj): string {
 	    if (keystrokeObj.selector.includes("win32")) {
 	        return "win32";
 	    } else if (keystrokeObj.selector.includes("darwin")) {
@@ -584,7 +586,7 @@ export default class TitleBarReplacerView {
 	    return null;
 	}
 	//An attempt at getting the most relevant keystroke
-	private getPlatformSpecificKeystroke(keystrokeArray) {
+	private getPlatformSpecificKeystroke(keystrokeArray: AtomKeymap.KeyBinding[]): string {
 	    for (var i = 0; i < keystrokeArray.length; i++) {
 	        var platform = this.getPlatformKeystroke(keystrokeArray[i]);
 	        if (platform == process.platform) {
@@ -594,7 +596,7 @@ export default class TitleBarReplacerView {
 	    return keystrokeArray[keystrokeArray.length - 1].keystrokes;
 	}
 
-	private initTitleListener(titleSpan) {
+	private initTitleListener(titleSpan): void {
 
 	    setInterval(function() {
 	        var title = $("title")[0];

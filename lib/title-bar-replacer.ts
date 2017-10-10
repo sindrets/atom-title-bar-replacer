@@ -27,7 +27,7 @@ export default class TitleBarReplacer {
     subscriptions = null;
     openCategory = false;
 
-    activate(state) {
+    public activate(state: any): void {
         __this = this;
         this.titleBarReplacerView = new TitleBarReplacerView({ state: state.titleBarReplacerViewState, TitleBarReplacer: this });
         this.titleBarPanel = this.titleBarReplacerView.getElement();
@@ -134,49 +134,49 @@ export default class TitleBarReplacer {
         });
     }
 
-    deactivate() {
+    public deactivate(): void {
         this.titleBarPanel.destroy();
         this.subscriptions.dispose();
         this.titleBarReplacerView.destroy();
     }
 
-    serialize() {}
+    public serialize() {}
 
-    toggleTitleBar() {
-        var setTo = $(".title-bar-replacer").hasClass("no-title-bar");
+    public toggleTitleBar(): boolean {
+        var setTo: boolean = $(".title-bar-replacer").hasClass("no-title-bar");
         this.displayTitleBar(setTo);
         atom.config.set("title-bar-replacer.general.displayTitleBar", setTo);
         return setTo;
     }
 
-    toggleMenuBar() {
-        var setTo = !this.titleBarPanel.isMenuVisible();
+    public toggleMenuBar(): boolean {
+        var setTo: boolean = !this.titleBarPanel.isMenuVisible();
         this.displayMenuBar(setTo);
         atom.config.set("title-bar-replacer.general.displayMenuBar", setTo);
         return setTo;
     }
 
-    displayTitleBar(bool) {
+    public displayTitleBar(bool: boolean): void {
         if (bool)
             $(".title-bar-replacer").removeClass("no-title-bar");
         else $(".title-bar-replacer").addClass("no-title-bar");
     }
 
-    displayMenuBar(bool) {
+    public displayMenuBar(bool: boolean): void {
         this.setMenuVisible(bool);
     }
 
-    fullscreenTitleBar(bool) {
+    public fullscreenTitleBar(bool: boolean): void {
         if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
             $(".title-bar-replacer").addClass("no-title-bar");
         else $(".title-bar-replacer").removeClass("no-title-bar");
     }
 
-    isAutoColour() {
+    public isAutoColour(): boolean {
         return atom.config.get("title-bar-replacer.colours.autoSelectColour");
     }
 
-    toggleAutoColor(bool?: boolean) {
+    public toggleAutoColor(bool?: boolean): void {
         if (bool == undefined)
             bool = !this.isAutoColour();
         atom.config.set("title-bar-replacer.colours.autoSelectColour", bool);
@@ -189,26 +189,26 @@ export default class TitleBarReplacer {
         }
     }
 
-    runFrameRemover() {
+    public runFrameRemover(): void {
         if (this.windowFrameRemover == null)
             this.windowFrameRemover = new WindowFrameRemover();
         this.windowFrameRemover.run();
     }
 
-	setAltOn(bool) {
+	public setAltOn(bool): void {
 		altOn = bool;
 	}
 
-    private isMenuVisible() {
-        return ($(".app-menu").css("display") != "none");
-    }
-
-    private setMenuVisible(bool) {
-        if (bool) $(".app-menu").css("display", "block");
+    public setMenuVisible(bool: boolean): void {
+        if (bool) $(".app-menu").css("display", "flex");
         else $(".app-menu").css("display", "none");
     }
 
-    private keyHandler(keyEvent) {
+    private isMenuVisible(): boolean {
+        return ($(".app-menu").css("display") != "none");
+    }
+
+    private keyHandler(keyEvent: KeyboardEvent): void {
         if (!packageReady) return;
 
         if (keyEvent.keyCode == 18 && keyEvent.ctrlKey == false && keyEvent.shiftKey == false && keyEvent.code != "AltRight") { //alt key
@@ -225,8 +225,9 @@ export default class TitleBarReplacer {
         }
     }
 
-    private resetSettings() {
+    private resetSettings(): void {
         var c = this.config;
+        atom.config.set("title-bar-replacer.general.displayTitleBar", c.general.properties.displayTitleBar.default);
         atom.config.set("title-bar-replacer.general.displayMenu", c.general.properties.displayMenu.default);
         atom.config.set("title-bar-replacer.general.closeOnDispatch", c.general.properties.closeOnDispatch.default);
         atom.config.set("title-bar-replacer.general.openAdjacent", c.general.properties.openAdjacent.default);
@@ -242,25 +243,29 @@ export default class TitleBarReplacer {
         }, 300);
     }
 
-    private createStyleSheet(): CSSStyleSheet {
+    private createStyleSheet(id?: string): CSSStyleSheet {
+        id = id.replace("#", "");
 
         var style = document.createElement("style");
-        style.id = "title-bar-replacer-style";
+        style.id = id ? id : "title-bar-replacer-style";
         style.appendChild(document.createTextNode(""));
         document.head.appendChild(style);
 
         return <CSSStyleSheet>style.sheet;
     }
 
-    private styleExists(): boolean {
-        return ($("#title-bar-replacer-style")[0] != undefined);
+    private styleExists(id?: string): boolean {
+        var query = id ? id : "#title-bar-replacer-style";
+        return ($(query)[0] != undefined);
     }
 
-    private getStyleSheet(): CSSStyleSheet {
-        if (!this.styleExists())
-            return this.createStyleSheet();
+    private getStyleSheet(id?: string): CSSStyleSheet {
+        var query: string = id ? id : "#title-bar-replacer-style";
 
-        return $("#title-bar-replacer-style")[0].sheet;
+        if (!this.styleExists(query))
+            return this.createStyleSheet(query);
+
+        return $(query)[0].sheet;
     }
 
     private clearRule(selector) {
@@ -337,7 +342,7 @@ export default class TitleBarReplacer {
         sheet.insertRule(txt[2] + "{ color: " + this.shadeColor(colourText, (-0.4) * factor) + " !important }", sheet.cssRules.length);
     }
 
-    private shadeColor(hexcolor, frac) {
+    private shadeColor(hexcolor, frac): string {
         var f = parseInt(hexcolor.slice(1), 16),
             t = frac < 0 ? 0 : 255,
             p = frac < 0 ? frac * -1 : frac,
@@ -348,7 +353,7 @@ export default class TitleBarReplacer {
     }
 
     //0.0: darkest, 1.0: lightest
-    private getLuminance(hexcolor: string) {
+    private getLuminance(hexcolor: string): number {
         if (hexcolor.includes("#")) hexcolor = hexcolor.slice(1);
         //Convert the 'RRGGBB' to their decimal values
         var r = parseInt(hexcolor.substr(0, 2), 16);
@@ -359,13 +364,19 @@ export default class TitleBarReplacer {
         return (y / 255);
     }
 
+
+    private intercept(event: Event): void {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
     private initKeyListeners(): void {
 
         var switchCategory = function(direction) {
 
             var target = $(".app-menu .menu-label.hovered, .app-menu .menu-label.open");
 
-            var focusCategory = function() {
+            var focusCategory = function(): boolean {
                 if (target.length == 0) {
                     switch(direction) {
                         case "right":
@@ -562,24 +573,6 @@ export default class TitleBarReplacer {
             }
         });
 
-    }
-
-    private intercept(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
-
-    private isJqueryVisible(jqueryElmnt) {
-        return (jqueryElmnt.css("display") != "none");
-    }
-
-    private hideJqueryElmnt(jqueryElmnt) {
-        jqueryElmnt.css("display", "none");
-    }
-
-    private toggleJqueryElmnt(jqueryElmnt) {
-        var d = (jqueryElmnt.css("display") == "none") ? "initial" : "none";
-        jqueryElmnt.css("display", d);
     }
 
 }

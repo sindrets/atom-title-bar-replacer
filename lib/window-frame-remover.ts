@@ -18,8 +18,8 @@ declare global {
         }
     }
     interface HTMLElement {
-        setText(text: string);
-        setInfo(text: string);
+        setText(text: string): void;
+        setInfo(text: string): void;
     }
 }
 
@@ -31,7 +31,7 @@ export default class WindowFrameRemover {
         rootPath = rootPath.substr(0, rootPath.lastIndexOf("/")+1) + "resources/";
     }
 
-    run() {
+    public run(): void {
         enum Operations {
             PATCH = 0,
             REVERT = 1,
@@ -87,8 +87,8 @@ export default class WindowFrameRemover {
         this.removeFrame(0, exists);
     }
 
-    private buildModal() {
-        var wrap = document.createElement("div");
+    private buildModal(): HTMLDivElement {
+        var wrap: HTMLDivElement = document.createElement("div");
         wrap.classList.add("window-frame-remover");
         $(wrap).css("margin-bottom", "7px");
 
@@ -123,7 +123,7 @@ export default class WindowFrameRemover {
         return wrap;
     }
 
-    private styleEndCard() {
+    private styleEndCard(): void {
         //Add restart button
         var button = document.createElement("button");
         button.classList.add("btn", "btn-info");
@@ -147,7 +147,7 @@ export default class WindowFrameRemover {
     }
 
     /**
-     * Synchronously delete a folder recursively
+     * Synchronously and recursively delete a folder.
      * @param  {string} rootPath Folder rootPath
      */
     private deleteFolderRecursive(rootPath: string): void {
@@ -164,7 +164,12 @@ export default class WindowFrameRemover {
         }
     }
 
-    private copyFileSync( source, target ) {
+    /**
+     * Synchronously copy a file to a specified location.
+     * @param  {string} source Path to the file to be copied
+     * @param  {string} target Path to the target copy location
+     */
+    private copyFileSync( source: string, target: string ): void {
 
         var targetFile = target;
 
@@ -178,7 +183,12 @@ export default class WindowFrameRemover {
         fs.writeFileSync(targetFile, fs.readFileSync(source));
     }
 
-    private copyFolderRecursiveSync( source, target ) {
+    /**
+     * Synchronously and recursively copy a folder to a specified location.
+     * @param {string} source Path to the folder to be copied
+     * @param {string} target Path to the target copy location
+     */
+    private copyFolderRecursiveSync( source: string, target: string ): void {
 
         if (!fs.existsSync(target))
             fs.mkdirSync(target);
@@ -199,13 +209,22 @@ export default class WindowFrameRemover {
         traverse("");
     }
 
-    private openResDir() {
+    /**
+     * Open a file-explorer revealing Atom's resources folder. \n
+     * (%localappdata%/atom/app-#.#.#/resources)
+     */
+    private openResDir(): void {
         var os: NodeJS.Platform = process.platform;
 
         if (os == "win32") childProcess.exec("start \"\" \""+rootPath+"\""); //Use empty title parameter and quotes around path in case of spaces in folder name
         else childProcess.exec("open \""+rootPath+"\"");
     }
 
+    /**
+     * Synchronously and recursively count the number of files and folders in a specified folder.
+     * @param  {string} source Path to the folder
+     * @return {number}        Total number of files and folders
+     */
     private numFilesSync(source: string): number {
 
         var count: number = 0;
@@ -229,7 +248,14 @@ export default class WindowFrameRemover {
 
     }
 
-    private extractAsarAsync(source: string, target: string, callback): void {
+    /**
+     * Asynchronously extract all contents of an ASAR archive to a specified location.
+     * @param {string}   source   Path to the ASAR archive
+     * @param {string}   target   Path to extraction directory. Folder will be created if the specified
+     *                              doesn't exist.
+     * @param {Function} callback Callback to be ran when extraction has finished.
+     */
+    private extractAsarAsync(source: string, target: string, callback: Function): void {
 
         var child = childProcess.fork(__dirname + path.sep + "utility-worker.js");
         console.log("Child worker running with PID: " + child.pid);
@@ -251,7 +277,7 @@ export default class WindowFrameRemover {
 
     }
 
-    private removeFrame(step, exists?) {
+    private removeFrame(step, exists?): void {
 
         switch (step) {
             case 0:
@@ -320,6 +346,7 @@ export default class WindowFrameRemover {
                         _this.removeFrame(6, exists);
                     });
 
+                    // Update info text on extraction progress until complete.
                     var total = asar.listPackage(rootPath + "app.asar.bak").length;
                     var progress;
                     var intervalId = setInterval(function() {
