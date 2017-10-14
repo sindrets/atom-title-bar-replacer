@@ -1,3 +1,21 @@
+### 1.7.0 - UI Customization Overhaul
+ * Added style presets
+    * Added Spatious preset
+    * Added Compact preset
+ * Added window controls presets
+    * Added Windows 10 preset
+    * Added Arc Theme preset
+    * Added Yosemite preset
+    * Added Legacy theme preset
+ * More source code documentation and type definitions
+ * Added more CSS selectors for customizability
+    * Unique style preset selectors
+    * Unique window controls preset selectors
+    * Reverse window controls flag selector
+    * Title bar visibility selector
+    * Menu bar visibility selector
+ * Removed 'Navigation Button Highlight Colour' setting
+
 ### 1.6.1
  * package.json correction
 

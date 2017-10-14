@@ -1,6 +1,6 @@
 import TitleBarReplacer from "./title-bar-replacer";
 import MenuUpdater from "./menu-updater";
-const $ = require("jquery");
+const $: JQueryStatic = require("jQuery");
 const jQuery = $;
 const remote = require('electron').remote;
 const { shell } = require('electron');
@@ -15,6 +15,17 @@ declare global {
 	namespace AtomCore {
 		interface CommandRegistry { dispatch(target: Node, commandName: string, detail: string): void; }
 		interface MenuManager { template: Array<Object>; }
+	}
+
+	interface JQuery<TElement extends Node = HTMLElement> extends Iterable<TElement> {
+		getHiddenDimensions(includeMargin: boolean): {
+			width: number;
+			height: number;
+			innerWidth: number;
+			innerHeight: number;
+			outerWidth: number;
+			outerHeight: number;
+		}
 	}
 }
 
@@ -36,33 +47,34 @@ export default class TitleBarReplacerView {
         this.element = document.createElement('div');
         this.element.classList.add('title-bar-replacer');
 
-        const titleSpan = document.createElement("span");
-        titleSpan.classList.add("custom-title");
-        var titleString;
-        if ($("title")[0] != undefined)
-            titleString = $("title")[0].innerHTML;
-        else titleString = "Atom";
-        titleSpan.innerHTML = titleString;
-        this.element.appendChild(titleSpan);
-        this.initTitleListener(titleSpan);
-
         const menuDiv = document.createElement('div');
         menuDiv.classList.add('tbr-title-bar');
 
+		const titleSpan = document.createElement("span");
+        titleSpan.classList.add("custom-title");
+        var titleString = "Atom";
+        titleSpan.innerHTML = titleString;
+        menuDiv.appendChild(titleSpan);
+        this.initTitleListener(titleSpan);
+
+		const controlWrap = document.createElement("div");
+		controlWrap.classList.add("control-wrap");
+		menuDiv.appendChild(controlWrap);
+
         const tbrMinimize = document.createElement("i");
-        tbrMinimize.textContent = "remove";
-        tbrMinimize.classList.add("tbr-minimize", "material-icons");
-        menuDiv.appendChild(tbrMinimize);
+        tbrMinimize.textContent = "control_minimize";
+        tbrMinimize.classList.add("tbr-minimize");
+        controlWrap.appendChild(tbrMinimize);
 
         const tbrMaximize = document.createElement("i");
-        tbrMaximize.textContent = "web_asset";
-        tbrMaximize.classList.add("tbr-maximize", "material-icons");
-        menuDiv.appendChild(tbrMaximize);
+        tbrMaximize.textContent = "control_maximize";
+        tbrMaximize.classList.add("tbr-maximize");
+        controlWrap.appendChild(tbrMaximize);
 
         const customClose = document.createElement("i");
-        customClose.textContent = "close";
-        customClose.classList.add("tbr-close", "material-icons");
-        menuDiv.appendChild(customClose);
+        customClose.textContent = "control_close";
+        customClose.classList.add("tbr-close");
+        controlWrap.appendChild(customClose);
 
 		this.element.appendChild(menuDiv);
 
@@ -74,7 +86,7 @@ export default class TitleBarReplacerView {
             return ($(".title-bar-replacer").css("display") != "none");
         };
         (this.element as any).isMenuVisible = function() {
-            return ($(".app-menu").css("display") != "none");
+            return (!$(".app-menu").hasClass("no-menu-bar"));
         };
     }
 
@@ -152,7 +164,7 @@ export default class TitleBarReplacerView {
 
 		if (!elmnt) {
 			$(window).click(function() {
-	            $(".app-menu .open").removeClass("open");
+	            $(".title-bar-replacer .app-menu .open").removeClass("open");
 	            _this.cleanSelectedSub();
 	            _this.cleanHovered();
 
@@ -161,7 +173,7 @@ export default class TitleBarReplacerView {
 	            }
 	            _this.TitleBarReplacer.openCategory = false;
 	            _this.TitleBarReplacer.setAltOn(false);
-	            $(".app-menu").removeClass("alt-down");
+	            $(".title-bar-replacer .app-menu").removeClass("alt-down");
 	        });
 		}
 
@@ -236,37 +248,37 @@ export default class TitleBarReplacerView {
 			$(target).click(function() {
 	            var editorElement = atom.views.getView(atom.workspace.getActiveTextEditor());
 	            if (editorElement == null) editorElement = atom.views.getView(atom.workspace.getActivePane());
-	            if (this.command == "window:toggle-menu-bar") {
+	            if ((<TbrCore.MenuItemHTMLElement>this).command == "window:toggle-menu-bar") {
 	                atom.commands.dispatch(editorElement, "title-bar-replacer:toggle-menu-bar");
 	            }
-	            else if (this.command == "application:open-terms-of-use") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-terms-of-use") {
 	                shell.openExternal("https://help.github.com/articles/github-terms-of-service/");
 	            }
-	            else if (this.command == "application:open-documentation") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-documentation") {
 	                shell.openExternal("http://flight-manual.atom.io/");
 	            }
-	            else if (this.command == "application:open-faq") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-faq") {
 	                shell.openExternal("https://atom.io/faq");
 	            }
-	            else if (this.command == "application:open-discussions") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-discussions") {
 	                shell.openExternal("https://discuss.atom.io/");
 	            }
-	            else if (this.command == "application:report-issue") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:report-issue") {
 	                shell.openExternal("https://github.com/atom/atom/blob/master/CONTRIBUTING.md#submitting-issues");
 	            }
-	            else if (this.command == "application:search-issues") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:search-issues") {
 	                shell.openExternal("https://github.com/atom/atom/issues");
 	            }
 	            else {
-	                atom.commands.dispatch(editorElement, this.command, this.commandDetail);
+	                atom.commands.dispatch(editorElement, (<TbrCore.MenuItemHTMLElement>this).command, (<TbrCore.MenuItemHTMLElement>this).commandDetail);
 	            }
-	            if (!this.ignoreHide && atom.config.get("title-bar-replacer.general.closeOnDispatch")) {
+	            if (!(<TbrCore.MenuItemHTMLElement>this).ignoreHide && atom.config.get("title-bar-replacer.general.closeOnDispatch")) {
 	                _this.hideAll();
 	            }
-	            if (!this.ignoreHide && atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
+	            if (!(<TbrCore.MenuItemHTMLElement>this).ignoreHide && atom.config.get("title-bar-replacer.general.autoHide") && !_this.TitleBarReplacer.openCategory) {
 					_this.TitleBarReplacer.setMenuVisible(false);
 	            }
-				this.ignoreHide = false;
+				(<TbrCore.MenuItemHTMLElement>this).ignoreHide = false;
 	            _this.TitleBarReplacer.openCategory = false;
 	            _this.TitleBarReplacer.setAltOn(false);
 	            $(".app-menu").removeClass("alt-down");
@@ -278,23 +290,21 @@ export default class TitleBarReplacerView {
         mainWindow = remote.getCurrentWindow();
 
         mainWindow.on("maximize", function() {
-            $(".tbr-title-bar .tbr-maximize").html("filter_none");
-            $(".tbr-title-bar .tbr-maximize").css("transform", "rotate(180deg)");
+            $(".tbr-title-bar .tbr-maximize").html("control_restore");
         });
         mainWindow.on("unmaximize", function() {
-            $(".tbr-title-bar .tbr-maximize").html("web_asset");
-            $(".tbr-title-bar .tbr-maximize").css("transform", "rotate(0deg)");
+            $(".tbr-title-bar .tbr-maximize").html("control_maximize");
         });
         mainWindow.on("enter-full-screen", function() {
             $(".tbr-title-bar .tbr-maximize").addClass("disabled");
             if (atom.config.get("title-bar-replacer.general.hideFullscreenTitle")) {
-                $(".title-bar-replacer").addClass("no-title-bar");
+                $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
             }
         });
         mainWindow.on("leave-full-screen", function() {
             $(".tbr-title-bar .tbr-maximize").removeClass("disabled");
 			if (atom.config.get("title-bar-replacer.general.displayTitleBar")) {
-            	$(".title-bar-replacer").removeClass("no-title-bar");
+            	$(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
 			}
         });
         mainWindow.on("blur", function() {
@@ -308,12 +318,10 @@ export default class TitleBarReplacerView {
         $(".tbr-title-bar .tbr-maximize").click(function() {
             if (!mainWindow.isMaximized()) {
                 mainWindow.maximize();
-                $(".tbr-title-bar .tbr-maximize").html("filter_none");
-                $(".tbr-title-bar .tbr-maximize").css("transform", "rotate(180deg)");
+                $(".tbr-title-bar .tbr-maximize").html("control_restore");
             } else {
                 mainWindow.unmaximize();
-                $(".tbr-title-bar .tbr-maximize").html("web_asset");
-                $(".tbr-title-bar .tbr-maximize").css("transform", "rotate(0deg)");
+                $(".tbr-title-bar .tbr-maximize").html("control_maximize");
             }
         });
 
@@ -322,8 +330,7 @@ export default class TitleBarReplacerView {
         });
 
         if (mainWindow.isMaximized()) {
-            $(".tbr-title-bar .tbr-maximize").html("filter_none");
-            $(".tbr-title-bar .tbr-maximize").css("transform", "rotate(180deg)");
+            $(".tbr-title-bar .tbr-maximize").html("control_restore");
         }
     }
 
@@ -600,7 +607,7 @@ export default class TitleBarReplacerView {
 
 	    setInterval(function() {
 	        var title = $("title")[0];
-	        if (title && title.innerHTML == undefined) return;
+	        if (!title || !title.innerHTML) return;
 
 	        var oldTitle = titleSpan.innerHTML;
 	        var newTitle = title.innerHTML;

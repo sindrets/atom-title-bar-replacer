@@ -13,7 +13,7 @@ declare namespace TbrCore {
         /** @type {MenuItem[]} Array of menu items contained in the submenu. */
         submenu?: MenuItem[];
 
-        /** @type {string} Describes the menu item type. Possible values include: separator */
+        /** @type {string} Describes the menu item type. Possible values include: separator, {undefined} */
         type?: string;
 
         /** @type {boolean} Determines the menu item visibility in the application menu. */
@@ -31,18 +31,24 @@ declare namespace TbrCore {
          *  @see AtomCore.CommandRegistry.dispatch */
         commandDetail?: string;
 
-        /** @type {MenuItem} Property used by the MenuUpdater to refer to this menu item's containing submenu. */
+        /** @type {MenuItem} Property used by the MenuUpdater to refer to this menu item's parent submenu. */
         menuParent?: MenuItem;
     }
 
     /**
-     * An object that contains the html for a menu label, a plain-text label name, and the alt key that
+     * An object that contains the html for the menu label text, a plain-text label name, and the alt key that
      * triggers this menu item
      */
     interface AltKeyCommand {
         html: string;
         name: string;
         key: string;
+    }
+
+    interface MenuItemHTMLElement extends HTMLElement {
+        command: string;
+        commandDetail: string;
+        ignoreHide: boolean;
     }
 
 }

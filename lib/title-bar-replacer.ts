@@ -1,7 +1,7 @@
 import TitleBarReplacerView from "./title-bar-replacer-view";
 import WindowFrameRemover from "./window-frame-remover";
 import { CompositeDisposable } from "atom";
-const $ = require("jquery");
+const $: JQueryStatic = require("jQuery");
 const jQuery = $;
 const ConfigSchema = require("./configuration.js");
 
@@ -26,6 +26,39 @@ export default class TitleBarReplacer {
     titleBarPanel = null;
     subscriptions = null;
     openCategory = false;
+
+    appearanceStyles = {
+        "Spatious": {
+            id: 0,
+            cssId: "tbr-style-spatious",
+            name: "Spatious"
+        },
+        "Compact": {
+            id: 1,
+            cssId: "tbr-style-compact",
+            name: "Compact"
+        }
+    };
+    style: { id: number, cssId: string, name: string };
+    hoverStyles = {
+        "Windows 10": {
+            id: 0,
+            cssClass: "control-theme-windows-10"
+        },
+        "Arc Theme": {
+            id: 1,
+            cssClass: "control-theme-arc-theme"
+        },
+        "Yosemite": {
+            id: 2,
+            cssClass: "control-theme-yosemite"
+        },
+        "Legacy Theme": {
+            id: 3,
+            cssClass: "control-theme-legacy-theme"
+        }
+    };
+    hoverStyle: { id: number, cssClass: string };
 
     public activate(state: any): void {
         __this = this;
@@ -73,20 +106,20 @@ export default class TitleBarReplacer {
 
         atom.config.observe('title-bar-replacer.general.displayTitleBar', (function(__this) {
             return function(value) {
-                return __this.displayTitleBar(value);
+                return __this.setTitleBarVisible(value);
             };
         })(this));
-        atom.config.observe('title-bar-replacer.general.displayMenu', (function(__this) {
+        atom.config.observe('title-bar-replacer.general.displayMenuBar', (function(__this) {
             return function(value) {
-                return __this.displayMenuBar(value);
+                return __this.setMenuVisible(value);
             };
         })(this));
         atom.config.observe("title-bar-replacer.general.autoHide", (function(__this) {
             return function(value) {
                 if (value)
-                    return __this.displayMenuBar(false);
+                    return __this.setMenuVisible(false);
 
-                return __this.displayMenuBar(atom.config.get("title-bar-replacer.general.displayMenu"));
+                return __this.setMenuVisible(atom.config.get("title-bar-replacer.general.displayMenuBar"));
             };
         })(this));
         atom.config.observe("title-bar-replacer.general.hideFullscreenTitle", (function(__this) {
@@ -96,14 +129,6 @@ export default class TitleBarReplacer {
         })(this));
         atom.config.onDidChange('title-bar-replacer.general.closeOnDispatch', function(value) {
             closeOnDispatch = value.newValue;
-        });
-        atom.config.observe('title-bar-replacer.colours.navColour', function(value) {
-            if (!value) return;
-            var selector = ".title-bar-replacer .tbr-title-bar i::before";
-            __this.clearRule(selector);
-            __this.getStyleSheet().insertRule(
-                selector + "{ background-color: " + value.toHexString() + " }", __this.getStyleSheet().cssRules.length
-            );
         });
         atom.config.onDidChange('title-bar-replacer.colours.autoSelectColour', function(value) {
             __this.toggleAutoColor(value.newValue);
@@ -121,6 +146,21 @@ export default class TitleBarReplacer {
         atom.config.observe('title-bar-replacer.colours.textColour', (function(__this) {
             return function(value) {
                 if (!__this.isAutoColour()) __this.setCustomColours();
+            };
+        })(this));
+        atom.config.observe('title-bar-replacer.colours.style', (function(__this) {
+            return function(value) {
+                __this.setTitleBarStyle(value);
+            };
+        })(this));
+        atom.config.observe('title-bar-replacer.colours.controlTheme', (function(__this) {
+            return function(value) {
+                __this.setControlTheme(value);
+            };
+        })(this));
+        atom.config.observe('title-bar-replacer.colours.controlLocation', (function(__this) {
+            return function(value) {
+                value ? $(".title-bar-replacer").addClass("reverse-controls") : $(".title-bar-replacer").removeClass("reverse-controls");
             };
         })(this));
         atom.config.onDidChange('title-bar-replacer.configuration.restoreDefaults', function(value) {
@@ -143,33 +183,29 @@ export default class TitleBarReplacer {
     public serialize() {}
 
     public toggleTitleBar(): boolean {
-        var setTo: boolean = $(".title-bar-replacer").hasClass("no-title-bar");
-        this.displayTitleBar(setTo);
+        var setTo: boolean = $(".title-bar-replacer .tbr-title-bar").hasClass("no-title-bar");
+        this.setTitleBarVisible(setTo);
         atom.config.set("title-bar-replacer.general.displayTitleBar", setTo);
         return setTo;
     }
 
     public toggleMenuBar(): boolean {
         var setTo: boolean = !this.titleBarPanel.isMenuVisible();
-        this.displayMenuBar(setTo);
+        this.setMenuVisible(setTo);
         atom.config.set("title-bar-replacer.general.displayMenuBar", setTo);
         return setTo;
     }
 
-    public displayTitleBar(bool: boolean): void {
+    public setTitleBarVisible(bool: boolean): void {
         if (bool)
-            $(".title-bar-replacer").removeClass("no-title-bar");
-        else $(".title-bar-replacer").addClass("no-title-bar");
-    }
-
-    public displayMenuBar(bool: boolean): void {
-        this.setMenuVisible(bool);
+            $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
+        else $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
     }
 
     public fullscreenTitleBar(bool: boolean): void {
         if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
-            $(".title-bar-replacer").addClass("no-title-bar");
-        else $(".title-bar-replacer").removeClass("no-title-bar");
+            $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
+        else $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
     }
 
     public isAutoColour(): boolean {
@@ -200,12 +236,12 @@ export default class TitleBarReplacer {
 	}
 
     public setMenuVisible(bool: boolean): void {
-        if (bool) $(".app-menu").css("display", "flex");
-        else $(".app-menu").css("display", "none");
+        if (bool) document.querySelector(".app-menu").classList.remove("no-menu-bar");
+        else document.querySelector(".app-menu").classList.add("no-menu-bar");
     }
 
     private isMenuVisible(): boolean {
-        return ($(".app-menu").css("display") != "none");
+        return !$(".app-menu").hasClass("no-menu-bar");
     }
 
     private keyHandler(keyEvent: KeyboardEvent): void {
@@ -228,7 +264,7 @@ export default class TitleBarReplacer {
     private resetSettings(): void {
         var c = this.config;
         atom.config.set("title-bar-replacer.general.displayTitleBar", c.general.properties.displayTitleBar.default);
-        atom.config.set("title-bar-replacer.general.displayMenu", c.general.properties.displayMenu.default);
+        atom.config.set("title-bar-replacer.general.displayMenuBar", c.general.properties.displayMenuBar.default);
         atom.config.set("title-bar-replacer.general.closeOnDispatch", c.general.properties.closeOnDispatch.default);
         atom.config.set("title-bar-replacer.general.openAdjacent", c.general.properties.openAdjacent.default);
         atom.config.set("title-bar-replacer.general.autoHide", c.general.properties.autoHide.default);
@@ -243,11 +279,12 @@ export default class TitleBarReplacer {
         }, 300);
     }
 
-    private createStyleSheet(id?: string): CSSStyleSheet {
-        id = id.replace("#", "");
+    private createStyleSheet(id?: string, domClass?: string): CSSStyleSheet {
+        if (id) id = id.replace("#", "");
 
         var style = document.createElement("style");
         style.id = id ? id : "title-bar-replacer-style";
+        if (domClass) style.classList.add(domClass);
         style.appendChild(document.createTextNode(""));
         document.head.appendChild(style);
 
@@ -259,13 +296,15 @@ export default class TitleBarReplacer {
         return ($(query)[0] != undefined);
     }
 
-    private getStyleSheet(id?: string): CSSStyleSheet {
+    private getStyleSheet(id?: string, domClass?: string): CSSStyleSheet {
         var query: string = id ? id : "#title-bar-replacer-style";
 
         if (!this.styleExists(query))
-            return this.createStyleSheet(query);
+            return this.createStyleSheet(query, domClass);
 
-        return $(query)[0].sheet;
+        if (domClass) query += "." + domClass;
+
+        return ($(query)[0] as any).sheet;
     }
 
     private clearRule(selector) {
@@ -276,6 +315,12 @@ export default class TitleBarReplacer {
             }
         }
         return sheet;
+    }
+
+    private removeNodes(selector): void {
+        (<any>document.querySelectorAll(".tbr-appearance")).forEach(function(o: HTMLElement) {
+            o.remove();
+        });
     }
 
     private clearCustomColours(): void {
@@ -364,8 +409,39 @@ export default class TitleBarReplacer {
         return (y / 255);
     }
 
+    private setTitleBarStyle(style: string): void {
+        var id: number = this.appearanceStyles[style].id;
+        if (id === undefined || (this.style && this.style.id == id)) return;
 
-    private intercept(event: Event): void {
+        var tbr = $(".title-bar-replacer");
+        if (this.style) {
+            tbr.removeClass(this.style.cssId);
+        }
+        this.style = this.appearanceStyles[style];
+        tbr.addClass(this.style.cssId);
+
+        this.removeNodes(".tbr-appearance");
+
+    }
+
+    private setControlTheme(style: string): void {
+
+        var id: number = this.hoverStyles[style].id;
+        if (id === undefined || (this.hoverStyle && id == this.hoverStyle.id)) return;
+
+        var tbr = $(".title-bar-replacer");
+
+        if (this.hoverStyle) {
+            tbr.removeClass(this.hoverStyle.cssClass);
+        }
+
+        this.hoverStyle = this.hoverStyles[style];
+        tbr.addClass(this.hoverStyle.cssClass);
+
+    }
+
+
+    private intercept(event: Event | JQuery.Event): void {
         event.stopPropagation();
         event.preventDefault();
     }
@@ -405,7 +481,7 @@ export default class TitleBarReplacer {
         }
 
         //Keyboard navigation
-        $("atom-workspace").keydown(function(e) {
+        $("atom-workspace").keydown(function(e: JQuery.Event) {
 
             if (altOn && $(".app-menu .menu-label.open").length == 0) {
 
@@ -424,7 +500,7 @@ export default class TitleBarReplacer {
             }
 
             //Alt shortcuts
-            if (altOn && e.originalEvent.repeat == false) {
+            if (altOn && (<KeyboardEvent>e.originalEvent).repeat == false) {
                 if (e.which == 18 && !(e.altKey && e.ctrlKey)) {
                     menuToggleAllowed = false;
                     $(window).trigger("click");
@@ -466,13 +542,13 @@ export default class TitleBarReplacer {
                     menuToggleAllowed = false;
                 }
             }
-            else if (e.which == 18 && !(e.altKey && e.ctrlKey) && !e.shiftKey && e.originalEvent.repeat == false) { //alt, disable altGraph
+            else if (e.which == 18 && !(e.altKey && e.ctrlKey) && !e.shiftKey && (<KeyboardEvent>e.originalEvent).repeat == false) { //alt, disable altGraph
                 __this.setAltOn(true);
                 $(".app-menu").addClass("alt-down");
             }
 
             //Close menu if open and alt is pressed
-            if ((e.which == 18 && !(e.altKey && e.ctrlKey) && e.originalEvent.repeat == false) && $(".app-menu .menu-label.open").length != 0) {
+            if ((e.which == 18 && !(e.altKey && e.ctrlKey) && (<KeyboardEvent>e.originalEvent).repeat == false) && $(".app-menu .menu-label.open").length != 0) {
                 menuToggleAllowed = false;
                 $(window).trigger("click");
             }

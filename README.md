@@ -9,7 +9,7 @@ This package is aimed mostly at Windows users, as the native Windows title bar d
 # Removing the Native Title Bar
 
 For Windows users, this package comes equipped with functionality to do just this for you. The Window Frame Removal Utility can be accessed  from the application menu:
-* Packages > Title Bar Replacer > Settings > Window frame remover
+* Packages > Title Bar Replacer > Quick Settings > Window frame remover
 
 It can also be accessed from the package settings under 'Configuration'. Further it can be accessed from the command palette by searching for 'Remove Window Frame'.
 
@@ -35,7 +35,31 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 ![Keyboard Navigation](http://i.imgur.com/WeAerzg.gif)
 
+# UI Customization
+
+There are provided settings to adjust the title bar layout style as well as a few different window contols presets. If there is some design you are unhappy with, or some design features you miss, the title bar is highly adjustable through CSS (Atom's stylesheet).
+
+![UI Customization](https://i.imgur.com/XkEmfzB.gif)
+
 # Changelog
+
+### 1.7.0 - UI Customization Overhaul
+ * Added style presets
+    * Added Spatious preset
+    * Added Compact preset
+ * Added window controls presets
+    * Added Windows 10 preset
+    * Added Arc Theme preset
+    * Added Yosemite preset
+    * Added Legacy Theme preset
+ * More source code documentation and type definitions
+ * Added more CSS selectors for customizability
+    * Unique style preset selectors
+    * Unique window controls preset selectors
+    * Reverse window controls flag selector
+    * Title bar visibility selector
+    * Menu bar visibility selector
+ * Removed 'Navigation Button Highlight Colour' setting
 
 ### 1.6.1
  * package.json correction
@@ -43,15 +67,5 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 ### 1.6.0 - Conversion to TypeScript
  * The entire project has been ported to TypeScript
  * Made the window-frame-remover compatible with Atom 1.21
-
-### 1.5.0 - General Improvements
- * Pressing space bar now uses the selected menu item without closing the application menu
- * Implemented support for command details
- * No longer stopping key event propagation if no action responding to a key event is taken in the Title Bar Replacer
- * Added setting for title bar visibility
- * Improved selection of keystrokes for menu items
- * Handle error that occurs when the title element is accessed pre definition
- * Window control icons now transition to white on hover
- * New markup structure and class naming
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).
