@@ -126,6 +126,10 @@ export default class TitleBarReplacer {
             return function(value) {
                 return __this.fullscreenTitleBar(value);
             };
+        atom.config.observe("title-bar-replacer.general.hideFullscreenMenuBar", (function(__this) {
+            return function(value) {
+                return __this.fullscreenMenuBar(value);
+            };
         })(this));
         atom.config.onDidChange('title-bar-replacer.general.closeOnDispatch', function(value) {
             closeOnDispatch = value.newValue;
@@ -206,6 +210,12 @@ export default class TitleBarReplacer {
         if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
             $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
         else $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
+    }
+
+    public fullscreenMenuBar(bool: boolean): void {
+        if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
+            $(".title-bar-replacer .app-menu").addClass("no-menu-bar");
+        else $(".title-bar-replacer .app-menu").removeClass("no-menu-bar");
     }
 
     public isAutoColour(): boolean {
