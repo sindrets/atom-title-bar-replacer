@@ -119,6 +119,9 @@ export default class TitleBarReplacer {
                 if (value)
                     return __this.setMenuVisible(false);
 
+                if (atom.config.get("title-bar-replacer.general.hideFullscreenMenuBar") && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
+                    return __this.setMenuVisible(false);
+
                 return __this.setMenuVisible(atom.config.get("title-bar-replacer.general.displayMenuBar"));
             };
         })(this));
@@ -126,6 +129,7 @@ export default class TitleBarReplacer {
             return function(value) {
                 return __this.fullscreenTitleBar(value);
             };
+        })(this));
         atom.config.observe("title-bar-replacer.general.hideFullscreenMenuBar", (function(__this) {
             return function(value) {
                 return __this.fullscreenMenuBar(value);
@@ -259,7 +263,7 @@ export default class TitleBarReplacer {
 
         if (keyEvent.keyCode == 18 && keyEvent.ctrlKey == false && keyEvent.shiftKey == false && keyEvent.code != "AltRight") { //alt key
             if (menuToggleAllowed && atom.config.get("title-bar-replacer.general.autoHide")) {
-                if ($(".app-menu .menu-label.open").length > 0){
+                if ($(".app-menu .menu-label.open").length > 0) {
                     this.openCategory = true;
                     $(window).click();
                 }

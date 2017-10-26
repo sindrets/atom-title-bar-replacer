@@ -297,8 +297,11 @@ export default class TitleBarReplacerView {
         });
         mainWindow.on("enter-full-screen", function() {
             $(".tbr-title-bar .tbr-maximize").addClass("disabled");
-            if (atom.config.get("title-bar-replacer.general.hideFullscreenTitle")) {
+			if (atom.config.get("title-bar-replacer.general.hideFullscreenTitle")) {
                 $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
+            }
+			if (atom.config.get("title-bar-replacer.general.hideFullscreenMenuBar")) {
+                $(".title-bar-replacer .app-menu").addClass("no-menu-bar");
             }
         });
         mainWindow.on("leave-full-screen", function() {
@@ -306,6 +309,10 @@ export default class TitleBarReplacerView {
 			if (atom.config.get("title-bar-replacer.general.displayTitleBar")) {
             	$(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
 			}
+			if (atom.config.get("title-bar-replacer.general.displayMenuBar") && !atom.config.get("title-bar-replacer.general.autoHide")) {
+            	$(".title-bar-replacer .app-menu").removeClass("no-menu-bar");
+			}
+			_this.TitleBarReplacer.setAltOn(false);
         });
         mainWindow.on("blur", function() {
             $(window).trigger("click");
