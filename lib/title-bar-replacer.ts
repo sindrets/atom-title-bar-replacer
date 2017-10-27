@@ -83,7 +83,7 @@ export default class TitleBarReplacer {
             function extendUpdate() {
                 prev.apply(atom.menu);
                 if (packageReady)
-                    __this.titleBarReplacerView.updateMenu();
+                __this.titleBarReplacerView.updateMenu();
             }
 
             return extendUpdate;
@@ -117,10 +117,10 @@ export default class TitleBarReplacer {
         atom.config.observe("title-bar-replacer.general.autoHide", (function(__this) {
             return function(value) {
                 if (value)
-                    return __this.setMenuVisible(false);
+                return __this.setMenuVisible(false);
 
                 if (atom.config.get("title-bar-replacer.general.hideFullscreenMenuBar") && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
-                    return __this.setMenuVisible(false);
+                return __this.setMenuVisible(false);
 
                 return __this.setMenuVisible(atom.config.get("title-bar-replacer.general.displayMenuBar"));
             };
@@ -206,20 +206,20 @@ export default class TitleBarReplacer {
 
     public setTitleBarVisible(bool: boolean): void {
         if (bool)
-            $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
+        $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
         else $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
     }
 
     public fullscreenTitleBar(bool: boolean): void {
         if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
-            $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
+        $(".title-bar-replacer .tbr-title-bar").addClass("no-title-bar");
         else $(".title-bar-replacer .tbr-title-bar").removeClass("no-title-bar");
     }
 
     public fullscreenMenuBar(bool: boolean): void {
         if (bool && (<BrowserWindow>atom.getCurrentWindow()).isFullScreen())
-            $(".title-bar-replacer .app-menu").addClass("no-menu-bar");
-        else $(".title-bar-replacer .app-menu").removeClass("no-menu-bar");
+        $(".title-bar-replacer .app-menu").addClass("no-menu-bar");
+        else if((<BrowserWindow>atom.getCurrentWindow()).isFullScreen()) $(".title-bar-replacer .app-menu").removeClass("no-menu-bar");
     }
 
     public isAutoColour(): boolean {
@@ -228,7 +228,7 @@ export default class TitleBarReplacer {
 
     public toggleAutoColor(bool?: boolean): void {
         if (bool == undefined)
-            bool = !this.isAutoColour();
+        bool = !this.isAutoColour();
         atom.config.set("title-bar-replacer.colours.autoSelectColour", bool);
         if (bool) {
             atom.notifications.addSuccess("Auto Colour component enabled");
@@ -241,13 +241,13 @@ export default class TitleBarReplacer {
 
     public runFrameRemover(): void {
         if (this.windowFrameRemover == null)
-            this.windowFrameRemover = new WindowFrameRemover();
+        this.windowFrameRemover = new WindowFrameRemover();
         this.windowFrameRemover.run();
     }
 
-	public setAltOn(bool): void {
-		altOn = bool;
-	}
+    public setAltOn(bool): void {
+        altOn = bool;
+    }
 
     public setMenuVisible(bool: boolean): void {
         if (bool) document.querySelector(".app-menu").classList.remove("no-menu-bar");
@@ -260,14 +260,17 @@ export default class TitleBarReplacer {
 
     private keyHandler(keyEvent: KeyboardEvent): void {
         if (!packageReady) return;
+        console.log("I'm here!");
 
         if (keyEvent.keyCode == 18 && keyEvent.ctrlKey == false && keyEvent.shiftKey == false && keyEvent.code != "AltRight") { //alt key
-            if (menuToggleAllowed && atom.config.get("title-bar-replacer.general.autoHide")) {
+            if ((menuToggleAllowed && atom.config.get("title-bar-replacer.general.autoHide"))) {
                 if ($(".app-menu .menu-label.open").length > 0) {
                     this.openCategory = true;
+                    console.log("I'm noot here!");
                     $(window).click();
                 }
                 else {
+                    console.log("I'm herelast!");
                     this.setMenuVisible(!this.isMenuVisible());
                 }
             }
@@ -283,6 +286,7 @@ export default class TitleBarReplacer {
         atom.config.set("title-bar-replacer.general.openAdjacent", c.general.properties.openAdjacent.default);
         atom.config.set("title-bar-replacer.general.autoHide", c.general.properties.autoHide.default);
         atom.config.set("title-bar-replacer.general.hideFullscreenTitle", c.general.properties.hideFullscreenTitle.default);
+        atom.config.set("title-bar-replacer.general.hideFullscreenMenuBar", c.general.properties.hideFullscreenMenuBar.default);
         atom.config.set("title-bar-replacer.colours.navColour", c.colours.properties.navColour.default);
         atom.config.set("title-bar-replacer.colours.autoSelectColour", c.colours.properties.autoSelectColour.default);
         atom.config.set("title-bar-replacer.colours.baseColour", c.colours.properties.baseColour.default);
@@ -314,7 +318,7 @@ export default class TitleBarReplacer {
         var query: string = id ? id : "#title-bar-replacer-style";
 
         if (!this.styleExists(query))
-            return this.createStyleSheet(query, domClass);
+        return this.createStyleSheet(query, domClass);
 
         if (domClass) query += "." + domClass;
 
@@ -403,11 +407,11 @@ export default class TitleBarReplacer {
 
     private shadeColor(hexcolor, frac): string {
         var f = parseInt(hexcolor.slice(1), 16),
-            t = frac < 0 ? 0 : 255,
-            p = frac < 0 ? frac * -1 : frac,
-            R = f >> 16,
-            G = f >> 8 & 0x00FF,
-            B = f & 0x0000FF;
+        t = frac < 0 ? 0 : 255,
+        p = frac < 0 ? frac * -1 : frac,
+        R = f >> 16,
+        G = f >> 8 & 0x00FF,
+        B = f & 0x0000FF;
         return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
     }
 
@@ -470,10 +474,10 @@ export default class TitleBarReplacer {
                 if (target.length == 0) {
                     switch(direction) {
                         case "right":
-                            $(".app-menu .menu-label").first().addClass("hovered");
-                            break;
+                        $(".app-menu .menu-label").first().addClass("hovered");
+                        break;
                         case "left":
-                            $(".app-menu .menu-label").last().addClass("hovered");
+                        $(".app-menu .menu-label").last().addClass("hovered");
                     }
                     return true;
                 }
@@ -483,10 +487,10 @@ export default class TitleBarReplacer {
             if (!focusCategory()) {
                 switch(direction) {
                     case "right":
-                        target = target.next();
-                        break;
+                    target = target.next();
+                    break;
                     case "left":
-                        target = target.prev();
+                    target = target.prev();
                 }
                 __this.titleBarReplacerView.hideAll();
                 target.addClass("hovered");
@@ -551,118 +555,123 @@ export default class TitleBarReplacer {
                 }
                 // Disable alt mode if no command was dispatched and the pressed key was irrelevant
                 else if (!dispatched && e.which != 37 && e.which != 38 && e.which != 39 && e.which != 40
-                        && e.which != 32 && e.which != 13 && e.which != 27 && e.which != 18) {// arrow left | arrow up | arrow right | arrow down | space | enter | escape | alt
-                    $(window).trigger("click");
-                    menuToggleAllowed = false;
+                    && e.which != 32 && e.which != 13 && e.which != 27 && e.which != 18) {// arrow left | arrow up | arrow right | arrow down | space | enter | escape | alt
+                        $(window).trigger("click");
+                        menuToggleAllowed = false;
+                    }
                 }
-            }
-            else if (e.which == 18 && !(e.altKey && e.ctrlKey) && !e.shiftKey && (<KeyboardEvent>e.originalEvent).repeat == false) { //alt, disable altGraph
-                __this.setAltOn(true);
-                $(".app-menu").addClass("alt-down");
-            }
+                else if (e.which == 18 && !(e.altKey && e.ctrlKey) && !e.shiftKey && (<KeyboardEvent>e.originalEvent).repeat == false) { //alt, disable altGraph
+                    __this.setAltOn(true);
+                    if(((<BrowserWindow>atom.getCurrentWindow()).isFullScreen()) && atom.config.get("title-bar-replacer.general.hideFullscreenMenuBar"))
+                    {
+                        $(".app-menu").removeClass("no-menu-bar");
+                        menuToggleAllowed = false;
+                    }
+                    $(".app-menu").addClass("alt-down");
+                }
 
-            //Close menu if open and alt is pressed
-            if ((e.which == 18 && !(e.altKey && e.ctrlKey) && (<KeyboardEvent>e.originalEvent).repeat == false) && $(".app-menu .menu-label.open").length != 0) {
-                menuToggleAllowed = false;
-                $(window).trigger("click");
-            }
+                //Close menu if open and alt is pressed
+                if ((e.which == 18 && !(e.altKey && e.ctrlKey) && (<KeyboardEvent>e.originalEvent).repeat == false) && $(".app-menu .menu-label.open").length != 0) {
+                    menuToggleAllowed = false;
+                    $(window).trigger("click");
+                }
 
 
 
-            if ($(".title-bar-replacer .menu-label.open").length > 0) {
-                var target: JQuery<HTMLElement>;
+                if ($(".title-bar-replacer .menu-label.open").length > 0) {
+                    var target: JQuery<HTMLElement>;
 
-                var selectFirst = function() {
-                    if ($(".app-menu .menu-label.open .menu-item.selected").length == 0) {
-                        target = $(".app-menu .menu-label.open .menu-item").first();
+                    var selectFirst = function() {
+                        if ($(".app-menu .menu-label.open .menu-item.selected").length == 0) {
+                            target = $(".app-menu .menu-label.open .menu-item").first();
+                            target.trigger("mouseenter");
+                            target.removeClass("open");
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    target = $(".app-menu .menu-label.open .menu-item.selected").last();
+
+                    if (e.which == 38) { //arrow up
+                        __this.intercept(e);
+                        if (selectFirst()) return;
+                        var parent = target.parent().parent();
+                        target = target.prev();
+                        if (target.length == 0 && parent.hasClass("menu-label")) {
+                            parent.removeClass("open");
+                            parent.addClass("hovered");
+                            __this.setAltOn(true);
+                            $(".app-menu").addClass("alt-down");
+                            return;
+                        }
+                        while (target.length != 0 && target.prop("nodeName") != "DIV") {
+                            target = target.prev();
+                        }
                         target.trigger("mouseenter");
                         target.removeClass("open");
-                        return true;
                     }
-                    return false;
-                }
-
-                target = $(".app-menu .menu-label.open .menu-item.selected").last();
-
-                if (e.which == 38) { //arrow up
-                    __this.intercept(e);
-                    if (selectFirst()) return;
-                    var parent = target.parent().parent();
-                    target = target.prev();
-                    if (target.length == 0 && parent.hasClass("menu-label")) {
-                        parent.removeClass("open");
-                        parent.addClass("hovered");
-                        __this.setAltOn(true);
-                        $(".app-menu").addClass("alt-down");
-                        return;
-                    }
-                    while (target.length != 0 && target.prop("nodeName") != "DIV") {
-                        target = target.prev();
-                    }
-                    target.trigger("mouseenter");
-                    target.removeClass("open");
-                }
-                else if (e.which == 40) { //arrow down
-                    __this.intercept(e);
-                    if (selectFirst()) return;
-                    target = target.next();
-                    while (target.length != 0 && target.prop("nodeName") != "DIV") {
+                    else if (e.which == 40) { //arrow down
+                        __this.intercept(e);
+                        if (selectFirst()) return;
                         target = target.next();
+                        while (target.length != 0 && target.prop("nodeName") != "DIV") {
+                            target = target.next();
+                        }
+                        target.trigger("mouseenter");
+                        target.removeClass("open");
                     }
-                    target.trigger("mouseenter");
-                    target.removeClass("open");
-                }
 
-                else if (e.which == 37) { //arrow left
-                    __this.intercept(e);
-                    $(".app-menu .menu-item.has-sub.open").last().trigger("mouseenter");
-                    if (!target.parent().parent().hasClass("menu-label"))
+                    else if (e.which == 37) { //arrow left
+                        __this.intercept(e);
+                        $(".app-menu .menu-item.has-sub.open").last().trigger("mouseenter");
+                        if (!target.parent().parent().hasClass("menu-label"))
                         target.parent().parent().removeClass("open");
-                    else {
-                        switchCategory("left");
-                        __this.setAltOn(true);
-                        $(".app-menu").addClass("alt-down");
+                        else {
+                            switchCategory("left");
+                            __this.setAltOn(true);
+                            $(".app-menu").addClass("alt-down");
+                        }
+                    }
+                    else if (e.which == 39) { //arrow right
+                        __this.intercept(e);
+                        if (!target.hasClass("has-sub")) {
+                            switchCategory("right");
+                            __this.setAltOn(true);
+                            $(".app-menu").addClass("alt-down");
+                            return;
+                        }
+
+                        target.addClass("open");
+                        target = target.find(".menu-item").first();
+                        target.trigger("mouseenter");
+                    }
+
+                    //Execute command
+                    else if (e.which == 13) { //enter
+                        __this.intercept(e);
+                        target.trigger("click");
+                    }
+                    // Bounce
+                    else if (e.which == 32 && target && !target.hasClass("has-sub")) {
+                        __this.intercept(e);
+                        (target[0] as any).ignoreHide = true;
+                        target.trigger("click");
+
+                        var duration = parseFloat(target.css("animation-duration")) * 1000;
+                        target.addClass("bounce");
+                        setTimeout(function () {
+                            target.removeClass("bounce");
+                        }, duration);
+                    }
+                    //Close menu
+                    else if (e.which == 27) { //escape
+                        __this.intercept(e);
+                        $(window).trigger("click");
                     }
                 }
-                else if (e.which == 39) { //arrow right
-                    __this.intercept(e);
-                    if (!target.hasClass("has-sub")) {
-                        switchCategory("right");
-                        __this.setAltOn(true);
-                        $(".app-menu").addClass("alt-down");
-                        return;
-                    }
+            });
 
-                    target.addClass("open");
-                    target = target.find(".menu-item").first();
-                    target.trigger("mouseenter");
-                }
-
-                //Execute command
-                else if (e.which == 13) { //enter
-                    __this.intercept(e);
-                    target.trigger("click");
-                }
-                // Bounce
-                else if (e.which == 32 && target && !target.hasClass("has-sub")) {
-                    __this.intercept(e);
-                    (target[0] as any).ignoreHide = true;
-                    target.trigger("click");
-
-                    var duration = parseFloat(target.css("animation-duration")) * 1000;
-                    target.addClass("bounce");
-                    setTimeout(function () {
-                        target.removeClass("bounce");
-                    }, duration);
-                }
-                //Close menu
-                else if (e.which == 27) { //escape
-                    __this.intercept(e);
-                    $(window).trigger("click");
-                }
-            }
-        });
+        }
 
     }
-
-}

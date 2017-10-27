@@ -174,6 +174,8 @@ export default class TitleBarReplacerView {
 	            _this.TitleBarReplacer.openCategory = false;
 	            _this.TitleBarReplacer.setAltOn(false);
 	            $(".title-bar-replacer .app-menu").removeClass("alt-down");
+				if(((<BrowserWindow>atom.getCurrentWindow()).isFullScreen()) && atom.config.get("title-bar-replacer.general.hideFullscreenMenuBar"))
+                    $(".app-menu").addClass("no-menu-bar");
 	        });
 		}
 
