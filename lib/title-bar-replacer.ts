@@ -260,17 +260,14 @@ export default class TitleBarReplacer {
 
     private keyHandler(keyEvent: KeyboardEvent): void {
         if (!packageReady) return;
-        console.log("I'm here!");
 
         if (keyEvent.keyCode == 18 && keyEvent.ctrlKey == false && keyEvent.shiftKey == false && keyEvent.code != "AltRight") { //alt key
             if ((menuToggleAllowed && atom.config.get("title-bar-replacer.general.autoHide"))) {
                 if ($(".app-menu .menu-label.open").length > 0) {
                     this.openCategory = true;
-                    console.log("I'm noot here!");
                     $(window).click();
                 }
                 else {
-                    console.log("I'm herelast!");
                     this.setMenuVisible(!this.isMenuVisible());
                 }
             }
