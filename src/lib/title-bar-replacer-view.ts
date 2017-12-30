@@ -2,11 +2,11 @@ import TitleBarReplacer from "./title-bar-replacer";
 import MenuUpdater from "./menu-updater";
 const $: JQueryStatic = require("jQuery");
 const jQuery = $;
-const remote = require('electron').remote;
+const remote: any = require('electron').remote;
 const { shell } = require('electron');
 
-var mainWindow = null;
-var customMenu;
+var mainWindow: BrowserWindow;
+var customMenu: HTMLElement;
 var _this: TitleBarReplacerView;
 
 //Missing definitions
@@ -31,56 +31,71 @@ declare global {
 
 export default class TitleBarReplacerView {
 
-	TitleBarReplacer: TitleBarReplacer = null;
-	MenuUpdater: MenuUpdater = null;
-	currentTemplate: TbrCore.MenuItem[] = null;
+	TitleBarReplacer: TitleBarReplacer;
+	MenuUpdater: MenuUpdater;
+	currentTemplate: TbrCore.MenuItem[];
 	firstBuildDone: boolean = false;
-	lastMenuUpdate: number = null;
+	lastMenuUpdate: number;
 	element: HTMLElement;
+	builtFromState: boolean = false;
 
-    constructor(args) {
+    constructor(args: {html: string | undefined, template: string | undefined, titleBarReplacer: TitleBarReplacer}) {
         _this = this;
-		this.TitleBarReplacer = args.TitleBarReplacer;
+		this.TitleBarReplacer = args.titleBarReplacer;
 		this.MenuUpdater = new MenuUpdater(this);
 
         // Create root element
-        this.element = document.createElement('div');
-        this.element.classList.add('title-bar-replacer');
+		if (args.html) {
+			let temp = document.createElement("template");
+			temp.innerHTML = args.html;
+			this.element = temp.content.firstChild as HTMLElement;
+			this.builtFromState = true;
+			this.firstBuildDone = true;
 
-        const menuDiv = document.createElement('div');
-        menuDiv.classList.add('tbr-title-bar');
+			if (args.template) {
+				this.currentTemplate = JSON.parse(args.template);
+			}
+		}
+		else {
+			this.element = document.createElement('div');
+	        this.element.classList.add('title-bar-replacer');
 
-		const titleSpan = document.createElement("span");
-        titleSpan.classList.add("custom-title");
-        var titleString = "Atom";
-        titleSpan.innerHTML = titleString;
-        menuDiv.appendChild(titleSpan);
-        this.initTitleListener(titleSpan);
+	        const menuDiv = document.createElement('div');
+	        menuDiv.classList.add('tbr-title-bar');
 
-		const controlWrap = document.createElement("div");
-		controlWrap.classList.add("control-wrap");
-		menuDiv.appendChild(controlWrap);
+			const titleSpan = document.createElement("span");
+	        titleSpan.classList.add("custom-title");
+	        var titleString = "Atom";
+	        titleSpan.innerHTML = titleString;
+	        menuDiv.appendChild(titleSpan);
 
-        const tbrMinimize = document.createElement("i");
-        tbrMinimize.textContent = "control_minimize";
-        tbrMinimize.classList.add("tbr-minimize");
-        controlWrap.appendChild(tbrMinimize);
+			const controlWrap = document.createElement("div");
+			controlWrap.classList.add("control-wrap");
+			menuDiv.appendChild(controlWrap);
 
-        const tbrMaximize = document.createElement("i");
-        tbrMaximize.textContent = "control_maximize";
-        tbrMaximize.classList.add("tbr-maximize");
-        controlWrap.appendChild(tbrMaximize);
+	        const tbrMinimize = document.createElement("i");
+	        tbrMinimize.textContent = "control_minimize";
+	        tbrMinimize.classList.add("tbr-minimize");
+	        controlWrap.appendChild(tbrMinimize);
 
-        const customClose = document.createElement("i");
-        customClose.textContent = "control_close";
-        customClose.classList.add("tbr-close");
-        controlWrap.appendChild(customClose);
+	        const tbrMaximize = document.createElement("i");
+	        tbrMaximize.textContent = "control_maximize";
+	        tbrMaximize.classList.add("tbr-maximize");
+	        controlWrap.appendChild(tbrMaximize);
 
-		this.element.appendChild(menuDiv);
+	        const customClose = document.createElement("i");
+	        customClose.textContent = "control_close";
+	        customClose.classList.add("tbr-close");
+	        controlWrap.appendChild(customClose);
 
-        customMenu = document.createElement("div");
-        customMenu.classList.add("app-menu");
-        this.element.appendChild(customMenu);
+			this.element.appendChild(menuDiv);
+
+	        customMenu = document.createElement("div");
+	        customMenu.classList.add("app-menu");
+	        this.element.appendChild(customMenu);
+		}
+
+		this.initTitleListener(this.element.querySelector(".custom-title") as HTMLSpanElement);
 
         (this.element as any).isVisible = function() {
             return ($(".title-bar-replacer").css("display") != "none");
@@ -94,7 +109,7 @@ export default class TitleBarReplacerView {
         this.spawnTempLabels(customMenu);
     }
 
-    public cleanOpenClass(jqueryElmnt): void {
+    public cleanOpenClass(jqueryElmnt: JQuery): void {
         if (!jqueryElmnt.hasClass("has-sub")) {
             jqueryElmnt.parent().find(".open").removeClass("open");
         } else if (!jqueryElmnt.hasClass("open")) {
@@ -122,11 +137,11 @@ export default class TitleBarReplacerView {
 		this.cleanHovered();
     }
 
-	public descendantOf(child, parent): boolean {
+	public descendantOf(child: HTMLElement, parent:HTMLElement): boolean {
 	    return ($(parent).find(child).length > 0);
 	}
 
-    public initMenuBar(elmnt): void {
+    public initMenuBar(elmnt?: HTMLElement): void {
 
 		var target;
 		var run = false;
@@ -246,31 +261,31 @@ export default class TitleBarReplacerView {
 		else target = ".app-menu .menu-item:not(.has-sub, .disabled)";
 		if (!elmnt || run) {
 			$(target).click(function() {
-	            var editorElement = atom.views.getView(atom.workspace.getActiveTextEditor());
+	            var editorElement = atom.views.getView(atom.workspace.getActiveTextEditor() as object);
 	            if (editorElement == null) editorElement = atom.views.getView(atom.workspace.getActivePane());
-	            if ((<TbrCore.MenuItemHTMLElement>this).command == "window:toggle-menu-bar") {
+	            if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "window:toggle-menu-bar") {
 	                atom.commands.dispatch(editorElement, "title-bar-replacer:toggle-menu-bar");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-terms-of-use") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:open-terms-of-use") {
 	                shell.openExternal("https://help.github.com/articles/github-terms-of-service/");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-documentation") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:open-documentation") {
 	                shell.openExternal("http://flight-manual.atom.io/");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-faq") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:open-faq") {
 	                shell.openExternal("https://atom.io/faq");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:open-discussions") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:open-discussions") {
 	                shell.openExternal("https://discuss.atom.io/");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:report-issue") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:report-issue") {
 	                shell.openExternal("https://github.com/atom/atom/blob/master/CONTRIBUTING.md#submitting-issues");
 	            }
-	            else if ((<TbrCore.MenuItemHTMLElement>this).command == "application:search-issues") {
+	            else if ((<TbrCore.MenuItemHTMLElement>this).getAttribute("command") == "application:search-issues") {
 	                shell.openExternal("https://github.com/atom/atom/issues");
 	            }
 	            else {
-	                atom.commands.dispatch(editorElement, (<TbrCore.MenuItemHTMLElement>this).command, (<TbrCore.MenuItemHTMLElement>this).commandDetail);
+	                atom.commands.dispatch(editorElement, (<TbrCore.MenuItemHTMLElement>this).getAttribute("command") as string, JSON.parse((<TbrCore.MenuItemHTMLElement>this).getAttribute("command-detail") as string));
 	            }
 	            if (!(<TbrCore.MenuItemHTMLElement>this).ignoreHide && atom.config.get("title-bar-replacer.general.closeOnDispatch")) {
 	                _this.hideAll();
@@ -286,7 +301,7 @@ export default class TitleBarReplacerView {
 		}
     }
 
-    public initButtons(): void {
+    public initControls(): void {
         mainWindow = remote.getCurrentWindow();
 
         mainWindow.on("maximize", function() {
@@ -332,6 +347,7 @@ export default class TitleBarReplacerView {
         if (mainWindow.isMaximized()) {
             $(".tbr-title-bar .tbr-maximize").html("control_restore");
         }
+		else $(".tbr-title-bar .tbr-maximize").html("control_maximize");
     }
 
 	//Assemble each menu category and populate submenus
@@ -345,14 +361,14 @@ export default class TitleBarReplacerView {
 
 	        var menuLabel = document.createElement("span");
 	        menuLabel.classList.add("menu-label");
-	        var labelData = this.formatAltKey(this.currentTemplate[i].label);
-	        (menuLabel as any).label = labelData.name;
-	        (menuLabel as any).altTrigger = labelData.key;
+	        var labelData = this.formatAltKey(this.currentTemplate[i].label as string);
+			menuLabel.setAttribute("label", labelData.name);
+			menuLabel.setAttribute("alt-trigger", labelData.key as string);
 	        menuLabel.innerHTML = labelData.html;
 
 	        var menu = document.createElement("div");
 	        menu.classList.add("menu-box");
-	        var traversed = this.traverseMenu(this.currentTemplate[i].submenu);
+	        var traversed = this.traverseMenu(this.currentTemplate[i].submenu as TbrCore.MenuItem[]);
 
 	        //Sort packages alphabetically
 	        if (labelData.name == "Packages") {
@@ -387,8 +403,8 @@ export default class TitleBarReplacerView {
 		var menuLabel = document.createElement("span");
 		menuLabel.classList.add("menu-label");
 		var labelData = this.formatAltKey(labelObject.label);
-		(menuLabel as any).label = labelData.name;
-		(menuLabel as any).altTrigger = labelData.key;
+		menuLabel.setAttribute("label", labelData.name);
+		menuLabel.setAttribute("alt-trigger", labelData.key as string);
 		menuLabel.innerHTML = labelData.html;
 
 		var menu = document.createElement("div");
@@ -406,7 +422,7 @@ export default class TitleBarReplacerView {
 
 	}
 
-	public setCurrentTemplate(template): void {
+	public setCurrentTemplate(template: TbrCore.MenuItem[]): void {
 		this.currentTemplate = template;
 	}
 	public getCurrentTemplate(): TbrCore.MenuItem[] {
@@ -427,6 +443,7 @@ export default class TitleBarReplacerView {
 
     // Tear down any state and detach
     public destroy(): void {
+		this.firstBuildDone = false;
         this.element.remove();
     }
 
@@ -434,11 +451,11 @@ export default class TitleBarReplacerView {
         return this.element;
     }
 
-	public traverseTemplate(menuArray): any[] {
+	public traverseTemplate(menuArray: any): any[] {
 		return this.traverseMenu(menuArray);
 	}
 
-	public initMenuItem(item, menuBox): void {
+	public initMenuItem(item: HTMLElement, menuBox: HTMLElement): void {
 		var itemArray = $(item).find("div, span").toArray();
 		itemArray.splice(0, 0, item);
 		itemArray.forEach(function(o) {
@@ -453,7 +470,7 @@ export default class TitleBarReplacerView {
 	}
 
 	//Spawn menu bar labels without traversing the menu template as this is not finished at this point
-	private spawnTempLabels(parent): void {
+	private spawnTempLabels(parent: HTMLElement): void {
 	    this.currentTemplate = atom.menu.template.slice(0) as any;
 
 	    for (var i = 0; i < this.currentTemplate.length; i++) {
@@ -462,15 +479,16 @@ export default class TitleBarReplacerView {
 
 	        var menuLabel = document.createElement("span");
 	        menuLabel.classList.add("menu-label");
-	        var labelString = this.formatAltKey(this.currentTemplate[i].label).name;
-	        (menuLabel as any).label = menuLabel.innerHTML = labelString;
+	        var labelString = this.formatAltKey(this.currentTemplate[i].label as string).name;
+	        menuLabel.innerHTML = labelString;
+			menuLabel.setAttribute("label", labelString);
 	        parent.appendChild(menuLabel);
 	    }
 	}
 
 	// Return an object that contains the html for a menu label, a plain-text label name, and the alt key that triggers this menu item
-	private formatAltKey(string): TbrCore.AltKeyCommand {
-	    var key = string.match(/&./);
+	private formatAltKey(string: string): TbrCore.AltKeyCommand {
+	    var key: any = string.match(/&./);
 	    if (key == null) {
 	        return { html: string, name: string, key: null }
 	    }
@@ -483,7 +501,7 @@ export default class TitleBarReplacerView {
 	}
 
 	//Recursively traverse the menu template and assemble the custom menu
-	private traverseMenu(menuArray): HTMLElement[] {
+	private traverseMenu(menuArray: TbrCore.MenuItem[]): HTMLElement[] {
 	    var traversedElements: Array<HTMLElement> = new Array();
 
 	    for (var i = 0; i < menuArray.length; i++) {
@@ -500,9 +518,9 @@ export default class TitleBarReplacerView {
 	        if (menuArray[i].enabled == false)
 	            menuItem.classList.add("disabled");
 
-	        var altData = this.formatAltKey(menuArray[i].label);
+	        var altData = this.formatAltKey(menuArray[i].label as string);
 	        var s = altData.html;
-	        (menuItem as any).altTrigger = altData.key;
+			menuItem.setAttribute("alt-trigger", altData.key as string);
 	        if (menuArray[i].label == "VERSION")
 	            s = "Version " + (atom as any).appVersion;
 	        var menuItemName = document.createElement("span");
@@ -521,17 +539,20 @@ export default class TitleBarReplacerView {
 	            var menu = document.createElement("div");
 	            menu.classList.add("menu-box", "menu-item-submenu");
 
-	            var traversed = this.traverseMenu(menuArray[i].submenu);  // Recurse
-	            for (var j = 0; j < menuArray[i].submenu.length; j++) {
+	            var traversed = this.traverseMenu(menuArray[i].submenu as TbrCore.MenuItem[]);  // Recurse
+	            for (var j = 0; j < (menuArray[i].submenu as TbrCore.MenuItem[]).length; j++) {
 	                if (traversed[j] == undefined) continue;
 	                menu.appendChild(traversed[j]);
 	            }
 	            menuItem.appendChild(menu);
 	        } else if (menuArray[i].command != undefined) {
-	            (menuItem as any).command = menuArray[i].command;
-				(menuItem as any).commandDetail = menuArray[i].commandDetail;
+				menuItem.setAttribute("command", menuArray[i].command as string);
+				if (menuArray[i].commandDetail) {
+					menuItem.setAttribute("command-detail", JSON.stringify(menuArray[i].commandDetail));
+				}
+
 	            var strokeArray = atom.keymaps.findKeyBindings({
-	                command: (menuItem as any).command
+	                command: menuItem.getAttribute("command") as string
 	            });
 				if (strokeArray.length == 0) {
 					traversedElements.push(menuItem);
@@ -582,7 +603,7 @@ export default class TitleBarReplacerView {
 	    return traversedElements;
 	}
 
-	private getPlatformKeystroke(keystrokeObj): string {
+	private getPlatformKeystroke(keystrokeObj: Atom.KeyBinding): string | null {
 	    if (keystrokeObj.selector.includes("win32")) {
 	        return "win32";
 	    } else if (keystrokeObj.selector.includes("darwin")) {
@@ -603,7 +624,7 @@ export default class TitleBarReplacerView {
 	    return keystrokeArray[keystrokeArray.length - 1].keystrokes;
 	}
 
-	private initTitleListener(titleSpan): void {
+	private initTitleListener(titleSpan: HTMLSpanElement): void {
 
 	    setInterval(function() {
 	        var title = $("title")[0];
@@ -629,7 +650,7 @@ export default class TitleBarReplacerView {
                 visibility: 'hidden',
                 display: 'block'
             },
-            dim = {
+            dim: any = {
                 width: 0,
                 height: 0,
                 innerWidth: 0,
@@ -640,13 +661,13 @@ export default class TitleBarReplacerView {
             $hiddenParents = $item.parents().not(':visible'),
             includeMargin = (includeMargin == null) ? false : includeMargin;
 
-        var oldProps = [];
+        var oldProps: any[] = [];
         $hiddenParents.each(function() {
-            var old = {};
+            var old: any = {};
 
             for (var name in props) {
-                old[name] = this.style[name];
-                this.style[name] = props[name];
+                old[name] = this.style[name as any];
+                this.style[name as any] = (props as any)[name as any];
             }
 
             oldProps.push(old);
@@ -662,7 +683,7 @@ export default class TitleBarReplacerView {
         $hiddenParents.each(function(i) {
             var old = oldProps[i];
             for (var name in props) {
-                this.style[name] = old[name];
+                this.style[name as any] = old[name];
             }
         });
 

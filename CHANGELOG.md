@@ -1,6 +1,13 @@
+### 1.8.0 - Performance Optimization
+ * Unimplemented the transpiler. All TypeScript source files are now compiled pre-distribution.
+ * Implemented serialization. HTML is now stored and deserialized upon launch.
+ * Fixed bug that caused the 'Restore Defaults' button not to work.
+ * Handling exiting and disabling properly
+ * More type definitions.
+
 ### 1.7.0 - UI Customization Overhaul
  * Added style presets
-    * Added Spatious preset
+    * Added Spacious preset
     * Added Compact preset
  * Added window controls presets
     * Added Windows 10 preset

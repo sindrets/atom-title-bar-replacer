@@ -13,7 +13,7 @@ declare namespace TbrCore {
         /** @type {MenuItem[]} Array of menu items contained in the submenu. */
         submenu?: MenuItem[];
 
-        /** @type {string} Describes the menu item type. Possible values include: separator, {undefined} */
+        /** @type {string} Describes the menu item type. Possible values include: "separator", undefined */
         type?: string;
 
         /** @type {boolean} Determines the menu item visibility in the application menu. */
@@ -42,7 +42,7 @@ declare namespace TbrCore {
     interface AltKeyCommand {
         html: string;
         name: string;
-        key: string;
+        key: string | null;
     }
 
     interface MenuItemHTMLElement extends HTMLElement {

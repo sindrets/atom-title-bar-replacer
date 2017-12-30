@@ -43,15 +43,22 @@ There are provided settings to adjust the title bar layout style as well as a fe
 
 # Changelog
 
+### 1.8.0 - Performance Optimization
+ * Unimplemented the transpiler. All TypeScript source files are now compiled pre-distribution.
+ * Implemented serialization. HTML is now stored and deserialized upon launch.
+ * Fixed bug that caused the 'Restore Defaults' button not to work.
+ * Handling exiting and disabling properly
+ * More type definitions.
+
 ### 1.7.0 - UI Customization Overhaul
  * Added style presets
-    * Added Spatious preset
+    * Added Spacious preset
     * Added Compact preset
  * Added window controls presets
     * Added Windows 10 preset
     * Added Arc Theme preset
     * Added Yosemite preset
-    * Added Legacy Theme preset
+    * Added Legacy theme preset
  * More source code documentation and type definitions
  * Added more CSS selectors for customizability
     * Unique style preset selectors
@@ -63,9 +70,5 @@ There are provided settings to adjust the title bar layout style as well as a fe
 
 ### 1.6.1
  * package.json correction
-
-### 1.6.0 - Conversion to TypeScript
- * The entire project has been ported to TypeScript
- * Made the window-frame-remover compatible with Atom 1.21
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).
