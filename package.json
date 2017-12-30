@@ -1,28 +1,28 @@
 {
-    "name": "title-bar-replacer",
-    "main": "./lib/index",
-    "version": "1.7.0",
-    "description": "Adds an alternative, theme-aware title bar and application menu that is more inline with Atom's UI design.",
-    "keywords": [
-        "title bar replacer",
-        "title bar",
-        "menu bar",
-        "ui",
-        "custom",
-        "replacer"
-    ],
-    "repository": "https://github.com/sindrets/atom-title-bar-replacer",
-    "license": "MIT",
-    "engines": {
-        "atom": ">=1.21.0"
-    },
-    "dependencies": {
-        "asar": "^0.13.0",
-        "jquery": "^2.1.4"
-    },
-    "devDependencies": {
-        "@types/atom": "^1.21.0",
-        "@types/jquery": "^3.2.13",
-        "@types/node": "^8.0.32"
-    }
+  "name": "title-bar-replacer",
+  "main": "./lib/index",
+  "version": "1.8.0",
+  "description": "Adds an alternative, theme-aware title bar and application menu that is more inline with Atom's UI design.",
+  "keywords": [
+    "title bar replacer",
+    "title bar",
+    "menu bar",
+    "ui",
+    "custom",
+    "replacer"
+  ],
+  "repository": "https://github.com/sindrets/atom-title-bar-replacer",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.21.0"
+  },
+  "dependencies": {
+    "asar": "^0.13.0",
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "@types/atom": "^1.21.0",
+    "@types/jquery": "^3.2.13",
+    "@types/node": "^8.0.32"
+  }
 }
