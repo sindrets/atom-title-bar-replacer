@@ -82,7 +82,12 @@ export default class TitleBarReplacer {
     public activate(state: any): void {
         console.log(state);
         __this = this;
-        this.titleBarReplacerView = new TitleBarReplacerView({ html: state.data.html, template: state.data.currentTemplate, titleBarReplacer: this });
+        let html, currentTemplate;
+        if (state.data) {
+            html = state.data.html;
+            currentTemplate = state.data.currentTemplate;
+        }
+        this.titleBarReplacerView = new TitleBarReplacerView({ html: html, template: currentTemplate, titleBarReplacer: this });
         this.titleBarPanel = this.titleBarReplacerView.getElement();
         $(".workspace").prepend(this.titleBarPanel);
         this.titleBarReplacerView.initControls();

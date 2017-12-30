@@ -1,3 +1,6 @@
+### 1.8.1
+ * Fixed fatal bug occurring when no serialization state exists.
+
 ### 1.8.0 - Performance Optimization
  * Unimplemented the transpiler. All TypeScript source files are now compiled pre-distribution.
  * Implemented serialization. HTML is now stored and deserialized upon launch.

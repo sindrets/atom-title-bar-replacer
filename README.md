@@ -43,6 +43,9 @@ There are provided settings to adjust the title bar layout style as well as a fe
 
 # Changelog
 
+### 1.8.1
+ * Fixed fatal bug occurring when no serialization state exists.
+
 ### 1.8.0 - Performance Optimization
  * Unimplemented the transpiler. All TypeScript source files are now compiled pre-distribution.
  * Implemented serialization. HTML is now stored and deserialized upon launch.
@@ -67,8 +70,5 @@ There are provided settings to adjust the title bar layout style as well as a fe
     * Title bar visibility selector
     * Menu bar visibility selector
  * Removed 'Navigation Button Highlight Colour' setting
-
-### 1.6.1
- * package.json correction
 
 For the full changelog, visit [the repository](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md).
