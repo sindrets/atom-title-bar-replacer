@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "asar": "^0.13.0",
-    "jquery": "^2.1.4"
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
     "@types/atom": "^1.21.0",
-    "@types/jquery": "^3.2.13",
+    "@types/jquery": "^3.3.0",
     "@types/node": "^8.0.32"
   }
 }
