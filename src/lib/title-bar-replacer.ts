@@ -1,7 +1,7 @@
 import TitleBarReplacerView from "./title-bar-replacer-view";
 import WindowFrameRemover from "./window-frame-remover";
 import { CompositeDisposable } from "atom";
-const $: JQueryStatic = require("jQuery");
+const $: JQueryStatic = require("jquery");
 const jQuery = $;
 const ConfigSchema = require("./configuration.js");
 
