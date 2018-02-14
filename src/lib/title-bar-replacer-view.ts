@@ -1,6 +1,6 @@
 import TitleBarReplacer from "./title-bar-replacer";
 import MenuUpdater from "./menu-updater";
-const $: JQueryStatic = require("jQuery");
+const $: JQueryStatic = require("jquery");
 const jQuery = $;
 const remote: any = require('electron').remote;
 const { shell } = require('electron');
