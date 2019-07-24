@@ -364,7 +364,7 @@ export default class WindowFrameRemover {
                 setTimeout(function() {
                     var data = fs.readFileSync(rootPath+"_app-extract/src/main-process/atom-window.js", "utf-8");
                     var newData = data.replace("options = {", "options = {\n        frame: false,");
-                    fs.writeFile(rootPath+"_app-extract/src/main-process/atom-window.js", newData, "utf-8", _this.removeFrame(7));
+                    fs.writeFile(rootPath+"_app-extract/src/main-process/atom-window.js", newData, "utf-8", () => { _this.removeFrame(7) });
                 }, 50);
                 break;
 
