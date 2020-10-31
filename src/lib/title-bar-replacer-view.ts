@@ -397,8 +397,8 @@ export default class TitleBarReplacerView {
 	 * @param  {number} 		  insertIndex The index at which the menu label should be inserted
 	 */
 	public deserializeLabel(labelObject: TbrCore.MenuItem, insertIndex: number): void {
-
-		if (!labelObject.label || !labelObject.submenu) return; //Prevent crash upon accessing faulty menu items
+		var target = this.element.querySelector(".app-menu");
+		if (!labelObject.label || !labelObject.submenu || !target) return; //Prevent crash upon accessing faulty menu items
 
 		var menuLabel = document.createElement("span");
 		menuLabel.classList.add("menu-label");
@@ -416,8 +416,7 @@ export default class TitleBarReplacerView {
 		});
 
 		menuLabel.appendChild(menu);
-		customMenu.insertBefore(menuLabel, customMenu.children[insertIndex]);
-
+		target.insertBefore(menuLabel, target.children[insertIndex]);
 		this.initMenuItem(menuLabel, menu);
 
 	}
