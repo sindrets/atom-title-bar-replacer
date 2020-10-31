@@ -239,12 +239,7 @@ export default class MenuUpdater {
                 .children[indexList[0]]
                 .getElementsByClassName("menu-box")[0];
             for (var i = 1; i < indexList.length - 1; i++) {
-                temp = Array.prototype.filter.call(temp.children, function(node: Element) {
-                    if (!node.classList.contains("menu-item"))
-                        return false;
-                    else return true;
-                })[indexList[i]];
-                temp = temp.getElementsByClassName("menu-box")[0];
+                temp = temp.children[indexList[i]].getElementsByClassName("menu-box")[0];
             }
             var traversed = this.titleBarReplacerView.traverseTemplate([template]);
             temp.insertBefore(traversed[0], temp.children[indexList[indexList.length - 1]]);
