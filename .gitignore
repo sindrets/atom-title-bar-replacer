@@ -1,4 +1,14 @@
-.DS_Store
-npm-debug.log
-node_modules
-.tern-project
+# Package Managers
+bower_components/
+node_modules/
+*npm-debug.log*
+yarn-error.log
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Compiled Source
+lib/
+
+# misc
+.vim/

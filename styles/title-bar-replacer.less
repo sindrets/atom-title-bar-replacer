@@ -2,8 +2,6 @@
 //
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
-//@text-color-highlight
-//@tab-bar-background-color
 @import "ui-variables";
 
 @title-height: 30px;
@@ -143,7 +141,8 @@
             }
 
             .menu-box {
-                display: none;
+                display: block;
+                visibility: hidden;
                 position: absolute;
                 background-color: @button-background-color;
                 @menuBoxPadding: 24px;
@@ -175,6 +174,9 @@
                     transform-origin: center;
                     &.disabled {
                         color: @text-color-subtle;
+                    }
+                    &.invisible {
+                        display: none;
                     }
                     .menu-item-keystroke {
                         white-space: nowrap;
@@ -209,10 +211,11 @@
         }
 
         span.open > .menu-box {
-            display: block;
+            visibility: visible;
         }
         div.open > .menu-box {
             display: initial;
+            visibility: visible;
         }
     }
 }
