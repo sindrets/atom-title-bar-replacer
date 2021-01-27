@@ -1,10 +1,12 @@
 import EventEmitter from "events";
-import { IMenuItem } from "./IMenuItem";
-import { MalformedInputError } from "./MalformedInputError";
-import { TbrEvent } from "./TbrEvent";
+import { ApplicationMenu } from "./ApplicationMenu";
+import { MalformedTemplateError } from "./MalformedTemplateError";
+import { MenuLabel } from "./MenuLabel";
+import { IMenuItem, MenuLike, TbrEvent } from "./types";
 import { Utils } from "./Utils";
+import { Submenu } from "./Submenu";
 
-export class MenuItem {
+export class MenuItem implements MenuLike {
     private element: HTMLDivElement | HTMLHRElement;
     private separator: boolean = false;
     private enabled: boolean = true;
@@ -13,15 +15,15 @@ export class MenuItem {
     private open: boolean = false;
     private command?: string;
     private commandDetail?: any;
-    private submenu?: MenuItem[];
+    private altTrigger?: string;
+    private submenu?: Submenu;
     private emitter: EventEmitter;
-    private parentEmitter?: EventEmitter;
+    private parent?: MenuLabel | MenuItem;
 
     private constructor(element: HTMLDivElement | HTMLHRElement) {
         this.element = element;
         this.emitter = new EventEmitter();
 
-        this.emitter.on(TbrEvent.MOUSE_CLICK, (...args) => this.onSubItemClick(args[0], args[1]));
         this.emitter.on(TbrEvent.MOUSE_ENTER, (...args) =>
             this.onSubItemMouseEnter(args[0], args[1])
         );
@@ -30,20 +32,22 @@ export class MenuItem {
         this.element.addEventListener("mouseenter", (e) => this.onMouseEnter(e as MouseEvent));
     }
 
-    public static createMenuItem(menuItem: IMenuItem, parentEmitter?: EventEmitter): MenuItem {
+    /**
+     * @throws {MalformedTemplateError}
+     */
+    public static createMenuItem(menuItem: IMenuItem): MenuItem {
         if (menuItem.type == "separator") {
             const self = new MenuItem(document.createElement("hr"));
             self.separator = true;
             return self;
         }
         if (menuItem.label === undefined) {
-            throw new MalformedInputError("Menu item is malformed!");
+            throw new MalformedTemplateError("Menu item template is malformed!");
         }
 
         const elmnt = document.createElement("div");
         elmnt.classList.add("menu-item");
         const self = new MenuItem(elmnt);
-        self.parentEmitter = parentEmitter;
 
         if (menuItem.enabled === false) {
             self.enabled = false;
@@ -57,6 +61,7 @@ export class MenuItem {
 
         const altKeyData = Utils.formatAltKey(menuItem.label);
         elmnt.setAttribute("alt-trigger", altKeyData.key as string);
+        self.altTrigger = altKeyData.key || undefined;
 
         // Exception for the VERSION item
         if (menuItem.label === "VERSION") {
@@ -84,23 +89,13 @@ export class MenuItem {
         }
 
         if (menuItem.submenu?.length > 0) {
-            elmnt.classList.add("has-sub");
-
-            const menuBox = document.createElement("div");
-            menuBox.classList.add("menu-box", "menu-item-submenu");
-
-            self.submenu = [];
             menuItem.submenu.forEach((o) => {
                 try {
-                    const listItem = MenuItem.createMenuItem(o, self.emitter);
-                    self.submenu?.push(listItem);
-                    menuBox.appendChild(listItem.getElement());
+                    self.addChild(MenuItem.createMenuItem(o));
                 } catch (e) {
                     console.error(e);
                 }
             });
-
-            elmnt.appendChild(menuBox);
         }
 
         return self;
@@ -108,15 +103,17 @@ export class MenuItem {
 
     private onMouseClick(e: MouseEvent) {
         e.stopPropagation();
-        this.parentEmitter?.emit(TbrEvent.MOUSE_CLICK, this, e);
+        this.parent?.getEmitter().emit(TbrEvent.MOUSE_CLICK, this, e);
+        if (this.isExecutable()) {
+            this.execCommand();
+            this.getAppMenuRoot()?.close();
+        }
     }
 
     private onMouseEnter(e: MouseEvent) {
         e.stopPropagation();
-        this.parentEmitter?.emit(TbrEvent.MOUSE_ENTER, this, e);
+        this.parent?.getEmitter().emit(TbrEvent.MOUSE_ENTER, this, e);
     }
-
-    private onSubItemClick(target: MenuItem, e: MouseEvent): void {}
 
     private onSubItemMouseEnter(target: MenuItem, e: MouseEvent): void {
         this.submenu?.forEach((o) => {
@@ -125,6 +122,50 @@ export class MenuItem {
         });
         target.setSelected(true);
         target.setOpen(true);
+    }
+
+    public execCommand(): Promise<void> | null {
+        let target =
+            (atom.workspace.getActiveTextEditor() as any)?.getElement() ||
+            (atom.workspace.getActivePane() as any).getElement();
+        return (atom.commands as any).dispatch(target, this.command, this.commandDetail);
+    }
+
+    public addChild(item: MenuItem) {
+        if (!this.hasSubmenu()) {
+            this.submenu = new Submenu();
+            this.element.classList.add("has-sub");
+
+            const menuBox = document.createElement("div");
+            menuBox.classList.add("menu-box", "menu-item-submenu");
+            this.element.appendChild(menuBox);
+        }
+
+        item.setParent(this);
+        this.submenu?.push(item);
+        this.element.querySelector(".menu-box")?.appendChild(item.getElement());
+    }
+
+    public getAppMenuRoot(): ApplicationMenu | null {
+        let result: MenuItem | MenuLabel | ApplicationMenu | undefined = this.parent;
+        while (result && !(result instanceof ApplicationMenu)) {
+            result = result.getParent();
+        }
+
+        if (result instanceof ApplicationMenu) {
+            return result;
+        }
+
+        return null;
+    }
+
+    public bounce(): void {
+        const duration = parseFloat(window.getComputedStyle(this.element).animationDuration) * 1000;
+        this.element.classList.add("bounce");
+
+        setTimeout(() => {
+            this.element.classList.remove("bounce");
+        }, duration);
     }
 
     public getElement() {
@@ -159,6 +200,30 @@ export class MenuItem {
         return this.commandDetail;
     }
 
+    public getAltTrigger() {
+        return this.altTrigger;
+    }
+
+    public getSubmenu() {
+        return this.submenu;
+    }
+
+    public hasSubmenu() {
+        return this.submenu !== undefined;
+    }
+
+    public getEmitter() {
+        return this.emitter;
+    }
+
+    public getParent() {
+        return this.parent;
+    }
+
+    public isExecutable() {
+        return this.enabled && !this.separator && !this.hasSubmenu();
+    }
+
     public setSelected(flag: boolean) {
         this.selected = flag;
         flag
@@ -174,6 +239,10 @@ export class MenuItem {
                 o.setSelected(false);
             });
         }
-        flag ? this.element.classList.add("open") : this.element.classList.remove("open");
+        Utils.setToggleClass(this.element, "open", flag);
+    }
+
+    public setParent(parent: MenuLabel | MenuItem) {
+        this.parent = parent;
     }
 }

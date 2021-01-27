@@ -1,4 +1,4 @@
-import { IAltKeyData } from "./IAltKeyData";
+import { IAltKeyData } from "./types";
 
 export class Utils {
     public static formatAltKey(label: string): IAltKeyData {
@@ -6,5 +6,18 @@ export class Utils {
         const key = m ? m[0] : null;
         const html = label.replace(`&${key}`, `<u>${key}</u>`);
         return { html, name: label.replace("&", ""), key: key?.toLowerCase() || null };
+    }
+
+    public static setToggleClass(elmnt: HTMLElement, clazz: string, flag: boolean): void {
+        flag ? elmnt.classList.add(clazz) : elmnt.classList.remove(clazz);
+    }
+
+    public static mod(n: number, m: number): number {
+        return ((n % m) + m) % m;
+    }
+
+    public static stopEvent(e: Event): void {
+        e.stopPropagation();
+        e.preventDefault();
     }
 }

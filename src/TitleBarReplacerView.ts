@@ -42,6 +42,8 @@ export class TitleBarReplacerView {
         let menuTemplate = atom.menu.template;
         this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate);
         this.element.appendChild(this.appMenu.getElement());
+        // @ts-ignore
+        window.appMenu = this.appMenu;
     }
 
     public updateTransforms(): void {

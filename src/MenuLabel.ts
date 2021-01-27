@@ -1,20 +1,22 @@
-import { IMenuLabel } from "./IMenuLabel";
-import { MalformedInputError } from "./MalformedInputError";
-import { MenuItem } from "./MenuItem";
-import { Utils } from "./Utils";
-import { TbrEvent } from "./TbrEvent";
 import EventEmitter from "events";
+import { ApplicationMenu } from "./ApplicationMenu";
+import { MalformedTemplateError } from "./MalformedTemplateError";
+import { MenuItem } from "./MenuItem";
+import { IMenuLabel, MenuLike, TbrEvent } from "./types";
+import { Utils } from "./Utils";
+import { Submenu } from "./Submenu";
 
-export class MenuLabel {
+export class MenuLabel implements MenuLike {
     private element: HTMLSpanElement;
-    private submenu: MenuItem[];
+    private submenu: Submenu;
     private open: boolean = false;
-    private emitter?: EventEmitter;
-    private parentEmitter?: EventEmitter;
+    private altTrigger?: string;
+    private emitter: EventEmitter;
+    private parent?: ApplicationMenu;
 
     private constructor(element: HTMLSpanElement) {
         this.element = element;
-        this.submenu = [];
+        this.submenu = new Submenu();
         this.emitter = new EventEmitter();
 
         this.emitter.on(TbrEvent.MOUSE_CLICK, (...args) => this.onSubItemClick(args[0], args[1]));
@@ -26,9 +28,12 @@ export class MenuLabel {
         this.element.addEventListener("mouseenter", (e) => this.onMouseEnter(e));
     }
 
-    public static createMenuLabel(labelItem: IMenuLabel, parentEmitter?: EventEmitter): MenuLabel {
+    /**
+     * @throws {MalformedTemplateError}
+     */
+    public static createMenuLabel(labelItem: IMenuLabel): MenuLabel {
         if (labelItem.label === undefined || !labelItem.submenu) {
-            throw new MalformedInputError("Label object is malformed!");
+            throw new MalformedTemplateError("Label object is malformed!");
         }
 
         const elmnt = document.createElement("span");
@@ -39,42 +44,37 @@ export class MenuLabel {
         elmnt.innerHTML = labelData.html;
 
         const self = new MenuLabel(elmnt);
+        self.altTrigger = labelData.key || undefined;
 
         const submenuElmnt = document.createElement("div");
         submenuElmnt.classList.add("menu-box");
         elmnt.appendChild(submenuElmnt);
 
-        const submenu: MenuItem[] = [];
         labelItem.submenu.forEach((o) => {
             try {
-                const menuItem = MenuItem.createMenuItem(o, self.emitter);
-                submenu.push(menuItem);
-                submenuElmnt.appendChild(menuItem.getElement());
+                self.addChild(MenuItem.createMenuItem(o));
             } catch (e) {
                 console.error(e);
             }
         });
-
-        self.submenu = submenu;
-        self.parentEmitter = parentEmitter;
 
         return self;
     }
 
     private onMouseClick(e: MouseEvent) {
         e.stopPropagation();
-        this.parentEmitter?.emit(TbrEvent.MOUSE_CLICK, this, e);
+        this.parent?.getEmitter().emit(TbrEvent.MOUSE_CLICK, this, e);
     }
 
     private onMouseEnter(e: MouseEvent) {
         e.stopPropagation();
-        this.parentEmitter?.emit(TbrEvent.MOUSE_ENTER, this, e);
+        this.parent?.getEmitter().emit(TbrEvent.MOUSE_ENTER, this, e);
     }
 
     private onSubItemClick(target: MenuItem, e: MouseEvent): void {}
 
     private onSubItemMouseEnter(target: MenuItem, e: MouseEvent): void {
-        this.submenu?.forEach((o) => {
+        this.submenu.forEach((o) => {
             o.setOpen(false);
             o.setSelected(false);
         });
@@ -94,12 +94,34 @@ export class MenuLabel {
         return this.open;
     }
 
+    public getAltTrigger() {
+        return this.altTrigger;
+    }
+
+    public getEmitter() {
+        return this.emitter;
+    }
+
+    public getParent() {
+        return this.parent;
+    }
+
     public setOpen(flag: boolean) {
         this.open = flag;
         this.submenu.forEach((o) => {
             o.setOpen(false);
             if (!flag) o.setSelected(false);
         });
-        flag ? this.element.classList.add("open") : this.element.classList.remove("open");
+        Utils.setToggleClass(this.element, "open", flag);
+    }
+
+    public setParent(parent: ApplicationMenu) {
+        this.parent = parent;
+    }
+
+    public addChild(item: MenuItem) {
+        item.setParent(this);
+        this.submenu.push(item);
+        this.element.querySelector(".menu-box")?.appendChild(item.getElement());
     }
 }
