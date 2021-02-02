@@ -1,26 +1,31 @@
 {
-  "context-menu": {
-    "atom-text-editor": [
-      {
-        "command": "title-bar-replacer:hello-world",
-        "label": "Hello World"
-      }
-    ]
-  },
-  "menu": [
-    {
-      "label": "Packages",
-      "submenu": [
+    "menu": [
         {
-          "label": "title-bar-replacer",
-          "submenu": [
-            {
-              "command": "title-bar-replacer:hello-world",
-              "label": "Hello World"
-            }
-          ]
+            "label": "Packages",
+            "submenu": [
+                {
+                    "label": "Title Bar Replacer",
+                    "submenu": [
+                        {
+                            "label": "Toggle Menu Bar",
+                            "command": "title-bar-replacer:toggle-menu-bar"
+                        },
+                        {
+                            "label": "Quick Settings",
+                            "submenu": [
+                                {
+                                    "label": "Restore defaults",
+                                    "command": "title-bar-replacer:restore-defaults"
+                                },
+                                {
+                                    "label": "Auto select colors",
+                                    "command": "title-bar-replacer:auto-select-colors"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

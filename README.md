@@ -8,7 +8,7 @@ Adds an alternative, theme-aware title bar and application menu that is more inl
 
 ![Showcase of the replacer](http://i.imgur.com/s4wUu5M.gif)
 
-This package is aimed mostly at Windows users, as the native Windows title bar doesn't really go well with Atom's UI design. This title bar replacer adds a functional custom title bar, that lets you move, scale, and utilize Aero-snap features. It also adds a custom application menu that is somewhat more intelligent in terms of design. The default behaviour of the title bar and application menu is to choose colours based on the theme you are currently using. However, most of the colours can be customized in the settings, and the menu can also be hidden.
+This package is aimed mostly at Windows users, as the native Windows title bar doesn't really go well with Atom's UI design. This title bar replacer adds a functional custom title bar, that lets you move, scale, and utilize Aero-snap features. It also adds a custom application menu that is somewhat more intelligent in terms of design. The default behaviour of the title bar and application menu is to choose colors based on the theme you are currently using. However, most of the colors can be customized in the settings, and the menu can also be hidden.
 
 ## Installation
 
@@ -73,7 +73,7 @@ There are provided settings to adjust the title bar layout style as well as a fe
     -   Reverse window controls flag selector
     -   Title bar visibility selector
     -   Menu bar visibility selector
--   Removed 'Navigation Button Highlight Colour' setting
+-   Removed 'Navigation Button Highlight Color' setting
 
 [Full changelog](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md)
 

@@ -136,7 +136,7 @@
                 font: inherit;
                 color: inherit;
             }
-            &.open, &.hovered, &:hover {
+            &.open, &.focused, &:hover {
                 background-color: darken(@tab-bar-background-color, 10%);
             }
 
@@ -216,6 +216,7 @@
         div.open > .menu-box {
             display: initial;
             visibility: visible;
+            /* animation: 0s snapIn 0.25s forwards; */
         }
     }
 }
@@ -241,6 +242,12 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes snapIn {
+    to {
+        visibility: visible;
     }
 }
 
@@ -328,7 +335,7 @@
 
 
 /** Arc Theme */
-.title-bar-replacer.control-theme-arc-theme {
+.title-bar-replacer.control-theme-arc {
     @margin: 9px;
 
     .tbr-title-bar {
@@ -437,7 +444,7 @@ body.is-blurred {
 
 
 /** Legacy Theme */
-.title-bar-replacer.control-theme-legacy-theme {
+.title-bar-replacer.control-theme-legacy {
 
     .tbr-title-bar {
         i {

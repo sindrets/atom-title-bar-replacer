@@ -1,6 +1,6 @@
 import { TitleBarReplacer } from "./TitleBarReplacer";
 
-export {config} from "./config";
+export { config } from "./config";
 
 const titleBarReplacer = new TitleBarReplacer();
 
@@ -16,7 +16,7 @@ export function serialize() {
     return titleBarReplacer.serialize();
 }
 
-export function deserialize(state: {data: any}) {
+export function deserialize(state: { data: any }) {
     console.log(state.data);
     titleBarReplacer.deserialize(state.data);
 }

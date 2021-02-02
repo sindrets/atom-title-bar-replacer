@@ -8,6 +8,7 @@ import { Submenu } from "./Submenu";
 
 export class MenuItem implements MenuLike {
     private element: HTMLDivElement | HTMLHRElement;
+    private labelText?: string;
     private separator: boolean = false;
     private enabled: boolean = true;
     private visible: boolean = true;
@@ -71,6 +72,7 @@ export class MenuItem implements MenuLike {
         const menuItemName = document.createElement("span");
         menuItemName.classList.add("menu-item-name");
         menuItemName.innerHTML = altKeyData.html;
+        self.labelText = menuItem.label;
 
         const menuItemKeystroke = document.createElement("span");
         menuItemKeystroke.classList.add("menu-item-keystroke");
@@ -146,6 +148,36 @@ export class MenuItem implements MenuLike {
         this.element.querySelector(".menu-box")?.appendChild(item.getElement());
     }
 
+    insertChild(item: MenuItem, index: number): void {
+        if (!this.hasSubmenu()) {
+            this.submenu = new Submenu();
+            this.element.classList.add("has-sub");
+
+            const menuBox = document.createElement("div");
+            menuBox.classList.add("menu-box", "menu-item-submenu");
+            this.element.appendChild(menuBox);
+        }
+
+        item.setParent(this);
+        this.submenu?.splice(index, 0, item);
+        this.element
+            .querySelector(".menu-box")
+            ?.insertBefore(item.element, item.element.parentElement?.children[index] || null);
+    }
+
+    removeChild(item: MenuItem): void;
+    removeChild(index: number): void;
+    removeChild(x: MenuItem | number) {
+        if (x instanceof MenuItem) {
+            this.submenu?.splice(this.submenu?.indexOf(x), 1);
+            x.getElement().parentElement?.removeChild(x.getElement());
+            return;
+        }
+
+        const item = this.submenu?.splice(x, 1)[0];
+        item?.getElement().parentElement?.removeChild(item?.getElement());
+    }
+
     public getAppMenuRoot(): ApplicationMenu | null {
         let result: MenuItem | MenuLabel | ApplicationMenu | undefined = this.parent;
         while (result && !(result instanceof ApplicationMenu)) {
@@ -170,6 +202,10 @@ export class MenuItem implements MenuLike {
 
     public getElement() {
         return this.element;
+    }
+
+    public getLabelText() {
+        return this.labelText;
     }
 
     public isSeparator() {

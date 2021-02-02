@@ -8,8 +8,10 @@ import { Submenu } from "./Submenu";
 
 export class MenuLabel implements MenuLike {
     private element: HTMLSpanElement;
+    private labelText!: string;
     private submenu: Submenu;
     private open: boolean = false;
+    private focused: boolean = false;
     private altTrigger?: string;
     private emitter: EventEmitter;
     private parent?: ApplicationMenu;
@@ -33,7 +35,7 @@ export class MenuLabel implements MenuLike {
      */
     public static createMenuLabel(labelItem: IMenuLabel): MenuLabel {
         if (labelItem.label === undefined || !labelItem.submenu) {
-            throw new MalformedTemplateError("Label object is malformed!");
+            throw new MalformedTemplateError("Label template is malformed!");
         }
 
         const elmnt = document.createElement("span");
@@ -44,6 +46,7 @@ export class MenuLabel implements MenuLike {
         elmnt.innerHTML = labelData.html;
 
         const self = new MenuLabel(elmnt);
+        self.labelText = labelData.name;
         self.altTrigger = labelData.key || undefined;
 
         const submenuElmnt = document.createElement("div");
@@ -78,12 +81,20 @@ export class MenuLabel implements MenuLike {
             o.setOpen(false);
             o.setSelected(false);
         });
-        target.setSelected(true);
-        target.setOpen(true);
+        if (target.isEnabled()) {
+            target.setSelected(true);
+            if (target.hasSubmenu()) {
+                target.setOpen(true);
+            }
+        }
     }
 
     public getElement() {
         return this.element;
+    }
+
+    public getLabelText() {
+        return this.labelText;
     }
 
     public getSubmenu() {
@@ -92,6 +103,10 @@ export class MenuLabel implements MenuLike {
 
     public isOpen() {
         return this.open;
+    }
+
+    public isFocused() {
+        return this.focused;
     }
 
     public getAltTrigger() {
@@ -108,11 +123,19 @@ export class MenuLabel implements MenuLike {
 
     public setOpen(flag: boolean) {
         this.open = flag;
+        if (flag) {
+            this.setFocused(false);
+        }
         this.submenu.forEach((o) => {
             o.setOpen(false);
             if (!flag) o.setSelected(false);
         });
         Utils.setToggleClass(this.element, "open", flag);
+    }
+
+    public setFocused(flag: boolean) {
+        this.focused = flag;
+        Utils.setToggleClass(this.element, "focused", flag);
     }
 
     public setParent(parent: ApplicationMenu) {
@@ -123,5 +146,29 @@ export class MenuLabel implements MenuLike {
         item.setParent(this);
         this.submenu.push(item);
         this.element.querySelector(".menu-box")?.appendChild(item.getElement());
+    }
+
+    insertChild(item: MenuItem, index: number): void {
+        item.setParent(this);
+        this.submenu?.splice(index, 0, item);
+        this.element
+            .querySelector(".menu-box")
+            ?.insertBefore(
+                item.getElement(),
+                item.getElement().parentElement?.children[index] || null
+            );
+    }
+
+    removeChild(item: MenuItem): void;
+    removeChild(index: number): void;
+    removeChild(x: MenuItem | number) {
+        if (x instanceof MenuItem) {
+            this.submenu?.splice(this.submenu?.indexOf(x), 1);
+            x.getElement().parentElement?.removeChild(x.getElement());
+            return;
+        }
+
+        const item = this.submenu?.splice(x, 1)[0];
+        item?.getElement().parentElement?.removeChild(item?.getElement());
     }
 }

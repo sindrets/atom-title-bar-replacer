@@ -1,6 +1,8 @@
 import EventEmitter from "events";
 import { MenuItem } from "./MenuItem";
 import { MenuLabel } from "./MenuLabel";
+import { TitleBarReplacer } from "./TitleBarReplacer";
+import { TitleBarReplacerView } from "./TitleBarReplacerView";
 import { IMenuLabel, MenuLike, TbrEvent } from "./types";
 import { Utils } from "./Utils";
 
@@ -9,11 +11,15 @@ export class ApplicationMenu {
     private labels: MenuLabel[];
     private showingAltKeys = false;
     private emitter: EventEmitter;
+    private parent?: TitleBarReplacerView;
 
-    private constructor(element: HTMLDivElement) {
+    private constructor(element: HTMLDivElement, parent?: TitleBarReplacerView) {
         this.element = element;
         this.labels = [];
         this.emitter = new EventEmitter();
+        if (parent) {
+            this.parent = parent;
+        }
 
         this.emitter.on(TbrEvent.MOUSE_CLICK, (...args) => this.onLabelClicked(args[0], args[1]));
         this.emitter.on(TbrEvent.MOUSE_ENTER, (...args) =>
@@ -22,22 +28,22 @@ export class ApplicationMenu {
 
         window.addEventListener("click", (e) => {
             this.close();
+            this.getFocusedLabel()?.setFocused(false);
             this.showAltKeys(false);
         });
 
-        document
-            .querySelector("atom-workspace")
-            ?.addEventListener("keydown", (e) => this.onKeyDown(e as KeyboardEvent));
-        document
-            .querySelector("atom-workspace")
-            ?.addEventListener("keyup", (e) => this.onKeyUp(e as KeyboardEvent));
+        document.body.addEventListener("keydown", (e) => this.onKeyDown(e as KeyboardEvent));
+        document.body.addEventListener("keyup", (e) => this.onKeyUp(e as KeyboardEvent));
     }
 
-    public static createApplicationMenu(menuTemplate: IMenuLabel[]): ApplicationMenu {
+    public static createApplicationMenu(
+        menuTemplate: IMenuLabel[],
+        parent?: TitleBarReplacerView
+    ): ApplicationMenu {
         const menuElement = document.createElement("div");
         menuElement.classList.add("app-menu");
 
-        const self = new ApplicationMenu(menuElement);
+        const self = new ApplicationMenu(menuElement, parent);
 
         self.labels = [];
         menuTemplate.forEach((o) => {
@@ -63,7 +69,7 @@ export class ApplicationMenu {
     }
 
     private onLabelMouseEnter(target: MenuLabel, e: MouseEvent): void {
-        if (this.isOpen() && !target.isOpen()) {
+        if (this.isOpen() && !target.isOpen() && TitleBarReplacer.configState.openAdjacent) {
             this.onLabelClicked(target, e);
         }
     }
@@ -72,9 +78,10 @@ export class ApplicationMenu {
         if (
             !e.repeat &&
             (e.key === "Alt" || e.key === "Escape") &&
-            (this.showingAltKeys || this.isOpen())
+            (this.showingAltKeys || this.isOpen() || this.isFocused())
         ) {
             this.close();
+            this.getFocusedLabel()?.setFocused(false);
             this.showAltKeys(false);
             return;
         }
@@ -88,6 +95,7 @@ export class ApplicationMenu {
         }
 
         const openLabel = this.getOpenLabel();
+        const focusedLabel = this.getFocusedLabel();
         if (openLabel) {
             let selected = this.getSelectedLeaf();
             switch (e.key) {
@@ -138,7 +146,7 @@ export class ApplicationMenu {
                     }
                     break;
 
-                case " ":   // Space
+                case " ": // Space
                     if (selected && !selected.hasSubmenu()) {
                         selected.bounce();
                         selected.execCommand();
@@ -177,6 +185,25 @@ export class ApplicationMenu {
                 }
             }
         } else {
+            if (focusedLabel) {
+                switch (e.key) {
+                    case "Enter":
+                    case "ArrowDown":
+                        focusedLabel.setOpen(true);
+                        Utils.stopEvent(e);
+                        return;
+
+                    case "ArrowLeft":
+                        this.focusPreviousLabel();
+                        Utils.stopEvent(e);
+                        return;
+
+                    case "ArrowRight":
+                        this.focusNextLabel();
+                        Utils.stopEvent(e);
+                        return;
+                }
+            }
             if (this.showingAltKeys && !e.repeat) {
                 let handled = false;
 
@@ -185,6 +212,9 @@ export class ApplicationMenu {
                         o.getAltTrigger() !== undefined &&
                         o.getAltTrigger() === e.key.toLowerCase()
                     ) {
+                        if (focusedLabel) {
+                            focusedLabel.setFocused(false);
+                        }
                         o.setOpen(true);
                         Utils.stopEvent(e);
                         handled = true;
@@ -204,14 +234,22 @@ export class ApplicationMenu {
 
     public onKeyUp(e: KeyboardEvent): void {
         if (e.key === "Alt" && this.showingAltKeys && !this.isOpen()) {
-            this.openFirstLabel();
+            if (TitleBarReplacer.configState.autoHide) {
+                this.parent?.setMenuBarVisible(true);
+            }
+            this.focusFirstLabel();
         }
     }
 
     public close(): void {
         this.labels.forEach((o) => {
-            o.setOpen(false);
+            if (o.isOpen()) {
+                o.setOpen(false);
+            }
         });
+        if (TitleBarReplacer.configState.autoHide) {
+            this.parent?.setMenuBarVisible(false);
+        }
     }
 
     public showAltKeys(flag: boolean): void {
@@ -224,7 +262,7 @@ export class ApplicationMenu {
     }
 
     public openLastLabel(): void {
-        this.labels[this.labels.length]?.setOpen(true);
+        this.labels[this.labels.length - 1]?.setOpen(true);
     }
 
     public openNextLabel(): void {
@@ -242,6 +280,40 @@ export class ApplicationMenu {
         if (label) {
             label.setOpen(false);
             this.labels[Utils.mod(this.labels.indexOf(label) - 1, this.labels.length)].setOpen(
+                true
+            );
+        }
+    }
+
+    public focusFirstLabel(): void {
+        this.labels.forEach((o) => {
+            o.setFocused(false);
+        });
+        this.labels[0]?.setFocused(true);
+    }
+
+    public focusLastLabel(): void {
+        this.labels.forEach((o) => {
+            o.setFocused(false);
+        });
+        this.labels[this.labels.length - 1]?.setFocused(true);
+    }
+
+    public focusNextLabel(): void {
+        let label = this.getFocusedLabel();
+        if (label) {
+            label.setFocused(false);
+            this.labels[Utils.mod(this.labels.indexOf(label) + 1, this.labels.length)].setFocused(
+                true
+            );
+        }
+    }
+
+    public focusPreviousLabel(): void {
+        let label = this.getFocusedLabel();
+        if (label) {
+            label.setFocused(false);
+            this.labels[Utils.mod(this.labels.indexOf(label) - 1, this.labels.length)].setFocused(
                 true
             );
         }
@@ -330,6 +402,20 @@ export class ApplicationMenu {
         return result;
     }
 
+    public getFocusedLabel(): MenuLabel | null {
+        let result: MenuLabel | null = null;
+
+        this.labels.some((o) => {
+            if (o.isFocused()) {
+                result = o;
+                return true;
+            }
+            return false;
+        });
+
+        return result;
+    }
+
     public getElement() {
         return this.element;
     }
@@ -342,6 +428,10 @@ export class ApplicationMenu {
         return this.getOpenLabel() !== null;
     }
 
+    public isFocused() {
+        return this.getFocusedLabel() !== null;
+    }
+
     public getEmitter() {
         return this.emitter;
     }
@@ -350,5 +440,27 @@ export class ApplicationMenu {
         labelItem.setParent(this);
         this.labels.push(labelItem);
         this.element.appendChild(labelItem.getElement());
+    }
+
+    insertLabel(item: MenuLabel, index: number): void {
+        item.setParent(this);
+        this.labels.splice(index, 0, item);
+        this.element.insertBefore(
+            item.getElement(),
+            item.getElement().parentElement?.children[index] || null
+        );
+    }
+
+    removeLabel(item: MenuLabel): void;
+    removeLabel(index: number): void;
+    removeLabel(x: MenuLabel | number) {
+        if (x instanceof MenuLabel) {
+            this.labels.splice(this.labels.indexOf(x), 1);
+            x.getElement().parentElement?.removeChild(x.getElement());
+            return;
+        }
+
+        const item = this.labels.splice(x, 1)[0];
+        item?.getElement().parentElement?.removeChild(item?.getElement());
     }
 }
