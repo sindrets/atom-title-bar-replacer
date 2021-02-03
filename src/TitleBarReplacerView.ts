@@ -3,7 +3,8 @@ import { ApplicationMenu } from "./ApplicationMenu";
 import { remote } from "electron";
 import { TbrConfig, TbrWindowControls } from "./types";
 import { Utils } from "./Utils";
-import {ThemeManager} from "./ThemeManager";
+import { ThemeManager } from "./ThemeManager";
+import { ChangeType, MenuUpdater } from "./MenuUpdater";
 
 export class TitleBarReplacerView {
     private configState: TbrConfig;
@@ -58,23 +59,45 @@ export class TitleBarReplacerView {
         this.element.appendChild(menuDiv);
         this.initWindowControls();
 
+        const titleObserver = new MutationObserver((mutations, self) => {
+            mutations.forEach((o) => {
+                if (o.type === "childList") {
+                    this.setTitleText(o.target.textContent || "Atom");
+                }
+            });
+        });
+
+        const titleElmnt = document.querySelector("title");
+        if (titleElmnt !== null) {
+            titleObserver.observe(titleElmnt, { childList: true });
+        }
+
         // @ts-ignore
         let menuTemplate = atom.menu.template;
         this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate, this);
         this.element.appendChild(this.appMenu.getElement());
+        this.updateTitleText();
+        // TODO remove
         // @ts-ignore
         window.appMenu = this.appMenu;
+
+        const originalUpdate = atom.menu.update;
+        atom.menu.update = (...args) => {
+            originalUpdate.apply(atom.menu, ...args);
+            const change = MenuUpdater.run(this.appMenu);
+            if (change === ChangeType.ADDITION) {
+                this.updateTransforms();
+            }
+        };
     }
 
     public updateTransforms(): void {
-        document.querySelectorAll(".menu-box").forEach((o) => {
-            if (o.classList.contains("menu-item-submenu")) {
-                const parentRect = o.parentElement?.getBoundingClientRect() as DOMRect;
-                const selfRect = o.getBoundingClientRect();
-                (o as HTMLElement).style.transform = `translate(${
-                    parentRect.width - (selfRect.x - parentRect.x) - 5
-                }px, -3px)`;
-            }
+        document.querySelectorAll(".menu-box.menu-item-submenu").forEach((o) => {
+            const parentRect = o.parentElement?.getBoundingClientRect() as DOMRect;
+            const selfRect = o.getBoundingClientRect();
+            (o as HTMLElement).style.transform = `translate(${
+                parentRect.width - (selfRect.x - parentRect.x) - 5
+            }px, -3px)`;
         });
     }
 
@@ -143,11 +166,22 @@ export class TitleBarReplacerView {
 
     public setMenuBarVisible(flag: boolean): void {
         this.menuBarVisible = flag;
-        Utils.setToggleClass(
-            this.appMenu.getElement(),
-            "no-menu-bar",
-            !flag
-        );
+        Utils.setToggleClass(this.appMenu.getElement(), "no-menu-bar", !flag);
+    }
+
+    public setTitleText(title: string): void {
+        const titleElmnt = this.getElement().querySelector(".custom-title");
+        if (titleElmnt !== null) {
+            titleElmnt.innerHTML = title;
+        }
+    }
+
+    public updateTitleText(): void {
+        const titleElmnt = document.querySelector("title");
+        const customTitleElmnt = this.element.querySelector(".custom-title");
+        if (titleElmnt !== null && customTitleElmnt !== null) {
+            customTitleElmnt.innerHTML = titleElmnt.textContent || "Atom";
+        }
     }
 
     public deactivate(): void {

@@ -60,6 +60,9 @@ export class TbrConfig {
     autoHide: boolean = false;
     hideFullscreenTitle: boolean = false;
     autoSelectColor: boolean = false;
+    baseColor!: Color;
+    highlightColor!: Color;
+    textColor!: Color;
     titleBarStyle: string = "";
     windowControlTheme: string = "";
     reverseWindowControls: boolean = false;
@@ -91,18 +94,20 @@ export const windowControlThemes: { readonly [key: string]: { readonly cssClass:
 
 export const themeCssSelectors: { readonly [key: string]: readonly string[] } = {
     base: [
-        ".title-bar-replacer",
-        ".app-menu .menu-label.open, .app-menu .menu-label:hover", //10% darker
+        ".title-bar-replacer, .title-bar-replacer::before",
+        ".app-menu .menu-label.open, .app-menu .menu-label:hover, " +
+            ".app-menu .menu-label.open, .app-menu .menu-label.focused", //10% darker
         ".app-menu .menu-label .menu-box", //ligther
     ],
     hi: [
         ".app-menu .menu-label .menu-box .menu-item.open, .app-menu .menu-label .menu-box " +
-            ".menu-item:hover",
+            ".menu-item.selected",
     ],
     txt: [
         ".title-bar-replacer",
-        ".title-bar-replacer .custom-title, .app-menu .menu-label .menu-box hr, .app-menu " +
-            ".menu-label .menu-box .menu-item .menu-item-keystroke", //subtle
+        ".title-bar-replacer .custom-title, .app-menu .menu-label .menu-box hr, " +
+            ".app-menu .menu-label .menu-box .menu-item .menu-item-keystroke, " +
+            ".app-menu .menu-label .menu-box .menu-item.disabled", //subtle
         ".tbr-title-bar i, .tbr-title-bar i.disabled, .app-menu .menu-label .menu-box " +
             ".menu-item", //highlight
     ],

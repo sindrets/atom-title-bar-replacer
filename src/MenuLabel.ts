@@ -46,7 +46,7 @@ export class MenuLabel implements MenuLike {
         elmnt.innerHTML = labelData.html;
 
         const self = new MenuLabel(elmnt);
-        self.labelText = labelData.name;
+        self.labelText = labelItem.label;
         self.altTrigger = labelData.key || undefined;
 
         const submenuElmnt = document.createElement("div");

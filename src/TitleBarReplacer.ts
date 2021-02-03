@@ -7,6 +7,7 @@ export class TitleBarReplacer {
     public static configState: TbrConfig = new TbrConfig();
     private subscriptions: CompositeDisposable;
     private titleBarReplacerView!: TitleBarReplacerView;
+    private initialized: boolean = false;
 
     public constructor() {
         this.subscriptions = new CompositeDisposable();
@@ -29,6 +30,7 @@ export class TitleBarReplacer {
                         ?.prepend(this.titleBarReplacerView.getElement());
                     this.titleBarReplacerView.updateTransforms();
                     this.initSubscriptions();
+                    this.initialized = true;
                 }
             }
         }, 50);
@@ -71,6 +73,24 @@ export class TitleBarReplacer {
         atom.config.observe("title-bar-replacer.colors.autoSelectColor", (value) => {
             TitleBarReplacer.configState.autoSelectColor = value;
             value ? ThemeManager.clearCustomColors() : ThemeManager.applyCustomColors();
+        });
+        atom.config.observe("title-bar-replacer.colors.baseColor", (value) => {
+            TitleBarReplacer.configState.baseColor = value;
+            if (!TitleBarReplacer.configState.autoSelectColor && this.initialized) {
+                ThemeManager.applyCustomColors();
+            }
+        });
+        atom.config.observe("title-bar-replacer.colors.highlightColor", (value) => {
+            TitleBarReplacer.configState.highlightColor = value;
+            if (!TitleBarReplacer.configState.autoSelectColor && this.initialized) {
+                ThemeManager.applyCustomColors();
+            }
+        });
+        atom.config.observe("title-bar-replacer.colors.textColor", (value) => {
+            TitleBarReplacer.configState.textColor = value;
+            if (!TitleBarReplacer.configState.autoSelectColor && this.initialized) {
+                ThemeManager.applyCustomColors();
+            }
         });
         atom.config.observe("title-bar-replacer.colors.style", (value) => {
             TitleBarReplacer.configState.titleBarStyle = value;

@@ -22,6 +22,16 @@
     margin-top: 3px;
     z-index: 900;
 
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -3px;
+        width: 100%;
+        height: 3px;
+        background: @tab-bar-background-color;
+    }
+
     .tbr-title-bar {
         position: relative;
         display: flex;
@@ -328,7 +338,6 @@
                     }
                 }
             }
-
         }
     }
 }
@@ -357,14 +366,14 @@
             }
 
             &.tbr-close {
-                color: @tab-bar-background-color;
+                color: @tab-bar-background-color !important;
                 margin-right: @margin + 8px;
                 &:before {
                     background-color: #cc575d;
                     transform: translate(0, -1px);
                 }
                 &:hover {
-                    color: #ccc;
+                    color: #ccc !important;
                 }
             }
         }
@@ -387,7 +396,7 @@
 
         .control-wrap {
             &:hover i {
-                color: rgba(0, 0, 0, 0.7);
+                color: rgba(0, 0, 0, 0.7) !important;
             }
 
             i {
@@ -396,7 +405,7 @@
                 margin-left: @margin;
                 margin-right: @margin;
                 padding: 1px;
-                color: rgba(0, 0, 0, 0);
+                color: rgba(0, 0, 0, 0) !important;
                 transition-duration: 0.1s;
 
                 &:before {
