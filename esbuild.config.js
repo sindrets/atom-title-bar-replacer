@@ -4,11 +4,9 @@ const esbuild = require("esbuild");
 exec("npx tsc --noEmit", (error, stdout, stderr) => {
     if (error) {
         console.error(`error: ${error.message}`);
-        return;
     }
     if (stderr) {
         console.error(stderr);
-        return;
     }
     if (stdout.length > 0) {
         console.log(stdout);

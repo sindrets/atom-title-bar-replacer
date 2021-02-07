@@ -1,7 +1,7 @@
 import { CompositeDisposable } from "atom";
+import { ThemeManager } from "./ThemeManager";
 import { TitleBarReplacerView } from "./TitleBarReplacerView";
 import { TbrConfig } from "./types";
-import { ThemeManager } from "./ThemeManager";
 
 export class TitleBarReplacer {
     public static configState: TbrConfig = new TbrConfig();
@@ -41,6 +41,37 @@ export class TitleBarReplacer {
     }
 
     public initSubscriptions(): void {
+        this.subscriptions.add(
+            atom.commands.add("atom-workspace", {
+                "title-bar-replacer:toggle-title-bar": () => {
+                    TitleBarReplacer.configState.displayTitleBar = !TitleBarReplacer.configState
+                        .displayTitleBar;
+                    this.titleBarReplacerView.setTitleBarVisible(
+                        TitleBarReplacer.configState.displayTitleBar
+                    );
+                },
+                "title-bar-replacer:toggle-menu-bar": () => {
+                    TitleBarReplacer.configState.displayMenuBar = !TitleBarReplacer.configState
+                        .displayMenuBar;
+                    this.titleBarReplacerView.setMenuBarVisible(
+                        TitleBarReplacer.configState.displayMenuBar
+                    );
+                },
+                "title-bar-replacer:auto-select-colors": () => {
+                    TitleBarReplacer.configState.autoSelectColor = !TitleBarReplacer.configState
+                        .autoSelectColor;
+                    TitleBarReplacer.configState.autoSelectColor
+                        ? ThemeManager.clearCustomColors()
+                        : ThemeManager.applyCustomColors();
+                },
+                "title-bar-replacer:run-menu-updater": () => {
+                    this.titleBarReplacerView.updateMenu();
+                },
+                "title-bar-replacer:force-rebuild-application-menu": () => {
+                    this.titleBarReplacerView.rebuildApplicationMenu();
+                },
+            })
+        );
         atom.config.observe("title-bar-replacer.general.displayTitleBar", (value) => {
             TitleBarReplacer.configState.displayTitleBar = value;
             this.titleBarReplacerView.setTitleBarVisible(value);

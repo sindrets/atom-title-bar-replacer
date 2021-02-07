@@ -14,10 +14,6 @@
                             "label": "Quick Settings",
                             "submenu": [
                                 {
-                                    "label": "Restore defaults",
-                                    "command": "title-bar-replacer:restore-defaults"
-                                },
-                                {
                                     "label": "Auto select colors",
                                     "command": "title-bar-replacer:auto-select-colors"
                                 }

@@ -231,7 +231,6 @@
     }
 }
 
-
 .title-bar-replacer .tbr-title-bar.no-title-bar ~ .app-menu.no-menu-bar {
     display: none !important;
 }
@@ -242,6 +241,25 @@
     }
 }
 
+// Fix dock toggles being unclickable without a window frame.
+.atom-dock-inner:not(.atom-dock-open) {
+    pointer-events: none;
+
+    &:not(.bottom) > .atom-dock-mask {
+        width: 8px !important;
+        pointer-events: none;
+        visibility: hidden;
+    }
+    > .atom-dock-toggle-button {
+        pointer-events: all;
+    }
+    > .atom-dock-toggle-button.left {
+        margin-left: -8px;
+    }
+    > .atom-dock-toggle-button.right {
+        margin-right: -8px;
+    }
+}
 
 @keyframes tbr-item-bounce {
     0% {

@@ -57,6 +57,12 @@ export class ApplicationMenu {
         return self;
     }
 
+    public serialize() {
+        return this.labels.map((o) => {
+            return o.serialize();
+        });
+    }
+
     private onLabelClicked(target: MenuLabel, e: MouseEvent): void {
         if (target.isOpen()) {
             target.setOpen(false);

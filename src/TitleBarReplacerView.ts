@@ -4,7 +4,7 @@ import { remote } from "electron";
 import { TbrConfig, TbrWindowControls } from "./types";
 import { Utils } from "./Utils";
 import { ThemeManager } from "./ThemeManager";
-import { ChangeType, MenuUpdater } from "./MenuUpdater";
+import { MenuUpdater } from "./MenuUpdater";
 
 export class TitleBarReplacerView {
     private configState: TbrConfig;
@@ -14,21 +14,52 @@ export class TitleBarReplacerView {
     private appMenu: ApplicationMenu;
     private titleBarVisible: boolean = true;
     private menuBarVisible: boolean = true;
+    private originalMenuUpdateFn?: VoidFunction;
 
     public constructor(configState: TbrConfig) {
         this.configState = configState;
         this.themeManager = new ThemeManager(this);
+        [this.element, this.windowControls] = this.createElement();
+        this.initWindowControls();
 
-        this.element = document.createElement("div");
-        this.element.classList.add("title-bar-replacer");
+        const titleObserver = new MutationObserver((mutations, self) => {
+            mutations.forEach((o) => {
+                if (o.type === "childList") {
+                    this.setTitleText(o.target.textContent || "Atom");
+                }
+            });
+        });
+
+        const titleElmnt = document.querySelector("title");
+        if (titleElmnt !== null) {
+            titleObserver.observe(titleElmnt, { childList: true });
+        }
+
+        // @ts-ignore
+        let menuTemplate = atom.menu.template;
+        this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate, this);
+        this.element.appendChild(this.appMenu.getElement());
+        this.updateTitleText();
+        this.attachMenuUpdater();
+        // TODO remove
+        // @ts-ignore
+        window.appMenu = this.appMenu;
+
+        atom.themes.onDidChangeActiveThemes(() => {
+            this.updateTransforms();
+        });
+    }
+
+    private createElement(): [HTMLDivElement, TbrWindowControls] {
+        const element = document.createElement("div");
+        element.classList.add("title-bar-replacer");
 
         const menuDiv = document.createElement("div");
         menuDiv.classList.add("tbr-title-bar");
 
         const titleSpan = document.createElement("span");
         titleSpan.classList.add("custom-title");
-        let titleString = "Atom";
-        titleSpan.innerHTML = titleString;
+        titleSpan.innerHTML = "Atom";
         menuDiv.appendChild(titleSpan);
 
         const controlWrap = document.createElement("div");
@@ -50,55 +81,57 @@ export class TitleBarReplacerView {
         controlClose.classList.add("tbr-close");
         controlWrap.appendChild(controlClose);
 
-        this.windowControls = {
-            minimize: controlMinimize,
-            maximize: controlMaximize,
-            close: controlClose,
-        };
+        element.appendChild(menuDiv);
 
-        this.element.appendChild(menuDiv);
-        this.initWindowControls();
-
-        const titleObserver = new MutationObserver((mutations, self) => {
-            mutations.forEach((o) => {
-                if (o.type === "childList") {
-                    this.setTitleText(o.target.textContent || "Atom");
-                }
-            });
-        });
-
-        const titleElmnt = document.querySelector("title");
-        if (titleElmnt !== null) {
-            titleObserver.observe(titleElmnt, { childList: true });
-        }
-
-        // @ts-ignore
-        let menuTemplate = atom.menu.template;
-        this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate, this);
-        this.element.appendChild(this.appMenu.getElement());
-        this.updateTitleText();
-        // TODO remove
-        // @ts-ignore
-        window.appMenu = this.appMenu;
-
-        const originalUpdate = atom.menu.update;
-        atom.menu.update = (...args) => {
-            originalUpdate.apply(atom.menu, ...args);
-            const change = MenuUpdater.run(this.appMenu);
-            if (change === ChangeType.ADDITION) {
-                this.updateTransforms();
-            }
-        };
+        return [
+            element,
+            {
+                minimize: controlMinimize,
+                maximize: controlMaximize,
+                close: controlClose,
+            },
+        ];
     }
 
     public updateTransforms(): void {
         document.querySelectorAll(".menu-box.menu-item-submenu").forEach((o) => {
             const parentRect = o.parentElement?.getBoundingClientRect() as DOMRect;
             const selfRect = o.getBoundingClientRect();
-            (o as HTMLElement).style.transform = `translate(${
-                parentRect.width - (selfRect.x - parentRect.x) - 5
-            }px, -3px)`;
+            (o as HTMLElement).style.transform = `translate(${parentRect.width - 25}px, -3px)`;
         });
+    }
+
+    public attachMenuUpdater(): void {
+        if (this.originalMenuUpdateFn === undefined) {
+            this.originalMenuUpdateFn = atom.menu.update;
+        }
+
+        atom.menu.update = (...args) => {
+            this.originalMenuUpdateFn?.apply(atom.menu, ...args);
+            this.updateMenu();
+        };
+    }
+
+    public detachMenuUpdater(): void {
+        if (this.originalMenuUpdateFn !== undefined) {
+            atom.menu.update = this.originalMenuUpdateFn;
+        }
+    }
+
+    public updateMenu(): void {
+        const edits = MenuUpdater.run(this.appMenu);
+        if (edits > 0) {
+            this.updateTransforms();
+        }
+    }
+
+    public rebuildApplicationMenu(): void {
+        this.appMenu.getElement().parentElement?.removeChild(this.appMenu.getElement());
+        // @ts-ignore
+        let menuTemplate = atom.menu.template;
+        this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate);
+        this.element.appendChild(this.appMenu.getElement());
+        this.updateTransforms();
     }
 
     public initWindowControls(): void {
@@ -186,6 +219,7 @@ export class TitleBarReplacerView {
 
     public deactivate(): void {
         this.element.parentElement?.removeChild(this.element);
+        this.detachMenuUpdater();
     }
 
     public getThemeManager() {
@@ -194,6 +228,10 @@ export class TitleBarReplacerView {
 
     public getElement() {
         return this.element;
+    }
+
+    public getApplicationMenu() {
+        return this.appMenu;
     }
 
     public isTitleBarVisible() {

@@ -17,6 +17,7 @@ export interface IMenuLabel {
 }
 
 export type TMenuLike = IMenuLabel | IMenuItem;
+export type EqualFunction<T, U> = (a: T, b: U) => boolean;
 
 export interface IAltKeyData {
     html: string;

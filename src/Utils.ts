@@ -16,6 +16,12 @@ export class Utils {
         return ((n % m) + m) % m;
     }
 
+    public static clamp(v: number, min: number, max: number): number {
+        if (v < min) return min;
+        if (v > max) return max;
+        return v;
+    }
+
     public static stopEvent(e: Event): void {
         e.stopPropagation();
         e.preventDefault();

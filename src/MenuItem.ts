@@ -103,6 +103,17 @@ export class MenuItem implements MenuLike {
         return self;
     }
 
+    public serialize() {
+        return {
+            label: this.labelText,
+            command: this.command,
+            commandDetail: this.commandDetail,
+            submenu: this.submenu?.map((o) => {
+                return o.serialize();
+            }),
+        };
+    }
+
     private onMouseClick(e: MouseEvent) {
         e.stopPropagation();
         this.parent?.getEmitter().emit(TbrEvent.MOUSE_CLICK, this, e);
@@ -160,9 +171,8 @@ export class MenuItem implements MenuLike {
 
         item.setParent(this);
         this.submenu?.splice(index, 0, item);
-        this.element
-            .querySelector(".menu-box")
-            ?.insertBefore(item.element, item.element.parentElement?.children[index] || null);
+        const menuElmnt = this.element.querySelector(".menu-box");
+        menuElmnt?.insertBefore(item.getElement(), menuElmnt.children[index] || null);
     }
 
     removeChild(item: MenuItem): void;

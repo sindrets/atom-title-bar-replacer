@@ -2,30 +2,27 @@ import { ApplicationMenu } from "./ApplicationMenu";
 import { MenuItem } from "./MenuItem";
 import { MenuLabel } from "./MenuLabel";
 import { IMenuItem, IMenuLabel, MenuLike, TMenuLike } from "./types";
-
-export enum ChangeType {
-    NONE,
-    REMOVAL,
-    ADDITION
-}
+import { Diff, EditToken } from "./Diff";
 
 export class MenuUpdater {
-    public static run(appMenu: ApplicationMenu): ChangeType {
-        console.info("MenuUpdater: running...");
+    public static run(appMenu: ApplicationMenu): number {
         const template: Partial<IMenuLabel>[] = JSON.parse(
             JSON.stringify((atom.menu as any).template)
         );
 
         if (!(template instanceof Array)) {
-            return ChangeType.NONE;
+            console.error("MenuUpdater: Menu template is malformed! Cannot perform menu update.");
+            return 0;
         }
 
         template.some((o) => {
             if (o.label === "&Packages") {
                 o.submenu?.sort((a, b) => {
                     if (a.label !== undefined && b.label !== undefined) {
-                        if (a.label < b.label) return -1;
-                        if (a.label > b.label) return 1;
+                        const aL = a.label.toLowerCase(),
+                            bL = b.label.toLowerCase();
+                        if (aL < bL) return -1;
+                        if (aL > bL) return 1;
                     }
                     return 0;
                 });
@@ -41,90 +38,77 @@ export class MenuUpdater {
         parent: ApplicationMenu | MenuLike,
         a: MenuLike[],
         b: Partial<TMenuLike>[]
-    ): ChangeType {
-        let change = ChangeType.NONE;
-        let ai: number = 0,
-            bi: number = 0;
+    ) {
+        let edits = 0;
+        const diff = new Diff<typeof a[0], typeof b[0]>(a, b, MenuUpdater.equals);
+        const editscript = diff.createEditScript();
+        edits += MenuUpdater.execEditScript(parent, a, b, editscript);
 
-        for (; bi < b.length; ai++, bi++) {
-            if (MenuUpdater.equals(a[ai], b[bi])) {
-                const aSub = a[ai].getSubmenu(), bSub = b[bi].submenu;
-                if (aSub !== undefined) {
-                    if (!(bSub instanceof Array)) {
-                        console.error("MenuUpdater: malformed menu template item!", b[bi]);
-                        continue;
-                    }
-                    change = Math.max(change, this.recurse(a[ai], aSub, bSub));
+        a.forEach((o, i) => {
+            const aSub = o.getSubmenu(),
+                bSub = b[i].submenu;
+            if (aSub !== undefined) {
+                if (!(bSub instanceof Array)) {
+                    console.error("MenuUpdater: malformed menu template item!", b[i]);
+                    return;
                 }
-                continue;
+                edits += MenuUpdater.recurse(o, aSub, bSub);
             }
+        });
 
-            let [arr, aj, bj]: [any[], number, number] = MenuUpdater.getRemoveable(a, b, ai, bi);
-            if (arr.length > 0) {
-                (arr as MenuLike[]).forEach((o) => {
+        return edits;
+    }
+
+    private static execEditScript(
+        parent: ApplicationMenu | MenuLike,
+        a: MenuLike[],
+        b: Partial<TMenuLike>[],
+        script: EditToken[]
+    ): number {
+        let ai = 0,
+            bi = 0,
+            edits = script.length;
+        script.forEach((opr) => {
+            switch (opr) {
+                case EditToken.NOOP:
+                    ai++, bi++;
+                    edits--;
+                    return;
+
+                case EditToken.DELETE:
                     if (parent instanceof ApplicationMenu) {
-                        parent.removeLabel(o as MenuLabel);
+                        parent.removeLabel(ai);
                     } else {
-                        parent.removeChild(o as MenuItem);
+                        parent.removeChild(ai);
                     }
-                });
-                change = Math.max(change, ChangeType.REMOVAL);
-                continue;
-            }
+                    break;
 
-            [arr, aj, bj] = MenuUpdater.getAdditions(a, b, ai, bi);
-            if (arr.length > 0) {
-                (arr as TMenuLike[]).forEach((o) => {
+                case EditToken.INSERT:
                     if (parent instanceof ApplicationMenu) {
-                        let newItem = MenuLabel.createMenuLabel(o as IMenuLabel);
+                        let newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
                         parent.insertLabel(newItem, ai++);
                     } else {
-                        let newItem = MenuItem.createMenuItem(o as IMenuItem);
+                        let newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
                         parent.insertChild(newItem, ai++);
                     }
-                });
-                bi = bj;
-                change = ChangeType.ADDITION;
+                    bi++;
+                    break;
+
+                case EditToken.REPLACE:
+                    if (parent instanceof ApplicationMenu) {
+                        parent.removeLabel(ai);
+                        let newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
+                        parent.insertLabel(newItem, ai++);
+                    } else {
+                        parent.removeChild(ai);
+                        let newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
+                        parent.insertChild(newItem, ai++);
+                    }
+                    break;
             }
-        }
+        });
 
-        return change;
-    }
-
-    private static getRemoveable(
-        a: MenuLike[],
-        b: Partial<TMenuLike>[],
-        ai: number,
-        bi: number
-    ): [MenuLike[], number, number] {
-        const arr: MenuLike[] = [];
-
-        for (; ai < a.length; ai++) {
-            if (MenuUpdater.equals(a[ai], b[bi])) {
-                break;
-            }
-            arr.push(a[ai]);
-        }
-
-        return [arr, ai, bi];
-    }
-
-    private static getAdditions(
-        a: MenuLike[],
-        b: Partial<TMenuLike>[],
-        ai: number,
-        bi: number
-    ): [Partial<TMenuLike>[], number, number] {
-        const arr: Partial<TMenuLike>[] = [];
-
-        for (; bi < b.length; bi++) {
-            if (MenuUpdater.equals(a[ai], b[bi])) {
-                break;
-            }
-            arr.push(b[bi]);
-        }
-
-        return [arr, ai, bi];
+        return edits;
     }
 
     private static equals(a: MenuLike | undefined, b: Partial<TMenuLike> | undefined): boolean {

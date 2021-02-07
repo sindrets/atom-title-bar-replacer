@@ -1,6 +1,9 @@
 import { TitleBarReplacer } from "./TitleBarReplacer";
 
 export { config } from "./config";
+export { ApplicationMenu } from "./ApplicationMenu";
+export { MenuUpdater } from "./MenuUpdater";
+export { Diff, EditToken } from "./Diff";
 
 const titleBarReplacer = new TitleBarReplacer();
 
