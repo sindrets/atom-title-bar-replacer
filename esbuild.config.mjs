@@ -41,7 +41,7 @@ await execCmd("npx tsc --noEmit").then(
 last = performance.now();
 await esbuild.build({
     entryPoints: ["src/main.ts"],
-    outfile: "lib/title-bar-replacer.js",
+    outfile: "dist/title-bar-replacer.js",
     bundle: true,
     platform: "node",
     target: ["node14"],
