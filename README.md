@@ -59,6 +59,19 @@ through CSS (Atom's stylesheet).
 
 ## Changelog
 
+### 2.0.0 - Complete rewrite
+
+-   The plugin has been rewritten completely from scratch
+-   More than 4x faster
+-   Reworked keyboard navigation
+-   Efficient menu diff and updates
+-   Setting for alt focus
+-   Setting for menu mnemonics
+-   Title text is hidden when it intersects with the menu bar.
+-   Dock toggle buttons are now accessible without a window frame.
+-   Removed the window frame remover in favor of the new 'Title Bar > hidden' setting.
+-   Less terrible code
+
 ### 1.8.1
 
 -   Fixed fatal bug occurring when no serialization state exists.
@@ -70,25 +83,6 @@ through CSS (Atom's stylesheet).
 -   Fixed bug that caused the 'Restore Defaults' button not to work.
 -   Handling exiting and disabling properly
 -   More type definitions.
-
-### 1.7.0 - UI Customization Overhaul
-
--   Added style presets
-    -   Added Spacious preset
-    -   Added Compact preset
--   Added window controls presets
-    -   Added Windows 10 preset
-    -   Added Arc Theme preset
-    -   Added Yosemite preset
-    -   Added Legacy theme preset
--   More source code documentation and type definitions
--   Added more CSS selectors for customizability
-    -   Unique style preset selectors
-    -   Unique window controls preset selectors
-    -   Reverse window controls flag selector
-    -   Title bar visibility selector
-    -   Menu bar visibility selector
--   Removed 'Navigation Button Highlight Color' setting
 
 [Full changelog](https://github.com/sindrets/atom-title-bar-replacer/blob/master/CHANGELOG.md)
 

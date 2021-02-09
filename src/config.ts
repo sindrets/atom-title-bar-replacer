@@ -95,7 +95,7 @@ export const config = {
                     "Spacious",
                     "Compact"
                 ],
-                default: "Spacious"
+                default: "Compact"
             },
             controlTheme: {
                 order: 6,

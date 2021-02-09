@@ -224,7 +224,8 @@ export class TitleBarReplacerView {
         if (this.configState.titleBarStyle === "Compact") {
             const menuRect = this.appMenu.getElement().getBoundingClientRect();
             const titleRect = this.titleElmnt.getBoundingClientRect();
-            if (menuRect.x + menuRect.width >= titleRect.x) {
+
+            if (Utils.domRectIntersects(menuRect, titleRect)) {
                 this.titleElmnt.style.visibility = "hidden";
             } else {
                 this.titleElmnt.style.visibility = "visible";

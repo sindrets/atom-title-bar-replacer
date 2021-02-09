@@ -1,3 +1,15 @@
+### 2.0.0 - Complete rewrite
+ * The plugin has been rewritten completely from scratch
+ * More than 4x faster
+ * Reworked keyboard navigation
+ * Efficient menu diff and updates
+ * Setting for alt focus
+ * Setting for menu mnemonics
+ * Title text is hidden when it intersects with the menu bar.
+ * Dock toggle buttons are now accessible without a window frame.
+ * Removed the window frame remover in favor of the new 'Title Bar > hidden' setting.
+ * Less terrible code
+
 ### 1.8.1
  * Fixed fatal bug occurring when no serialization state exists.
 

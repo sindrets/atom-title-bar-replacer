@@ -5,6 +5,9 @@ atom.keymaps = {
         return [];
     })
 }
+atom.workspace = {
+    onDidChangeActivePaneItem: jest.fn()
+}
 atom.menu = {};
 
 module.exports = atom;

@@ -27,16 +27,8 @@ export class ApplicationMenu {
             this.onLabelMouseEnter(args[0], args[1])
         );
 
-        window.addEventListener("click", (e) => {
-            this.close();
-            this.getFocusedLabel()?.setFocused(false);
-            this.attentive = false;
-            this.showAltKeys(false);
-        });
-
-        atom.workspace.onDidChangeActivePaneItem((item) => {
-            document.body.click();
-        });
+        window.addEventListener("click", (e) => this.blur());
+        atom.workspace.onDidChangeActivePaneItem((item) => this.blur());
 
         document.body.addEventListener("keydown", (e) => this.onKeyDown(e as KeyboardEvent));
         document.body.addEventListener("keyup", (e) => this.onKeyUp(e as KeyboardEvent));
@@ -277,6 +269,13 @@ export class ApplicationMenu {
 
             this.attentive = false;
         }
+    }
+
+    public blur(): void {
+        this.close();
+        this.getFocusedLabel()?.setFocused(false);
+        this.attentive = false;
+        this.showAltKeys(false);
     }
 
     public close(): void {

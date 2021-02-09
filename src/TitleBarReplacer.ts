@@ -136,6 +136,7 @@ export class TitleBarReplacer {
         atom.config.observe("title-bar-replacer.colors.style", (value) => {
             TitleBarReplacer.configState.titleBarStyle = value;
             this.titleBarReplacerView.getThemeManager().setTitleBarStyle(value);
+            this.titleBarReplacerView.checkTitleCollision();
         });
         atom.config.observe("title-bar-replacer.colors.controlTheme", (value) => {
             TitleBarReplacer.configState.windowControlTheme = value;

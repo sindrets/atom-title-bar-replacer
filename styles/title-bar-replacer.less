@@ -315,9 +315,12 @@
 
 
     &.reverse-controls {
-        flex-direction: row-reverse;
+        .tbr-title-bar {
+            order: 0;
+            width: auto;
+        }
         .tbr-title-bar .custom-title {
-            left: 0;
+            left: 50vw;
         }
     }
 }
