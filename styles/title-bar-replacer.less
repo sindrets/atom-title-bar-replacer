@@ -2,8 +2,6 @@
 //
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
-//@text-color-highlight
-//@tab-bar-background-color
 @import "ui-variables";
 
 @title-height: 30px;
@@ -23,6 +21,16 @@
     overflow: visible;
     margin-top: 3px;
     z-index: 900;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -3px;
+        width: 100%;
+        height: 3px;
+        background: @tab-bar-background-color;
+    }
 
     .tbr-title-bar {
         position: relative;
@@ -138,12 +146,13 @@
                 font: inherit;
                 color: inherit;
             }
-            &.open, &.hovered, &:hover {
+            &.open, &.focused, &:hover {
                 background-color: darken(@tab-bar-background-color, 10%);
             }
 
             .menu-box {
-                display: none;
+                display: block;
+                visibility: hidden;
                 position: absolute;
                 background-color: @button-background-color;
                 @menuBoxPadding: 24px;
@@ -175,6 +184,9 @@
                     transform-origin: center;
                     &.disabled {
                         color: @text-color-subtle;
+                    }
+                    &.invisible {
+                        display: none;
                     }
                     .menu-item-keystroke {
                         white-space: nowrap;
@@ -209,14 +221,15 @@
         }
 
         span.open > .menu-box {
-            display: block;
+            visibility: visible;
         }
         div.open > .menu-box {
             display: initial;
+            visibility: visible;
+            /* animation: 0s snapIn 0.25s forwards; */
         }
     }
 }
-
 
 .title-bar-replacer .tbr-title-bar.no-title-bar ~ .app-menu.no-menu-bar {
     display: none !important;
@@ -228,6 +241,25 @@
     }
 }
 
+// Fix dock toggles being unclickable without a window frame.
+.atom-dock-inner:not(.atom-dock-open) {
+    pointer-events: none;
+
+    &:not(.bottom) > .atom-dock-mask {
+        width: 8px !important;
+        pointer-events: none;
+        visibility: hidden;
+    }
+    > .atom-dock-toggle-button {
+        pointer-events: all;
+    }
+    > .atom-dock-toggle-button.left {
+        margin-left: -8px;
+    }
+    > .atom-dock-toggle-button.right {
+        margin-right: -8px;
+    }
+}
 
 @keyframes tbr-item-bounce {
     0% {
@@ -241,6 +273,12 @@
     }
 }
 
+@keyframes snapIn {
+    to {
+        visibility: visible;
+    }
+}
+
 
 
 // Style presets
@@ -251,19 +289,19 @@
     flex-direction: row;
 
     .tbr-title-bar {
-        width: initial;
         order: 2;
 
         .custom-title {
-            position: fixed;
-            left: ~"calc(-100vw + 100%)";
-            width: 100vw;
+            position: absolute;
+            left: ~"calc(-50vw + 100%)";
+            transform: translate(-50%);
+            width: max-content;
         }
     }
 
     .app-menu {
         -webkit-app-region: drag;
-        width: 100%;
+        width: auto;
         order: 1;
 
         &.no-menu-bar {
@@ -277,9 +315,12 @@
 
 
     &.reverse-controls {
-        flex-direction: row-reverse;
+        .tbr-title-bar {
+            order: 0;
+            width: auto;
+        }
         .tbr-title-bar .custom-title {
-            left: 0;
+            left: 50vw;
         }
     }
 }
@@ -318,14 +359,13 @@
                     }
                 }
             }
-
         }
     }
 }
 
 
 /** Arc Theme */
-.title-bar-replacer.control-theme-arc-theme {
+.title-bar-replacer.control-theme-arc {
     @margin: 9px;
 
     .tbr-title-bar {
@@ -347,14 +387,14 @@
             }
 
             &.tbr-close {
-                color: @tab-bar-background-color;
+                color: @tab-bar-background-color !important;
                 margin-right: @margin + 8px;
                 &:before {
                     background-color: #cc575d;
                     transform: translate(0, -1px);
                 }
                 &:hover {
-                    color: #ccc;
+                    color: #ccc !important;
                 }
             }
         }
@@ -377,7 +417,7 @@
 
         .control-wrap {
             &:hover i {
-                color: rgba(0, 0, 0, 0.7);
+                color: rgba(0, 0, 0, 0.7) !important;
             }
 
             i {
@@ -386,7 +426,7 @@
                 margin-left: @margin;
                 margin-right: @margin;
                 padding: 1px;
-                color: rgba(0, 0, 0, 0);
+                color: rgba(0, 0, 0, 0) !important;
                 transition-duration: 0.1s;
 
                 &:before {
@@ -434,7 +474,7 @@ body.is-blurred {
 
 
 /** Legacy Theme */
-.title-bar-replacer.control-theme-legacy-theme {
+.title-bar-replacer.control-theme-legacy {
 
     .tbr-title-bar {
         i {

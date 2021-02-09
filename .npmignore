@@ -7,9 +7,7 @@ yarn-error.log
 # TypeScript
 tsconfig.tsbuildinfo
 
-# Compiled Source
-lib/
-
 # misc
 .vim/
+.vscode/
 todo.md

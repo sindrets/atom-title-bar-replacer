@@ -1,0 +1,2335 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deletion Deleting items should delete multiple items at beginning of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should delete multiple items at end of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should delete multiple items from the middle of the submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should delete single item at beginning of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should delete single item at end of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should delete single item from the middle of the submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting items should handle deletions in different parts of the same submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete multiple labels at beginning of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete multiple labels at end of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete multiple labels from the middle of the menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete single label at beginning of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete single label at end of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Deletion Deleting labels should delete single label from the middle of the menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should do nothing when nothing is changed 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should handle insertions in different parts of the same submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"dolor\\",
+        \\"command\\": \\"sit\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert multiple items at beginning of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"dolor\\",
+        \\"command\\": \\"sit\\"
+      },
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      },
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert multiple items at end of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      },
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"dolor\\",
+        \\"command\\": \\"sit\\"
+      },
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert multiple items in the middle of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"dolor\\",
+        \\"command\\": \\"sit\\"
+      },
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert single item at beginning of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert single item at end of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      },
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting items should insert single item in the middle of submenu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"lorem\\",
+        \\"command\\": \\"ipsum\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert multiple labels at beginning of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"sit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"adipiscing\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"elit\\",
+        \\"command\\": \\"vestibulum\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert multiple labels at end of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"sit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"adipiscing\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"elit\\",
+        \\"command\\": \\"vestibulum\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert multiple labels in the middle of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"sit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"amet\\",
+        \\"command\\": \\"consectetur\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"adipiscing\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"elit\\",
+        \\"command\\": \\"vestibulum\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert single label at beginning of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert single label at end of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  }
+]"
+`;
+
+exports[`Insertion Inserting labels should insert single label in the middle of menu 1`] = `
+"[
+  {
+    \\"label\\": \\"File\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"foo\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"bar\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"baz\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"qux\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Edit\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"quux\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"quz\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"corge\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"grault\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"lorem\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"ipsum\\",
+        \\"command\\": \\"dolor\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"View\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"garply\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"waldo\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"fred\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"plugh\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  },
+  {
+    \\"label\\": \\"Selection\\",
+    \\"submenu\\": [
+      {
+        \\"label\\": \\"wibble\\",
+        \\"command\\": \\"1\\"
+      },
+      {
+        \\"label\\": \\"wabble\\",
+        \\"command\\": \\"2\\"
+      },
+      {
+        \\"label\\": \\"wubble\\",
+        \\"command\\": \\"3\\"
+      },
+      {
+        \\"label\\": \\"flob\\",
+        \\"command\\": \\"4\\"
+      }
+    ]
+  }
+]"
+`;

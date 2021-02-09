@@ -1,35 +1,31 @@
 {
-   "menu": [
-      {
-         "label": "Packages",
-         "submenu": [
-            {
-               "label": "Title Bar Replacer",
-               "submenu": [
-                  {
-                     "label": "Toggle Menu Bar",
-                     "command": "title-bar-replacer:toggle-menu-bar"
-                  },
-                  {
-                     "label": "Quick Settings",
-                     "submenu": [
+    "menu": [
+        {
+            "label": "Packages",
+            "submenu": [
+                {
+                    "label": "Title Bar Replacer",
+                    "submenu": [
                         {
-                           "label": "Restore defaults",
-                           "command": "title-bar-replacer:restore-defaults"
+                            "label": "Toggle Menu Bar",
+                            "command": "title-bar-replacer:toggle-menu-bar"
                         },
                         {
-                           "label": "Auto select colours",
-                           "command": "title-bar-replacer:auto-select-colours"
-                        },
-                        {
-                           "label": "Window frame remover",
-                           "command": "title-bar-replacer:remove-window-frame"
+                            "label": "Quick Settings",
+                            "submenu": [
+                                {
+                                    "label": "Auto select colors",
+                                    "command": "title-bar-replacer:auto-select-colors"
+                                },
+                                {
+                                    "label": "Remove window frame",
+                                    "command": "title-bar-replacer:remove-window-frame"
+                                }
+                            ]
                         }
-                     ]
-                  }
-               ]
-            }
-         ]
-      }
-   ]
+                    ]
+                }
+            ]
+        }
+    ]
 }
