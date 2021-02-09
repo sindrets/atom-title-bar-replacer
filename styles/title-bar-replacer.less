@@ -289,19 +289,19 @@
     flex-direction: row;
 
     .tbr-title-bar {
-        width: initial;
         order: 2;
 
         .custom-title {
-            position: fixed;
-            left: ~"calc(-100vw + 100%)";
-            width: 100vw;
+            position: absolute;
+            left: ~"calc(-50vw + 100%)";
+            transform: translate(-50%);
+            width: max-content;
         }
     }
 
     .app-menu {
         -webkit-app-region: drag;
-        width: 100%;
+        width: auto;
         order: 1;
 
         &.no-menu-bar {

@@ -4,11 +4,19 @@
 [![apm](https://flat.badgen.net/apm/v/title-bar-replacer)](https://atom.io/packages/title-bar-replacer)
 [![apm](https://flat.badgen.net/apm/dl/title-bar-replacer)](https://atom.io/packages/title-bar-replacer)
 
-Adds an alternative, theme-aware title bar and application menu that is more inline with Atom's UI design.
+Adds an alternative, theme-aware title bar and application menu that is more
+inline with Atom's UI design.
 
 ![Showcase of the replacer](http://i.imgur.com/s4wUu5M.gif)
 
-This package is aimed mostly at Windows users, as the native Windows title bar doesn't really go well with Atom's UI design. This title bar replacer adds a functional custom title bar, that lets you move, scale, and utilize Aero-snap features. It also adds a custom application menu that is somewhat more intelligent in terms of design. The default behaviour of the title bar and application menu is to choose colors based on the theme you are currently using. However, most of the colors can be customized in the settings, and the menu can also be hidden.
+This package is aimed mostly at Windows users, as the native Windows title bar
+doesn't really go well with Atom's UI design. This title bar replacer adds a
+functional custom title bar, that lets you move, scale, and utilize Aero-snap
+features. It also adds a custom application menu that is somewhat more
+intelligent in terms of design. The default behaviour of the title bar and
+application menu is to choose colors based on the theme you are currently
+using. However, most of the colors can be customized in the settings, and the
+menu can also be hidden.
 
 ## Installation
 
@@ -20,11 +28,15 @@ $ apm install title-bar-replacer
 
 ## Removing the Native Title Bar
 
-As of Atom version 1.53.0 you can now hide the title bar on Windows as well! Go to Settings > Core > Title bar, and set it to "hidden". Restart Atom and enjoy the custom title bar.
+As of Atom version 1.53.0 you no longer need to patch Atom in order to hide the
+native title bar! Go to Settings > Core > Title bar, and set it to `hidden`.
+Restart Atom and enjoy the custom title bar.
 
 ## Keyboard Navigation
 
-The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> will allow you to access the various categories through alt key shortcuts, or arrow keys.
+The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd>
+will allow you to access the various categories through alt key shortcuts, or
+arrow keys.
 
 -   <kbd>Alt</kbd> - toggle alt key shortcuts or close menu if it's open
 -   <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> - navigate the menu
@@ -38,7 +50,10 @@ The menu bar can be fully utilized from the keyboard. Pressing <kbd>Alt</kbd> wi
 
 ## UI Customization
 
-There are provided settings to adjust the title bar layout style as well as a few different window contols presets. If there is some design you are unhappy with, or some design features you miss, the title bar is highly adjustable through CSS (Atom's stylesheet).
+There are provided settings to adjust the title bar layout style as well as a
+few different window contols presets. If there is some design you are unhappy
+with, or some design features you miss, the title bar is highly adjustable
+through CSS (Atom's stylesheet).
 
 ![UI Customization](https://i.imgur.com/XkEmfzB.gif)
 

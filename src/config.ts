@@ -37,7 +37,21 @@ export const config = {
                 title: "Hide Title Bar in Fullscreen",
                 type: "boolean",
                 default: true
-            }
+            },
+            altGivesFocus: {
+                order: 6,
+                title: "Alt Gives Focus",
+                description: "Releasing the alt key gives focus to the application menu.",
+                type: "boolean",
+                default: true
+            },
+            menuBarMnemonics: {
+                order: 7,
+                title: "Menu Bar Mnemonics",
+                description: "Controls whether the application menu can be navigated with alt-key shortcuts.",
+                type: "boolean",
+                default: true
+            },
         }
     },
     colors: {

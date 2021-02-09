@@ -9,6 +9,7 @@ import { Utils } from "./Utils";
 export class ApplicationMenu {
     private element: HTMLDivElement;
     private labels: MenuLabel[];
+    private attentive: boolean = false;
     private showingAltKeys = false;
     private emitter: EventEmitter;
     private parent?: TitleBarReplacerView;
@@ -29,7 +30,12 @@ export class ApplicationMenu {
         window.addEventListener("click", (e) => {
             this.close();
             this.getFocusedLabel()?.setFocused(false);
+            this.attentive = false;
             this.showAltKeys(false);
+        });
+
+        atom.workspace.onDidChangeActivePaneItem((item) => {
+            document.body.click();
         });
 
         document.body.addEventListener("keydown", (e) => this.onKeyDown(e as KeyboardEvent));
@@ -88,6 +94,7 @@ export class ApplicationMenu {
         ) {
             this.close();
             this.getFocusedLabel()?.setFocused(false);
+            this.attentive = false;
             this.showAltKeys(false);
             return;
         }
@@ -96,7 +103,10 @@ export class ApplicationMenu {
             if (e.repeat) {
                 return;
             }
-            this.showAltKeys(!this.showingAltKeys);
+            this.attentive = !this.attentive;
+            if (TitleBarReplacer.configState.menuBarMnemonics) {
+                this.showAltKeys(!this.showingAltKeys);
+            }
             return;
         }
 
@@ -146,6 +156,7 @@ export class ApplicationMenu {
                     if (selected && !selected.hasSubmenu()) {
                         selected.execCommand();
                         this.close();
+                        this.attentive = false;
                         this.showAltKeys(false);
                         Utils.stopEvent(e);
                         return;
@@ -177,6 +188,7 @@ export class ApplicationMenu {
                             ) {
                                 o.execCommand();
                                 this.close();
+                                this.attentive = false;
                                 this.showAltKeys(false);
                                 Utils.stopEvent(e);
                                 handled = true;
@@ -235,15 +247,35 @@ export class ApplicationMenu {
             }
         }
 
+        this.attentive = false;
         this.showAltKeys(false);
     }
 
     public onKeyUp(e: KeyboardEvent): void {
-        if (e.key === "Alt" && this.showingAltKeys && !this.isOpen()) {
-            if (TitleBarReplacer.configState.autoHide) {
-                this.parent?.setMenuBarVisible(true);
+        if (e.key === "Alt" && !this.isFocused() && !this.isOpen()) {
+            if (this.showingAltKeys) {
+                if (
+                    !TitleBarReplacer.configState.altGivesFocus &&
+                    !TitleBarReplacer.configState.autoHide
+                ) {
+                    this.showAltKeys(false);
+                }
             }
-            this.focusFirstLabel();
+
+            if (this.attentive) {
+                if (TitleBarReplacer.configState.autoHide) {
+                    this.parent?.setMenuBarVisible(true);
+                }
+
+                if (
+                    TitleBarReplacer.configState.autoHide ||
+                    TitleBarReplacer.configState.altGivesFocus
+                ) {
+                    this.focusFirstLabel();
+                }
+            }
+
+            this.attentive = false;
         }
     }
 
@@ -253,8 +285,13 @@ export class ApplicationMenu {
                 o.setOpen(false);
             }
         });
+
         if (TitleBarReplacer.configState.autoHide) {
             this.parent?.setMenuBarVisible(false);
+        }
+
+        if (!TitleBarReplacer.configState.menuBarMnemonics) {
+            this.attentive = true;
         }
     }
 

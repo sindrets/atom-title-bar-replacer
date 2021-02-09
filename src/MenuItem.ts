@@ -2,9 +2,11 @@ import EventEmitter from "events";
 import { ApplicationMenu } from "./ApplicationMenu";
 import { MalformedTemplateError } from "./MalformedTemplateError";
 import { MenuLabel } from "./MenuLabel";
-import { IMenuItem, MenuLike, TbrEvent } from "./types";
+import { exceptionCommands, IMenuItem, MenuLike, TbrEvent } from "./types";
 import { Utils } from "./Utils";
 import { Submenu } from "./Submenu";
+// @ts-ignore
+import { shell } from "electron";
 
 export class MenuItem implements MenuLike {
     private element: HTMLDivElement | HTMLHRElement;
@@ -137,11 +139,42 @@ export class MenuItem implements MenuLike {
         target.setOpen(true);
     }
 
-    public execCommand(): Promise<void> | null {
+    public async execCommand(): Promise<void> {
+        if (this.command === undefined) {
+            return;
+        }
+
+        if (exceptionCommands.indexOf(this.command) > -1) {
+            switch (this.command) {
+                case "application:open-terms-of-use":
+                    shell.openExternal("https://help.github.com/articles/github-terms-of-service/");
+                    break;
+                case "application:open-documentation":
+                    shell.openExternal("http://flight-manual.atom.io/");
+                    break;
+                case "application:open-faq":
+                    shell.openExternal("https://atom.io/faq");
+                    break;
+                case "application:open-discussions":
+                    shell.openExternal("https://discuss.atom.io/");
+                    break;
+                case "application:report-issue":
+                    shell.openExternal(
+                        "https://github.com/atom/atom/blob/master/CONTRIBUTING.md#submitting-issues"
+                    );
+                    break;
+                case "application:search-issues":
+                    shell.openExternal("https://github.com/atom/atom/issues");
+                    break;
+            }
+            return;
+        }
+
         let target =
             (atom.workspace.getActiveTextEditor() as any)?.getElement() ||
             (atom.workspace.getActivePane() as any).getElement();
-        return (atom.commands as any).dispatch(target, this.command, this.commandDetail);
+
+        await (atom.commands as any).dispatch(target, this.command, this.commandDetail);
     }
 
     public addChild(item: MenuItem) {

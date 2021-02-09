@@ -60,11 +60,13 @@ export class TbrConfig {
     openAdjacent: boolean = false;
     autoHide: boolean = false;
     hideFullscreenTitle: boolean = false;
+    altGivesFocus: boolean = false;
+    menuBarMnemonics: boolean = false;
     autoSelectColor: boolean = false;
     baseColor!: Color;
     highlightColor!: Color;
     textColor!: Color;
-    titleBarStyle: string = "";
+    titleBarStyle: "Spacious" | "Compact" = "Spacious";
     windowControlTheme: string = "";
     reverseWindowControls: boolean = false;
 }
@@ -113,3 +115,12 @@ export const themeCssSelectors: { readonly [key: string]: readonly string[] } = 
             ".menu-item", //highlight
     ],
 };
+
+export const exceptionCommands = [
+    "application:open-terms-of-use",
+    "application:open-documentation",
+    "application:open-faq",
+    "application:open-discussions",
+    "application:report-issue",
+    "application:search-issues"
+]

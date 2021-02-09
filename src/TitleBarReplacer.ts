@@ -14,30 +14,23 @@ export class TitleBarReplacer {
     }
 
     public activate(state: any): void {
-        let panesElmnt = document.querySelector("atom-pane-container.panes");
-        let intervalId = setInterval(() => {
-            if (panesElmnt == null) {
-                panesElmnt = document.querySelector("atom-pane-container.panes");
-            }
-            if (panesElmnt !== null) {
-                if (window.getComputedStyle(panesElmnt).display === "flex") {
-                    clearInterval(intervalId);
-                    this.titleBarReplacerView = new TitleBarReplacerView(
-                        TitleBarReplacer.configState
-                    );
-                    document
-                        .querySelector("atom-workspace")
-                        ?.prepend(this.titleBarReplacerView.getElement());
+        this.titleBarReplacerView = new TitleBarReplacerView(TitleBarReplacer.configState);
+        this.initSubscriptions();
+
+        this.subscriptions.add(
+            atom.workspace.observeActivePane((pane) => {
+                if (!this.initialized) {
+                    let last = performance.now();
+                    (atom.workspace as any).element.prepend(this.titleBarReplacerView.getElement());
                     this.titleBarReplacerView.updateTransforms();
-                    this.initSubscriptions();
                     this.initialized = true;
                 }
-            }
-        }, 50);
+            })
+        );
 
-        // TODO remove before publish
-        // @ts-ignore
-        window.titleBarReplacer = this;
+        if (atom.inDevMode()) {
+            (window as any).titleBarReplacer = this;
+        }
     }
 
     public initSubscriptions(): void {
@@ -70,6 +63,17 @@ export class TitleBarReplacer {
                 "title-bar-replacer:force-rebuild-application-menu": () => {
                     this.titleBarReplacerView.rebuildApplicationMenu();
                 },
+                "title-bar-replacer:remove-window-frame": async () => {
+                    atom.confirm({
+                        message: "Title Bar Replacer",
+                        detailedMessage:
+                            "Hello old user! Thank you for still using title-bar-replacer. As of " +
+                            "Atom v1.53 you no longer need to patch Atom in order to remove the " +
+                            "window frame. You can now hide the native title bar by going to: \n" +
+                            "Settings > Core > Title Bar\n " +
+                            "And setting it to 'hidden'.",
+                    });
+                },
             })
         );
         atom.config.observe("title-bar-replacer.general.displayTitleBar", (value) => {
@@ -100,6 +104,12 @@ export class TitleBarReplacer {
             if (atom.isFullScreen()) {
                 this.titleBarReplacerView.setTitleBarVisible(!value);
             }
+        });
+        atom.config.observe("title-bar-replacer.general.altGivesFocus", (value) => {
+            TitleBarReplacer.configState.altGivesFocus = value;
+        });
+        atom.config.observe("title-bar-replacer.general.menuBarMnemonics", (value) => {
+            TitleBarReplacer.configState.menuBarMnemonics = value;
         });
         atom.config.observe("title-bar-replacer.colors.autoSelectColor", (value) => {
             TitleBarReplacer.configState.autoSelectColor = value;

@@ -16,6 +16,10 @@
                                 {
                                     "label": "Auto select colors",
                                     "command": "title-bar-replacer:auto-select-colors"
+                                },
+                                {
+                                    "label": "Remove window frame",
+                                    "command": "title-bar-replacer:remove-window-frame"
                                 }
                             ]
                         }

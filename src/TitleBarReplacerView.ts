@@ -10,6 +10,7 @@ export class TitleBarReplacerView {
     private configState: TbrConfig;
     private themeManager: ThemeManager;
     private element: HTMLDivElement;
+    private titleElmnt: HTMLSpanElement;
     private windowControls: TbrWindowControls;
     private appMenu: ApplicationMenu;
     private titleBarVisible: boolean = true;
@@ -19,7 +20,7 @@ export class TitleBarReplacerView {
     public constructor(configState: TbrConfig) {
         this.configState = configState;
         this.themeManager = new ThemeManager(this);
-        [this.element, this.windowControls] = this.createElement();
+        [this.element, this.titleElmnt, this.windowControls] = this.createElement();
         this.initWindowControls();
 
         const titleObserver = new MutationObserver((mutations, self) => {
@@ -30,27 +31,23 @@ export class TitleBarReplacerView {
             });
         });
 
-        const titleElmnt = document.querySelector("title");
-        if (titleElmnt !== null) {
-            titleObserver.observe(titleElmnt, { childList: true });
+        const realTitle = document.querySelector("title");
+        if (realTitle !== null) {
+            titleObserver.observe(realTitle, { childList: true });
         }
 
-        // @ts-ignore
-        let menuTemplate = atom.menu.template;
+        const menuTemplate = (atom.menu as any).template;
         this.appMenu = ApplicationMenu.createApplicationMenu(menuTemplate, this);
         this.element.appendChild(this.appMenu.getElement());
         this.updateTitleText();
         this.attachMenuUpdater();
-        // TODO remove
-        // @ts-ignore
-        window.appMenu = this.appMenu;
 
         atom.themes.onDidChangeActiveThemes(() => {
             this.updateTransforms();
         });
     }
 
-    private createElement(): [HTMLDivElement, TbrWindowControls] {
+    private createElement(): [HTMLDivElement, HTMLSpanElement, TbrWindowControls] {
         const element = document.createElement("div");
         element.classList.add("title-bar-replacer");
 
@@ -85,6 +82,7 @@ export class TitleBarReplacerView {
 
         return [
             element,
+            titleSpan,
             {
                 minimize: controlMinimize,
                 maximize: controlMaximize,
@@ -93,10 +91,9 @@ export class TitleBarReplacerView {
         ];
     }
 
-    public updateTransforms(): void {
-        document.querySelectorAll(".menu-box.menu-item-submenu").forEach((o) => {
+    public async updateTransforms(): Promise<void> {
+        this.element.querySelectorAll(".menu-box.menu-item-submenu").forEach((o) => {
             const parentRect = o.parentElement?.getBoundingClientRect() as DOMRect;
-            const selfRect = o.getBoundingClientRect();
             (o as HTMLElement).style.transform = `translate(${parentRect.width - 25}px, -3px)`;
         });
     }
@@ -110,6 +107,8 @@ export class TitleBarReplacerView {
             this.originalMenuUpdateFn?.apply(atom.menu, ...args);
             this.updateMenu();
         };
+
+        this.updateMenu();
     }
 
     public detachMenuUpdater(): void {
@@ -122,6 +121,7 @@ export class TitleBarReplacerView {
         const edits = MenuUpdater.run(this.appMenu);
         if (edits > 0) {
             this.updateTransforms();
+            this.checkTitleCollision();
         }
     }
 
@@ -163,6 +163,10 @@ export class TitleBarReplacerView {
             document.body.click();
         });
 
+        mainWindow.on("resize", () => {
+            this.checkTitleCollision();
+        });
+
         this.windowControls.minimize.addEventListener("click", () => {
             mainWindow.minimize();
         });
@@ -195,6 +199,7 @@ export class TitleBarReplacerView {
             "no-title-bar",
             !flag
         );
+        this.checkTitleCollision();
     }
 
     public setMenuBarVisible(flag: boolean): void {
@@ -203,23 +208,39 @@ export class TitleBarReplacerView {
     }
 
     public setTitleText(title: string): void {
-        const titleElmnt = this.getElement().querySelector(".custom-title");
-        if (titleElmnt !== null) {
-            titleElmnt.innerHTML = title;
-        }
+        this.titleElmnt.innerHTML = title;
+        this.checkTitleCollision();
     }
 
     public updateTitleText(): void {
-        const titleElmnt = document.querySelector("title");
-        const customTitleElmnt = this.element.querySelector(".custom-title");
-        if (titleElmnt !== null && customTitleElmnt !== null) {
-            customTitleElmnt.innerHTML = titleElmnt.textContent || "Atom";
+        const realTitle = document.querySelector("title");
+        if (realTitle !== null) {
+            this.titleElmnt.innerHTML = realTitle.textContent || "Atom";
+            this.checkTitleCollision();
+        }
+    }
+
+    public checkTitleCollision(): void {
+        if (this.configState.titleBarStyle === "Compact") {
+            const menuRect = this.appMenu.getElement().getBoundingClientRect();
+            const titleRect = this.titleElmnt.getBoundingClientRect();
+            if (menuRect.x + menuRect.width >= titleRect.x) {
+                this.titleElmnt.style.visibility = "hidden";
+            } else {
+                this.titleElmnt.style.visibility = "visible";
+            }
+        } else {
+            this.titleElmnt.style.visibility = "visible";
         }
     }
 
     public deactivate(): void {
         this.element.parentElement?.removeChild(this.element);
         this.detachMenuUpdater();
+    }
+
+    public getConfigState() {
+        return this.configState;
     }
 
     public getThemeManager() {

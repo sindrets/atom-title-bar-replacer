@@ -5,7 +5,7 @@
   "private": false,
   "main": "./lib/title-bar-replacer",
   "scripts": {
-    "build": "npx node ./esbuild.config.js",
+    "build": "npx node ./esbuild.config.mjs",
     "postinstall": "npm run build",
     "prepublishOnly": "npm run build",
     "test": "jest"

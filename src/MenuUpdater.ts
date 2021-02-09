@@ -85,10 +85,10 @@ export class MenuUpdater {
 
                 case EditToken.INSERT:
                     if (parent instanceof ApplicationMenu) {
-                        let newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
+                        const newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
                         parent.insertLabel(newItem, ai++);
                     } else {
-                        let newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
+                        const newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
                         parent.insertChild(newItem, ai++);
                     }
                     bi++;
@@ -97,11 +97,11 @@ export class MenuUpdater {
                 case EditToken.REPLACE:
                     if (parent instanceof ApplicationMenu) {
                         parent.removeLabel(ai);
-                        let newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
+                        const newItem = MenuLabel.createMenuLabel(b[bi] as IMenuLabel);
                         parent.insertLabel(newItem, ai++);
                     } else {
                         parent.removeChild(ai);
-                        let newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
+                        const newItem = MenuItem.createMenuItem(b[bi] as IMenuItem);
                         parent.insertChild(newItem, ai++);
                     }
                     break;
